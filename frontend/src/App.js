@@ -10,7 +10,14 @@ import SignupForm from './components/SessionForms/SignupForm';
 
 
 function App() {
-  return (
+
+  const [loaded, setLoaded] = useState(false);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCurrentUser()).then(() => setLoaded(true));
+  }, [dispatch]);
+
+  return loaded && (
     <Switch>
       <AuthRoute exact path="/" component={MainPage} />
       <AuthRoute exact path="/login" component={LoginForm} />
