@@ -40,13 +40,13 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
 router.delete('/:id', requireUser, async(req, res, next) => {
     try {
         Event.findByIdAndRemove(req.params.id)
-    .exec()
-    .then((event) => {
-        if(!event) {
-            res.status(400).send(`Event ${req.params.id} was not found`);
-        } else {
-            res.status(200).send(`Event ${req.params.id} was deleted`)
-        }
+        .exec()
+        .then((event) => {
+            if(!event) {
+                res.status(400).send(`Event ${req.params.id} was not found`);
+            } else {
+                res.status(200).send(`Event ${req.params.id} was deleted`)
+            }
     })
     }
     catch(err) {
