@@ -22,9 +22,6 @@ const eventSchema = Schema({
     type: Number,
     require: true
   },
-  price: {
-    type: [String]
-  },
   supplies: {
     type: String
   }
