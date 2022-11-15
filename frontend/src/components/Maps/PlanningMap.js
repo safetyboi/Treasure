@@ -12,6 +12,8 @@ export const PlanningMap = ({passUpMapData}) => {
   const [duration, setDuration] = useState(0);
   const [pathPoints, setPathPoints] = useState([]);
   const [elevationArray, setElevationArray] = useState([]);
+  const [showPointEditForm, setShowPointEditForm] = useState(false);
+  const [numPoints, setNumPoints] = useState(0);
 
   useEffect(() => {
     if (!map) {
@@ -48,7 +50,9 @@ export const PlanningMap = ({passUpMapData}) => {
     if (map) {
 
       const addMarker = (location, map) => {
+        setNumPoints(numPoints + 1);
         const marker = new window.google.maps.Marker({
+          order: numPoints,
           position: location,
           map: map,
           icon: {
@@ -59,8 +63,13 @@ export const PlanningMap = ({passUpMapData}) => {
             strokeWeight: 0
         }
         });
+        marker.addListener(map, 'click', (event) => {
+          setShowPointEditForm(marker.order);
+        })
         setMarkers(marks => [...marks, marker])
       };
+
+
 
       window.google.maps.event.addListener(map, "click", (event) => {
         setCoords(allCoords => [...allCoords, event.latLng])
@@ -69,6 +78,8 @@ export const PlanningMap = ({passUpMapData}) => {
     };
     
   }, [map]) ;
+
+  // todo: create conditional render of point edit form, pass in the showPointEditForm value to get the specific point
 
   const elevator = new window.google.maps.ElevationService();
   const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
