@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import './SessionForm.scss';
 import { signup, clearSessionErrors } from '../../store/session';
+import './SessionForm.scss';
 
 function SignupForm () {
   const [email, setEmail] = useState('');
@@ -55,7 +55,7 @@ function SignupForm () {
     <div className='session_wrapper flex-row justify-center'>
       <form className="session-form flex-col" 
         onSubmit={usernameSubmit}>
-        <h2 className='text-center'>Sign Up Form</h2>
+        <h2 className='text-center'>Sign Up</h2>
         <label>
           <span>Email</span>
           <input type="email"

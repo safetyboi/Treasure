@@ -15,10 +15,10 @@ function MainPage() {
         <div className='hero_title flex-col justify-evenly'>
           <h1>Create and organize your own scavenger hunt event.</h1>
           <p>Track the status of your joined event, create, and invite people, all in one app.</p>
-          <div className='hero_button flex-row justify-center'>
+          <div className='hero_button flex-row justify-start'>
             <Link to={'/signup'}><Button className='border-btn'>Sign up</Button></Link>
             <Link to={'/login'}><Button className='border-btn'>Log in</Button></Link>
-            <Link to={'#'}><Button>Demo</Button></Link>
+            <Link to={'#'}><Button className='demo-btn'>DEMO</Button></Link>
           </div>
         </div>
         <div className='hero_img flex-row justify-center'>

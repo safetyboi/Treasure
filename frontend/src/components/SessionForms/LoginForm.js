@@ -1,10 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { login, clearSessionErrors } from '../../store/session';
 import './SessionForm.scss';
 
@@ -28,18 +24,16 @@ function LoginForm () {
     return e => setState(e.currentTarget.value);
   }
 
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login({ email, password })); 
   }
 
   return (
-    <>
-      <form className="session-form" onSubmit={handleSubmit}>
-        <h2>Log In</h2>
+    <div className='session_wrapper flex-row justify-center'>
+      <form className="session-form flex-col" 
+        onSubmit={handleSubmit}>
+        <h2 className='text-center'>Log In</h2>
         <div className="errors">{errors?.email}</div>
         <label>
           <span>Email</span>
@@ -64,7 +58,7 @@ function LoginForm () {
           disabled={!email || !password}
         />
       </form>
-    </>
+    </div>
   );
 }
 
