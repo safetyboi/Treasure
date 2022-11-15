@@ -11,13 +11,14 @@ const csurf = require('csurf');
 const debug = require('debug');
 
 require('./models/User');
+require('./models/Event')
 
 require('./config/passport'); // <-- ADD THIS LINE
 const passport = require('passport');
 
 // const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/api/users');
-
+const eventsRouter = require('./routes/api/events')
 const csrfRouter = require('./routes/api/csrf');
 
 
@@ -51,7 +52,7 @@ if (!isProduction) {
 
 // app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
-
+app.use('/api/events', eventsRouter);
 app.use('/api/csrf', csrfRouter);
 
 app.use((req, res, next) => {
