@@ -24,21 +24,24 @@ function NavBar () {
       );
     } else {
       return (
-
-        <div className="links-auth flex-row justify-evenly">
+        <div className="links-auth flex-row justify-evenly align-center">
           <Link to={'/signup'}>Signup</Link>
           <Link to={'/login'}>Login</Link>
-          <Link to="#">Demo</Link>
+          <Link to="#" className='login-btn'>DEMO</Link>
         </div>
       );
     }
   }
 
   return (
-    <header className='flex-row justify-between align-center'>
-      <Link to={'/'}><h1>Treasure</h1></Link>
-      { getLinks() }
-    </header>
+    <>
+      <div className='spacer layer'></div>
+      <header className='flex-row justify-between align-center'>
+        <Link to={'/'}><h1>Treasure</h1></Link>
+        { getLinks() }
+      </header>
+    </>
+    
   );
 }
 

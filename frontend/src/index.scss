@@ -49,6 +49,8 @@ input{
 // Root CSS variable
 :root {
   --orange: #FF725E;
+  --white: #f2e5e1;
+  --border-radius: .5vw;
 }
 
 
@@ -78,6 +80,7 @@ button.btn {
   font-weight: bold;
   font-size: 1.1vw;
   padding: 2vh 2vw;
+  border-radius: .5vw;
 }
 
 
