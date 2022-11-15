@@ -10,7 +10,11 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1"
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^5.3.4",
+    "react-scripts": "5.0.1",
+    "redux": "^4.2.0",
+    "redux-thunk": "^2.4.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -33,5 +37,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "file-loader": "^6.2.0",
+    "redux-logger": "^3.0.6"
   }
 }
