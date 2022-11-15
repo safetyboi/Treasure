@@ -10,6 +10,7 @@ import SignupForm from './components/SessionForms/SignupForm';
 import Events from './components/Events/Events';
 import Profile from './components/Profile/Profile';
 import EventCompose from './components/Events/EventCompose';
+import PlanningMap from './components/Maps/PlanningMap';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
       <ProtectedRoute exact path="/events" component={Events} />
       <ProtectedRoute exact path="/profile" component={Profile} />
       <ProtectedRoute exact path="/events/new" component={EventCompose} />
+      <ProtectedRoute exact path="/testmap" component={PlanningMap} />
     </Switch>
   );
 }
