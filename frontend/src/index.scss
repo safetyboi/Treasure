@@ -50,7 +50,9 @@ input{
 :root {
   --orange: #FF725E;
   --white: #f2e5e1;
+  --title-size: 2.5vw;
   --border-radius: .5vw;
+  background-color: var(--white);
 }
 
 
@@ -103,7 +105,7 @@ button.btn {
   justify-content: end;
 }
 
-.justify-start {
+.justify-center {
   justify-content: center;
 }
 
@@ -129,6 +131,10 @@ button.btn {
 
 .align-end {
   align-items: end;
+}
+
+.text-center {
+  text-align: center;
 }
 
 /* TODO Add site wide styles */

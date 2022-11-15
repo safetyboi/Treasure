@@ -52,19 +52,19 @@ function SignupForm () {
   }
 
   return (
-    <div className='session_wrapper'>
-      <form className="session-form" onSubmit={usernameSubmit}>
-        <h2>Sign Up Form</h2>
-        <div className="errors">{errors?.email}</div>
+    <div className='session_wrapper flex-row justify-center'>
+      <form className="session-form flex-col" 
+        onSubmit={usernameSubmit}>
+        <h2 className='text-center'>Sign Up Form</h2>
         <label>
           <span>Email</span>
-          <input type="text"
+          <input type="email"
             value={email}
             onChange={update('email')}
             placeholder="Email"
           />
         </label>
-        <div className="errors">{errors?.username}</div>
+        <div className="errors">{errors?.email}</div>
         <label>
           <span>Username</span>
           <input type="text"
@@ -73,7 +73,7 @@ function SignupForm () {
             placeholder="Username"
           />
         </label>
-        <div className="errors">{errors?.password}</div>
+        <div className="errors">{errors?.username}</div>
         <label>
           <span>Password</span>
           <input type="password"
@@ -82,9 +82,7 @@ function SignupForm () {
             placeholder="Password"
           />
         </label>
-        <div className="errors">
-          {password !== password2 && 'Confirm Password field must match'}
-        </div>
+        <div className="errors">{errors?.password}</div>
         <label>
           <span>Confirm Password</span>
           <input type="password"
@@ -93,6 +91,9 @@ function SignupForm () {
             placeholder="Confirm Password"
           />
         </label>
+        <div className="errors">
+          {password !== password2 && 'Confirm Password field must match'}
+        </div>
         <input
           type="submit"
           value="Sign Up"

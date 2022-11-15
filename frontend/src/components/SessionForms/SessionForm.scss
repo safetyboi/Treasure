@@ -1,3 +1,55 @@
 .session_wrapper {
-  margin: 0 auto;
+  position: relative;
+  top: -17vh;
+
+  .session-form {
+    width: 30vw;
+    overflow: hidden;
+    font-size: 1.2vw;
+    
+    h2 {
+      font-size: var(--title-size);
+      margin-bottom: 3vh;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+
+      span {
+        margin-bottom: 1vh;
+      }
+
+      input {
+        font-size: 1.1vw;
+        border: none;
+        padding: 1vh 1vw;
+        border-radius: var(--border-radius);
+      }
+
+      input:focus {
+        outline: none;
+      }
+    }
+
+    .errors {
+      margin-top: 1vh;
+      margin-bottom: 2vh;
+    }
+
+    input[type="submit"] {
+      border: 1px solid var(--orange);
+      padding: 2vh 0;
+      color: #000;
+      border-radius: var(--border-radius);
+      font-size: 1.2vw;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: var(--orange);
+      color: var(--white);
+    }
+  }
 }
