@@ -45,6 +45,89 @@ input{
   border-radius: 0;
 }
 
+
+// Root CSS variable
+:root {
+  --orange: #FF725E;
+}
+
+
+// Common elements
+h1, h2, h3, h4, h5 { 
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 3vw;
+  margin-bottom: 2vh;
+}
+
+p {
+  font-size: 1.2vw;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button.btn {
+  background-color: var(--orange);
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1vw;
+  padding: 2vh 2vw;
+}
+
+
+// Display Flex
+.flex-row {
+  display: flex;
+  flex-direction: row;
+} 
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.justify-start {
+  justify-content: start;
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.justify-start {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
+.align-start {
+  align-items: start;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-end {
+  align-items: end;
+}
+
 /* TODO Add site wide styles */
 form > .errors {
     color: red;
@@ -52,5 +135,5 @@ form > .errors {
     height: 15px;
     display: flex;
     align-items: center;
-  }
+}
 

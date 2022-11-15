@@ -1,0 +1,26 @@
+.hero {
+  height: 80vh;
+  padding: 10vh 5vw;
+
+    .hero_title{
+      width: 50vw;
+      margin: auto 0;
+      
+      p {
+        margin: 2vh 0 5vh 0;
+      }
+
+      button {
+        margin-right: 1vw;
+      }
+    }
+
+    .hero_img {
+      width: 50vw;
+
+      img {
+        height: 100%;
+        margin: 0 auto;
+      }
+    }
+}

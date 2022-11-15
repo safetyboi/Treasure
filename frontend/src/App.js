@@ -24,15 +24,18 @@ function App() {
   }, [dispatch]);
 
   return loaded && (
-    <Switch>
-      <AuthRoute exact path="/" component={MainPage} />
-      <AuthRoute exact path="/login" component={LoginForm} />
-      <AuthRoute exact path="/signup" component={SignupForm} />
+    <>
+      <NavBar />
+      <Switch>
+        <AuthRoute exact path="/" component={MainPage} />
+        <AuthRoute exact path="/login" component={LoginForm} />
+        <AuthRoute exact path="/signup" component={SignupForm} />
 
-      <ProtectedRoute exact path="/events" component={Events} />
-      <ProtectedRoute exact path="/profile" component={Profile} />
-      <ProtectedRoute exact path="/events/new" component={EventCompose} />
-    </Switch>
+        <ProtectedRoute exact path="/events" component={Events} />
+        <ProtectedRoute exact path="/profile" component={Profile} />
+        <ProtectedRoute exact path="/events/new" component={EventCompose} />
+      </Switch>
+    </>
   );
 }
 
