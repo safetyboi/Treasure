@@ -133,7 +133,7 @@ button.btn {
 
 /* TODO Add site wide styles */
 form > .errors {
-    color: red;
+    color: var(--orange);
     font-size: 0.875em;
     height: 15px;
     display: flex;
