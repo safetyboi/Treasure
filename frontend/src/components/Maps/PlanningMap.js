@@ -14,7 +14,7 @@ export const PlanningMap = ({passUpMapData}) => {
   const [elevationArray, setElevationArray] = useState([]);
   const [showPointEditForm, setShowPointEditForm] = useState(false);
   const [numPoints, setNumPoints] = useState(0);
-  const [pins, setPins] = useState([{event: this eventid, order:2}, {event: this}]);
+  // const [pins, setPins] = useState([{event: this eventid, order:2}, {event: this}]);
 
   useEffect(() => {
     if (!map) {
