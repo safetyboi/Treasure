@@ -46,10 +46,12 @@ export const PlanningMap = ({passUpMapData}) => {
     setElevation(Math.round(totalClimbing * 10) / 10);
   };
 
+  // todo - pineditform is rendered for each position in the marker positions array (statevar). map and pass in the position to it, only show if the showeditform is set to its order. click handler on markers sets that variable to the position. 
+
   useEffect(() => {
     if (map) {
 
-      const addMarker = (location, map) => {
+      const addPin = (location, map) => {
         setNumPoints(numPoints + 1);
         const marker = new window.google.maps.Marker({
           order: numPoints,
@@ -73,7 +75,7 @@ export const PlanningMap = ({passUpMapData}) => {
 
       window.google.maps.event.addListener(map, "click", (event) => {
         setCoords(allCoords => [...allCoords, event.latLng])
-        addMarker(event.latLng, map);
+        addPin(event.latLng, map);
       });
     };
     

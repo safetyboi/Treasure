@@ -8,17 +8,19 @@ export const ViewingMap = ({event}) => {
   const [currentPosition, setCurrentPosition] = useState(getUserPosition(currentUser.id));
   const participants = useSelector(getEventParticipants(event.id));
   const [participantPositions, setParticipantPositions] = useState(updateParticipantPositions());
+  const [showPointViewForm, setShowPointViewForm] = useState(null);
   
   useEffect(() => {
     if (!map) {
       setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773972, lng: -122.431297}}))
-    }
+    };
+    renderPins();
     
   }, [mapRef]);
 
-  
+  // todo: differentiate playerpin and event pins, tie the markers to the pin info somehow
 
-  const addMarker = (location, map) => {
+  const addMarker = (location, map, order) => {
     const marker = new window.google.maps.Marker({
       position: location,
       map: map,
@@ -30,6 +32,9 @@ export const ViewingMap = ({event}) => {
         strokeWeight: 0
     }
     });
+    marker.addListener(map, 'click', (event) => {
+      setShowPointViewForm(marker.order);
+  });
 
   const renderParticipantPositions = () => {
     participantPositions.forEach(position => {
@@ -43,6 +48,12 @@ export const ViewingMap = ({event}) => {
   };
 
   setInterval(updateParticipantPositions, 30000);
+
+  const renderPins = () => {
+    event.pins.forEach(pin => {
+      addMarker(pin.location, map)
+    })
+  }
 
   useEffect(() => {
 
