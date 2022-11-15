@@ -34,7 +34,7 @@ export const ViewingMap = ({event}) => {
     });
     marker.addListener(map, 'click', (event) => {
       setShowPointViewForm(marker.order);
-  });
+  })};
 
   const renderParticipantPositions = () => {
     participantPositions.forEach(position => {

@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
+import './Map.css';
 
 export const PlanningMap = ({passUpMapData}) => {
   const [map, setMap] = useState(null);
@@ -157,9 +158,9 @@ export const PlanningMap = ({passUpMapData}) => {
     calcElevation(elevationArray);
   }, [elevationArray])
 
-  useEffect(() => {
-    passUpMapData(distance, duration, polyline, elevationArray, elevation);
-  }, [distance, duration, polyline, elevationArray, elevation])
+  // useEffect(() => {
+  //   passUpMapData(distance, duration, polyline, elevationArray, elevation);
+  // }, [distance, duration, polyline, elevationArray, elevation])
 
 
   return (
@@ -176,7 +177,7 @@ export const PlanningMap = ({passUpMapData}) => {
 const PlanningMapWrapper = ({passUpMapData}) => {
 
   return (
-    <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} libraries={["geometry"]}>
+    <Wrapper apiKey={'AIzaSyAdr4nYuDy8Fvs3WttQMLl_R08RhXj9RgA'} >
       <PlanningMap passUpMapData={passUpMapData}/>
     </Wrapper>
   )
