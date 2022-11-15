@@ -1,8 +1,7 @@
-
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import './NavBar.css';
 import { logout } from '../../store/session';
+import './NavBar.scss';
 
 function NavBar () {
   const loggedIn = useSelector(state => !!state.session.user);
@@ -16,7 +15,7 @@ function NavBar () {
   const getLinks = () => {
     if (loggedIn) {
       return (
-        <div className="links-nav">
+        <div className="links-nav flex-row">
           <Link to={'/events'}>All Events</Link>
           <Link to={'/profile'}>Profile</Link>
           <Link to={'/events/new'}>Create an Event</Link>
@@ -25,9 +24,10 @@ function NavBar () {
       );
     } else {
       return (
-        <div className="links-auth">
+        <div className="links-auth flex-row justify-evenly align-center">
           <Link to={'/signup'}>Signup</Link>
           <Link to={'/login'}>Login</Link>
+          <Link to="#" className='login-btn'>DEMO</Link>
         </div>
       );
     }
@@ -35,9 +35,13 @@ function NavBar () {
 
   return (
     <>
-      <h1>Treasure</h1>
-      { getLinks() }
+      <div className='spacer layer'></div>
+      <header className='flex-row justify-between align-center'>
+        <Link to={'/'}><h1>Treasure</h1></Link>
+        { getLinks() }
+      </header>
     </>
+    
   );
 }
 
