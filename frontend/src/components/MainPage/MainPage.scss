@@ -22,8 +22,17 @@
 
       .border-btn {
         border: 1px solid var(--orange);
-        background-color: white;
+        background-color: var(--white);
         color: var(--orange);
+      }
+
+      .border-btn:hover {
+        background-color: var(--orange);
+        color: var(--white);
+      }
+
+      .demo-btn {
+        letter-spacing: 1px;
       }
     }
 
