@@ -7,9 +7,9 @@ import NavBar from './components/NavBar/NavBar';
 import MainPage from './components/MainPage/MainPage';
 import LoginForm from './components/SessionForms/LoginForm';
 import SignupForm from './components/SessionForms/SignupForm';
-import Events from './components/Events/Events';
-import Profile from './components/Profile/Profile';
+import EventIndex from './components/Events/EventIndex';
 import EventCompose from './components/Events/EventCompose';
+import Profile from './components/Profile/Profile';
 import { getCurrentUser } from './store/session';
 
 
@@ -30,7 +30,7 @@ function App() {
         <AuthRoute exact path="/login" component={LoginForm} />
         <AuthRoute exact path="/signup" component={SignupForm} />
 
-        <ProtectedRoute exact path="/events" component={Events} />
+        <ProtectedRoute exact path="/events" component={EventIndex} />
         <ProtectedRoute exact path="/profile" component={Profile} />
         <ProtectedRoute exact path="/events/new" component={EventCompose} />
       </Switch>

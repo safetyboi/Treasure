@@ -27,6 +27,21 @@ header {
     color: white;
     cursor: pointer;
   }
+
+  .links-nav > * {
+    margin: 0 1vw;
+  }
+
+  .links-nav {
+    button {
+      background-color: transparent;
+      border: 1px solid var(--white);
+      color: var(--white);
+      padding: 1vh 1vw;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+    }
+  }
   
   .links-auth {
     width: 20%;
