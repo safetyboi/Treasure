@@ -40,7 +40,13 @@ export const PlanningMap = () => {
     
   };
 
-  const handlePinSubmit = (newPin) => {
+  const selectedPin = (order) => {
+    return pins.filter(pin => {
+      return pin.order === order
+    })[0];
+  };
+
+  const addPinToArray = (newPin) => {
     if (pins.filter(pin => {
       return pin.order === newPin.order
     })) {
@@ -54,8 +60,18 @@ export const PlanningMap = () => {
     }
   };
 
-  const deletePin = () => {
+  console.log(pins)
 
+  const deletePin = (marker) => {
+    // TODO: figure out how to delete a pin
+
+    // setPins(pins.filter(pin => {
+    //   return pin.order !== marker.order
+    // }));
+    // setMarkers(markers.filter(mark => {
+    //   return mark.order !== marker.order
+    // }));
+    // marker.setMap(null);
   };
 
   const calcElevation = (elevationArray) => {
@@ -67,6 +83,27 @@ export const PlanningMap = () => {
     };
     setElevation(Math.round(totalClimbing * 10) / 10);
   };
+
+  const blankPin = (marker) => {
+    console.log(marker)
+
+    return {
+      order: marker.order,
+      location: {
+        latitude: marker.position.lat(),
+        longitude: marker.position.lng(),
+      },
+      directionToPin: {text: ''},
+      task: {
+        prompt: '',
+        correctAnswer: '',
+      },
+      supplies: '',
+      price: 0,
+      duration: 0
+    }
+  }
+  
 
   // todo - pineditform is rendered for each position in the marker positions array (statevar). map and pass in the position to it, only show if the showeditform is set to its order. click handler on markers sets that variable to the position. 
   const addPin = (location, map) => {
@@ -87,6 +124,8 @@ export const PlanningMap = () => {
       setShowPinEditForm(marker);
     })
     setMarkers(marks => [...marks, marker])
+    addPinToArray(blankPin(marker))
+    setShowPinEditForm(marker)
   };
 
   useEffect(() => {
@@ -192,7 +231,7 @@ export const PlanningMap = () => {
     <>
       {/* <EventCreate pins={pins} mapData={mapData}/> */}
       <div className="google-map-container" ref={mapRef}>Map</div>
-      {showPinEditForm && <PinEditForm deletePin={deletePin} handlePinSubmit={handlePinSubmit} marker={showPinEditForm} pins={pins}/>}  
+      {showPinEditForm && <PinEditForm deletePin={deletePin} addPinToArray={addPinToArray} marker={showPinEditForm} pin={selectedPin(showPinEditForm.order)}/>}  
       {/* TODO grab the correct marker */}
     </>
   )
