@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import ManMap from '../../assets/images/ManMap.svg';
@@ -6,9 +5,6 @@ import ManMap from '../../assets/images/ManMap.svg';
 import './MainPage.scss';
 
 function MainPage() {
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
-
   return (
     <div className='hero_wrapper'>
       <section className='hero flex-row justify-center'>
