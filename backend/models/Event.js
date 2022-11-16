@@ -14,6 +14,10 @@ const eventSchema = Schema({
     type: String,
     required: true
   },
+  location: {
+    type: String,
+    required: true
+  },
   duration: {
     type: Number
   },
@@ -25,6 +29,12 @@ const eventSchema = Schema({
   },
   supplies: {
     type: String
+  },
+  gameStatus: {
+    type: Boolean
+  },
+  date: {
+    type: Date
   },
   elevation: {
     type: Number

@@ -74,14 +74,12 @@ header {
 }
 
 footer {
-  position: absolute;
-  bottom: 2vh;
-  overflow-x: hidden;
+  position: relative;
+  bottom: 0;
   color: white;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;
   width: 100vw;
-  padding: 0 5vw;
 
   p {
     font-size: 1vw;
@@ -91,6 +89,10 @@ footer {
   a {
     color: black;
     margin-right: 2vw;
+  }
+
+  .footer_content {
+    padding: 2vh 5vw;
   }
 }
 
