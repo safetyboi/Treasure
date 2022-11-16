@@ -37,7 +37,6 @@ function App() {
         <ProtectedRoute exact path="/events/new" component={EventCompose} />
         <ProtectedRoute exact path="/testmap" component={PlanningMap} />
       </Switch>
-      <Footer />
     </>
   );
 }
