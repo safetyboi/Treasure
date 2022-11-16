@@ -1,3 +1,6 @@
+import jwtFetch from "./jwt";
+
+
 const RECEIVE_NEW_PIN = "RECEIVE_NEW_PIN"
 const RECEIVE_EVENT_PINS = "RECEIVE_EVENT_PINS"
 const REMOVE_EVENT_PINS = "REMOVE_EVENT_PINS"
@@ -10,15 +13,15 @@ const receiveNewPin = pin => ({
     pin
   });
 
-  const receiveEventPins = eventId => ({
-    type: RECEIVE_EVENT_PINS,
-    events
-  });
+  // const receiveEventPins = eventId => ({
+  //   type: RECEIVE_EVENT_PINS,
+  //   events
+  // });
 
-  const removeEventPins = eventId => ({
-    type: REMOVE_EVENT_PINS,
-    events
-  });
+  // const removeEventPins = eventId => ({
+  //   type: REMOVE_EVENT_PINS,
+  //   events
+  // });
 
   export const createPin = data => async dispatch => {
     const res = await jwtFetch('/api/pins/', {
@@ -30,7 +33,7 @@ const receiveNewPin = pin => ({
       //no error-handling yet
   }
 
-  const pinsReducer = () => {
+  const pinsReducer = (state = {}, action) => {
     switch(action.type) {
         case RECEIVE_NEW_PIN:
             return {...state, pins: action.pin};

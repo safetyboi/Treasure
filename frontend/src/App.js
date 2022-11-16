@@ -8,7 +8,7 @@ import MainPage from './components/MainPage/MainPage';
 import LoginForm from './components/SessionForms/LoginForm';
 import SignupForm from './components/SessionForms/SignupForm';
 import EventIndex from './components/Events/EventIndex';
-import EventCompose from './components/Events/EventCompose';
+// import EventCompose from './components/Events/EventCompose';
 import Profile from './components/Profile/Profile';
 import Footer from './components/NavBar/Footer';
 import PlanningMap from './components/Maps/PlanningMap';
@@ -36,7 +36,7 @@ function App() {
 
         <ProtectedRoute exact path="/events" component={EventIndex} />
         <ProtectedRoute exact path="/profile" component={Profile} />
-        <ProtectedRoute exact path="/events/new" component={EventCompose} />
+        {/* <ProtectedRoute exact path="/events/new" component={EventCompose} /> */}
         <ProtectedRoute exact path="/testmap" component={PlanningMap} />
         <ProtectedRoute exact path="/onlinegame" component={OnlineGameMap} />
         <ProtectedRoute exact path="/imageupload" component={ImageUploader} />

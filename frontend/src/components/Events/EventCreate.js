@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearEventErrors, createEvent } from '../../store/tweets';
+import { clearEventErrors, createEvent } from '../../store/events';
 import EventBox from './EventBox';
-import PinBox from './PinBox'
+import { PinBox } from './PinBox'
 import * as pinReducerActions from '../../store/pins'
 import * as eventReducerActions from '../../store/events';
 import { Redirect } from 'react-router-dom';
@@ -25,7 +25,7 @@ function EventCreate ({pins, mapData}) {
     //add missing columns
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
-   
+  
     
 
   
