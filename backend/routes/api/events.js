@@ -27,7 +27,11 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
             distance: req.body.distance,
             price: req.body.price,
             supplies: req.body.supplies,
-            elevation: req.body.elevation
+            gameStatus: req.body.status,
+            elevation: req.body.elevation,
+            date: req.body.date,
+            status: req.body.status,
+            location: req.body.location
         })
 
         let event = await newEvent.save()
@@ -39,7 +43,7 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
     }
 })
 
-router.get('/:userId', async (req, res, next) => {
+router.get('/:userId/events', async (req, res, next) => {
     let user;
     try {
       user = await User.findById(req.params.userId);
@@ -60,6 +64,27 @@ router.get('/:userId', async (req, res, next) => {
     }
 })
 
+router.get('/:eventId', async (req, res, next) => {
+    let event;
+    try {
+      event = await Event.findById(req.params.eventId);
+    } catch(err) {
+      const error = new Error('User not found');
+      error.statusCode = 404;
+      error.errors = { message: "No event found with that id" };
+      return next(error);
+    }
+    try {
+      const event = await Event.findById(req.params.eventId)
+                                .sort({ createdAt: -1 })
+                                .populate("creator", "_id, username");
+      return res.json(event);
+    }
+    catch(err) {
+      return res.json([]);
+    }
+})
+
 router.patch('/:id', requireUser, validateEventInput, async (req, res, next) => {    
     try {
         Event.findByIdAndUpdate(req.params.id, {
@@ -70,7 +95,7 @@ router.patch('/:id', requireUser, validateEventInput, async (req, res, next) => 
             distance: req.body.distance,
             price: req.body.price,
             supplies: req.body.supplies,
-            elevation: req.body.elevation
+            elevation: req.body.elevation,
         })
         .exec()
         .then((event) => {

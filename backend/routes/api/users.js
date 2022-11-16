@@ -9,6 +9,10 @@ const { loginUser, restoreUser } = require('../../config/passport');
 const { isProduction } = require('../../config/keys');
 const validateRegisterInput = require('../../validations/register');
 const validateLoginInput = require('../../validations/login');
+const upload = require("../../services/ImageUpload");
+const singleUpload = upload.single("image");
+const { requireUser } = require('../../config/passport');
+
 
 router.get('/', function(req, res, next) {
   res.json({
@@ -86,6 +90,30 @@ router.get('/current', restoreUser, (req, res) => {
     _id: req.user._id,
     username: req.user.username,
     email: req.user.email
+  });
+});
+
+router.post("/add-profile-picture", requireUser, function (req, res) {
+  const uid = req.user._id;
+
+  singleUpload(req, res, function (err) {
+
+    if (err) {
+      return res.json({
+        success: false,
+        errors: {
+          title: "Image Upload Error",
+          detail: err.message,
+          error: err,
+        },
+      });
+    }
+    console.log(req)
+    let update = { profilePicture: req.file.location };
+
+    User.findByIdAndUpdate(uid, update, { new: true })
+      .then((user) => res.status(200).json({ success: true, user: user }))
+      .catch((err) => res.status(400).json({ success: false, error: err }));
   });
 });
 
