@@ -29,5 +29,3 @@ const subscriptionSchema = Schema({
 });
 
 module.exports = mongoose.model('Subscription', subscriptionSchema);
-
-user[0]["createdAt"]

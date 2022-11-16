@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Subscription = mongoose.model('Subscription');
 const { requireUser } = require('../../config/passport');
-const Subscription = require('../../models/Subscription');
+// const Subscription = require('../../models/Subscription');
 const validateSubscriptionInput = require('../../validations/subscription');
 
 
@@ -18,12 +18,12 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:eventId', async (req, res, next) => {
-    let pins;
+router.get('/:userId', async (req, res, next) => {
+    let subscription;
     try {
         console.log(req.params.eventId)
-        pins = await Pin.find({event: req.params.eventId})
-        return res.json(pins);
+        subscription = await Subscription.find({user: req.params.userId})
+        return res.json(subscription);
     } catch(err) {
       const error = new Error('Event not found');
       error.statusCode = 404;
