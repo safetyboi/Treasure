@@ -2,26 +2,56 @@ import { useState } from "react";
 import jwtFetch from "../../store/jwt";
 
 const UploadImages = () => {
-  const [imageFiles, setImageFlies] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imageFilesUrls, setImageFilesUrls] = useState([]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(imageFiles);
 
-    jwtFetch("/api/users/add-profile-picture", {
+    const formData = new FormData();
+
+    // formData.append("images", imageFiles);
+
+    for (let i = 0; i < imageFiles.length; i++) {
+      formData.append("image", imageFiles[i]);
+    }
+
+    await jwtFetch("/api/events/postImages", {
       method: "POST",
-      body: JSON.stringify({ files: imageFiles }),
-    });
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   };
 
-  const handleFiles = (e) => {
-    // console.log(e.target.files);
-    setImageFlies(e.target.files);
+  const handleFiles = async (e) => {
+    console.log(e.target.files[0])
+    const file = e.target.files[0];
+    // dispatch(uploadPhoto(currentUser._id, file));
+
+    const formData = new FormData();
+
+    formData.append("images", file);
+
+    // for (let i = 0; i < imageFiles.length; i++) {
+    //   formData.append("image", imageFiles[i]);
+    // }
+
+
+    await jwtFetch("/api/events/postImages", {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+
+    
+        
   };
 
   return (
     <form onSubmit={handleSubmit} encType="multipart/form-data">
-      <input onChange={handleFiles} type="file" name="images" multiple />
+      <input onChange={handleFiles} type="file" multiple />
       <button>submit</button>
     </form>
   );
