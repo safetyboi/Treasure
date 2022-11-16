@@ -1,0 +1,38 @@
+.hero_wrapper {
+  width: 100vw;
+  padding: 0 5vw;
+
+  .hero {
+    position: absolute;
+    top: 30vh;
+
+    .hero_title{
+      width: 50vw;
+      margin: auto 0;
+      
+      p {
+        margin: 2vh 0 5vh 0;
+      }
+
+      button {
+        margin-right: 1vw;
+        width: 9vw;
+        cursor: pointer;
+      }
+
+      .border-btn {
+        border: 1px solid var(--orange);
+        background-color: white;
+        color: var(--orange);
+      }
+    }
+
+    .hero_img {
+      width: 40vw;
+
+      img {
+       width: 70%;
+      }
+    }
+  }
+}
