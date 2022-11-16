@@ -1,13 +1,35 @@
 import './PinEditForm.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const PinEditForm = ({marker, handlePinSubmit, deletePin}) => {
-  const [directions, setDirections] = useState('');
-  const [challengePrompt, setChallengePrompt] = useState('');
-  const [challengeAnswser, setChallengeAnswser] = useState('');
-  const [supplies, setSupplies] = useState('');
-  const [activityDuration, setActivityDuration] = useState('');
-  const [price, setPrice] = useState('');
+const PinEditForm = ({pins, marker, handlePinSubmit, deletePin}) => {
+  console.log(pins)
+  const pin = pins.filter(pin => {
+    return pin.order === marker.order
+  })[0] 
+  const [directions, setDirections] = useState(pin ? pin.directionToPin.text : '');
+  const [challengePrompt, setChallengePrompt] = useState(pin ? pin.challengePrompt : '');
+  const [challengeAnswser, setChallengeAnswser] = useState(pin ? pin.challengeAnswser : '');
+  const [supplies, setSupplies] = useState(pin ? pin.supplies : '');
+  const [activityDuration, setActivityDuration] = useState(pin? pin.activityDuration : 0);
+  const [price, setPrice] = useState(pin ? pin.price : 0);
+
+  useEffect(() => {
+    if (pin) {
+      setDirections(pin.directionToPin.text);
+      setChallengePrompt(pin.task.prompt);
+      setChallengeAnswser(pin.task.correctAnswer);
+      setSupplies(pin.supplies);
+      setActivityDuration(pin.duration);
+      setPrice(pin.price);
+    } else {
+      setDirections('');
+      setChallengePrompt('');
+      setChallengeAnswser('');
+      setSupplies('');
+      setActivityDuration(0);
+      setPrice(0);
+    }
+  }, [pin])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,7 +51,7 @@ const PinEditForm = ({marker, handlePinSubmit, deletePin}) => {
     };
 
     handlePinSubmit(newPin);
-  }
+  };
 
   return (
     <>

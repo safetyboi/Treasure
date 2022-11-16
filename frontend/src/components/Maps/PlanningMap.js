@@ -27,9 +27,6 @@ export const PlanningMap = () => {
     
   }, [mapRef]);
 
-  console.log(numPoints)
-
-
   const calcElevationArray = async (points) => {
     if (points.length > 1) {
       let elev = await (elevator.getElevationAlongPath({
@@ -44,7 +41,17 @@ export const PlanningMap = () => {
   };
 
   const handlePinSubmit = (newPin) => {
-    setPins(allPins => [...allPins, newPin])
+    if (pins.filter(pin => {
+      return pin.order === newPin.order
+    })) {
+      setPins(allPins => 
+        [...allPins.filter(pin => {
+          return pin.order !== newPin.order
+        }), newPin]
+      )
+    } else {
+      setPins(allPins => [...allPins, newPin])
+    }
   };
 
   const deletePin = () => {
@@ -77,7 +84,6 @@ export const PlanningMap = () => {
     }
     });
     marker.addListener('click', async () => {
-      console.log(marker)
       setShowPinEditForm(marker);
     })
     setMarkers(marks => [...marks, marker])
@@ -186,7 +192,7 @@ export const PlanningMap = () => {
     <>
       {/* <EventCreate pins={pins} mapData={mapData}/> */}
       <div className="google-map-container" ref={mapRef}>Map</div>
-      {showPinEditForm && <PinEditForm deletePin={deletePin} handlePinSubmit={handlePinSubmit} marker={showPinEditForm}/>}  
+      {showPinEditForm && <PinEditForm deletePin={deletePin} handlePinSubmit={handlePinSubmit} marker={showPinEditForm} pins={pins}/>}  
       {/* TODO grab the correct marker */}
     </>
   )
