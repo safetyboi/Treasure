@@ -49,8 +49,15 @@ input{
 // Root CSS variable
 :root {
   --orange: #FF725E;
-  --white: #f2e5e1;
+  --white: #f2f2f2;
+  --gray: #727272;
+  --black: #2d2d2d;
+  --title-size: 2.5vw;
   --border-radius: .5vw;
+  --font-body: 'DM Sans', sans-serif;
+  background-color: var(--white);
+  color: var(--black);
+  font-family: var(--font-body);
 }
 
 
@@ -71,6 +78,11 @@ p {
 a {
   text-decoration: none;
   cursor: pointer;
+  color: var(--orange);
+}
+
+button {
+  font-family: var(--font-body);
 }
 
 button.btn {
@@ -103,7 +115,7 @@ button.btn {
   justify-content: end;
 }
 
-.justify-start {
+.justify-center {
   justify-content: center;
 }
 
@@ -129,6 +141,10 @@ button.btn {
 
 .align-end {
   align-items: end;
+}
+
+.text-center {
+  text-align: center;
 }
 
 /* TODO Add site wide styles */

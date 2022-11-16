@@ -18,7 +18,6 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', requireUser, validateEventInput, async (req, res, next) => {
-    console.log(req.body.elevation)
     try {
         const newEvent = new Event({
             creator: req.user._id,

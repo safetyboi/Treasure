@@ -1,0 +1,80 @@
+.profile_wrapper {
+  position: relative;
+  top: -15vh;
+  margin: 0 auto;
+  width: 80vw;
+
+  h1 {
+    font-size: var(--title-size);
+    margin-bottom: 5vh;
+  }
+
+  h2 {
+    font-size: 1.5vw;
+    margin-bottom: 1vh;
+  }
+
+  h3 {
+    font-size: 1.3vw;
+    color: grey;
+    margin-bottom: 1vh;
+  }
+
+  p {
+    font-size: 1vw;
+    margin-bottom: 2vh;
+  }
+  
+  p.join {
+    color: grey;
+  }
+
+  p.delete {
+    color: var(--orange);
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  picture {
+    margin-right: 2vw;
+  }
+
+  button {
+    background-color: transparent;
+    border: 1px solid var(--orange);
+    color: var(--black);
+    width: 14vw;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: var(--orange);
+    color: var(--white);
+  }
+
+  .profile_details, 
+  .profile_link {
+    width: 35vw;
+  }
+
+  .profile_link > * {
+    margin: 1vh 0;
+  }
+
+  .border {
+    margin: 10vh auto;
+    width: 80vw;
+    border: thin solid var(--gray);
+    opacity: .1;
+  }
+}
+
+.profile_event_wrapper {
+  h2 {
+    margin-bottom: 5vh;
+  }
+
+  p {
+    color: var(--gray);
+  }
+}
