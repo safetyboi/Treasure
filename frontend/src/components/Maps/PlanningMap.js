@@ -1,8 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import './Map.css';
+import './PinEditForm.css'
+import PinEditForm from "./EditPinForm";
 
-export const PlanningMap = ({passUpMapData}) => {
+export const PlanningMap = () => {
   const [map, setMap] = useState(null);
   const mapRef = useRef(null);
   const [markers, setMarkers] = useState([]);
@@ -13,9 +15,9 @@ export const PlanningMap = ({passUpMapData}) => {
   const [duration, setDuration] = useState(0);
   const [pathPoints, setPathPoints] = useState([]);
   const [elevationArray, setElevationArray] = useState([]);
-  const [showPointEditForm, setShowPointEditForm] = useState(false);
-  const [numPoints, setNumPoints] = useState(0);
-  // const [pins, setPins] = useState([{event: this eventid, order:2}, {event: this}]);
+  const [showPinEditForm, setShowPinEditForm] = useState(false);
+  let [numPoints, setNumPoints] = useState(0);
+  const [pins, setPins] = useState([]);
 
   useEffect(() => {
     if (!map) {
@@ -23,6 +25,8 @@ export const PlanningMap = ({passUpMapData}) => {
     }
     
   }, [mapRef]);
+
+  console.log(numPoints)
 
 
   const calcElevationArray = async (points) => {
@@ -38,6 +42,14 @@ export const PlanningMap = ({passUpMapData}) => {
     
   };
 
+  const handlePinSubmit = (newPin) => {
+    setPins(allPins => [...allPins, newPin])
+  };
+
+  const deletePin = () => {
+
+  };
+
   const calcElevation = (elevationArray) => {
     let totalClimbing = 0;
     for (let i = 0; i < elevationArray.length - 1; i++) {
@@ -49,32 +61,29 @@ export const PlanningMap = ({passUpMapData}) => {
   };
 
   // todo - pineditform is rendered for each position in the marker positions array (statevar). map and pass in the position to it, only show if the showeditform is set to its order. click handler on markers sets that variable to the position. 
+  const addPin = (location, map) => {
+    setNumPoints(numPoints++)
+    const marker = new window.google.maps.Marker({
+      order: numPoints,
+      position: location,
+      map: map,
+      icon: {
+        path: window.google.maps.SymbolPath.CIRCLE,
+        scale: 4.5,
+        fillColor: "red",
+        fillOpacity: 0.8,
+        strokeWeight: 0
+    }
+    });
+    marker.addListener('click', async () => {
+      console.log(marker)
+      setShowPinEditForm(marker);
+    })
+    setMarkers(marks => [...marks, marker])
+  };
 
   useEffect(() => {
     if (map) {
-
-      const addPin = (location, map) => {
-        setNumPoints(numPoints + 1);
-        const marker = new window.google.maps.Marker({
-          order: numPoints,
-          position: location,
-          map: map,
-          icon: {
-            path: window.google.maps.SymbolPath.CIRCLE,
-            scale: 4.5,
-            fillColor: "red",
-            fillOpacity: 0.8,
-            strokeWeight: 0
-        }
-        });
-        marker.addListener(map, 'click', (event) => {
-          setShowPointEditForm(marker.order);
-        })
-        setMarkers(marks => [...marks, marker])
-      };
-
-
-
       window.google.maps.event.addListener(map, "click", (event) => {
         setCoords(allCoords => [...allCoords, event.latLng])
         addPin(event.latLng, map);
@@ -82,6 +91,15 @@ export const PlanningMap = ({passUpMapData}) => {
     };
     
   }, [map]) ;
+
+  useEffect(() => {
+    setMapData({
+      distance,
+      elevation,
+      duration,
+    })
+  }, [distance, elevation, duration])
+
 
   // todo: create conditional render of point edit form, pass in the showPointEditForm value to get the specific point
 
@@ -164,7 +182,12 @@ export const PlanningMap = ({passUpMapData}) => {
 
 
   return (
-    <div className="google-map-container" ref={mapRef}>Map</div>
+    <>
+      {/* <EventCreate pins={pins} mapData={mapData}/> */}
+      <div className="google-map-container" ref={mapRef}>Map</div>
+      {showPinEditForm && <PinEditForm deletePin={deletePin} handlePinSubmit={handlePinSubmit} marker={showPinEditForm}/>}  
+      {/* TODO grab the correct marker */}
+    </>
   )
 
 };
@@ -174,11 +197,11 @@ export const PlanningMap = ({passUpMapData}) => {
 
 
 
-const PlanningMapWrapper = ({passUpMapData}) => {
+const PlanningMapWrapper = () => {
 
   return (
-    <Wrapper apiKey={'AIzaSyAdr4nYuDy8Fvs3WttQMLl_R08RhXj9RgA'} >
-      <PlanningMap passUpMapData={passUpMapData}/>
+    <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} >
+      <PlanningMap/>
     </Wrapper>
   )
 };

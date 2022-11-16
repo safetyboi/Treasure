@@ -43,6 +43,8 @@
 .google-map-container {
   height: 100%;
   width: 100%;
+  min-width: 400px;
+  min-height: 300px;
   z-index: 1000;
 }
 
