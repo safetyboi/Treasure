@@ -13,6 +13,7 @@ const debug = require('debug');
 require('./models/User');
 require('./models/Event')
 require('./models/Pin')
+require('./models/Subscription')
 
 require('./config/passport'); // <-- ADD THIS LINE
 const passport = require('passport');
@@ -21,6 +22,7 @@ const passport = require('passport');
 const usersRouter = require('./routes/api/users');
 const eventsRouter = require('./routes/api/events')
 const pinsRouter = require('./routes/api/pins')
+const subscriptionsRouter = require('./routes/api/subscriptions')
 const csrfRouter = require('./routes/api/csrf');
 
 
@@ -56,6 +58,7 @@ if (!isProduction) {
 app.use('/api/users', usersRouter);
 app.use('/api/events', eventsRouter);
 app.use('/api/pins', pinsRouter);
+app.use('/api/subscriptions', subscriptionsRouter);
 app.use('/api/csrf', csrfRouter);
 
 app.use((req, res, next) => {
