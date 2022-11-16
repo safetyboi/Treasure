@@ -21,10 +21,19 @@
     margin-bottom: 1vh;
   }
 
-  p.join {
+  p {
     font-size: 1vw;
-    color: grey;
     margin-bottom: 2vh;
+  }
+  
+  p.join {
+    color: grey;
+  }
+
+  p.delete {
+    color: var(--orange);
+    font-weight: bold;
+    cursor: pointer;
   }
 
   picture {
@@ -52,4 +61,8 @@
   .profile_link > * {
     margin: 1vh 0;
   }
+}
+
+.profile_event_wrapper {
+  margin-top: 15vh;
 }

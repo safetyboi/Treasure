@@ -1,15 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/session';
 import './NavBar.scss';
 
 function NavBar () {
+  const dispatch = useDispatch(); 
   const loggedIn = useSelector(state => !!state.session.user);
-  const dispatch = useDispatch();
+  const history = useHistory();
   
   const logoutUser = e => {
       e.preventDefault();
       dispatch(logout());
+      history.push('/');
   }
 
   const getLinks = () => {

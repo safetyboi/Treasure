@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import ProfileEvent from './ProfileEvent';
 import './Profile.scss'
 
 const Profile = () => {
@@ -18,6 +19,7 @@ const Profile = () => {
             <h2>{user.username}</h2>
             <h3>{user.email}</h3>
             <p className="join">Joined in {user.createdAt}</p>
+            <p className='delete'>Delete profile</p>
           </div>
         </div>
         <div className="profile_link flex-col align-end">
@@ -25,10 +27,7 @@ const Profile = () => {
           <Link to={'/events'}><Button>Find events to join</Button></Link>
         </div>
       </div>
-
-      <div className="profile_event">
-
-      </div>
+      <ProfileEvent />
     </section>
 
   )
