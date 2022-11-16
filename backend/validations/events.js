@@ -13,9 +13,16 @@ const validateEventInput = [
     .exists({ checkFalsy: true })
     .isLength({ min: 0, max: 500 })
     .withMessage('Event description must be less than 500 characters'),
-    check('duration')
+    check('location')
     .exists({ checkFalsy: true })
-    .withMessage('Event description must be less than 500 characters'),
+    .isLength({ min: 0, max: 50 })
+    .withMessage('Event location must be less than 500 characters'),
+    check('status')
+    .exists({ checkFalsy: false })
+    .withMessage('Event must have a game status'),
+    check('date')
+    .exists({ checkFalsy: true })
+    .withMessage('Event must have a game status'),
   handleValidationErrors
 ];
 

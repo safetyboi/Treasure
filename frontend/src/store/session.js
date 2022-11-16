@@ -34,20 +34,28 @@ export const signup = user => startSession(user, 'api/users/register');
 export const login = user => startSession(user, 'api/users/login');
 
 const startSession = (userInfo, route) => async dispatch => {
-  try {  
-    const res = await jwtFetch(route, {
-      method: "POST",
-      body: JSON.stringify(userInfo)
-    });
-    const { user, token } = await res.json();
-    localStorage.setItem('jwtToken', token);
-    return dispatch(receiveCurrentUser(user));
-  } catch(err) {
-    const res = await err.json();
-    if (res.statusCode === 400) {
-      return dispatch(receiveErrors(res.errors));
-    }
-  }
+  // try {  
+  //   const res = await jwtFetch(route, {
+  //     method: "POST",
+  //     body: JSON.stringify(userInfo)
+  //   });
+  //   const { user, token } = await res.json();
+  //   localStorage.setItem('jwtToken', token);
+  //   return dispatch(receiveCurrentUser(user));
+  // } catch(err) {
+  //   console.log(err)
+  //   const res = await err.json();
+  //   if (res.statusCode === 400) {
+  //     return dispatch(receiveErrors(res.errors));
+  //   }
+  // }
+  const res = await jwtFetch(route, {
+    method: "POST",
+    body: JSON.stringify(userInfo)
+  });
+  const { user, token } = await res.json();
+  localStorage.setItem('jwtToken', token);
+  return dispatch(receiveCurrentUser(user));
 };
 
 export const logout = () => dispatch => {
@@ -83,7 +91,7 @@ export const sessionErrorsReducer = (state = nullErrors, action) => {
   const sessionReducer = (state = initialState, action) => {
     switch (action.type) {
       case RECEIVE_CURRENT_USER:
-        return { user: action.currentUser };
+        return {...state, user: action.currentUser };
       case RECEIVE_USER_LOGOUT:
         return initialState;
       default:

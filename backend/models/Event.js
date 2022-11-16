@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const eventSchema = Schema({
+  creator: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   name: {
     type: String,
     required: true
@@ -10,20 +14,30 @@ const eventSchema = Schema({
     type: String,
     required: true
   },
-  duration: {
-    type: Number,
+  location: {
+    type: String,
     required: true
+  },
+  duration: {
+    type: Number
   },
   distance: {
-    type: Number,
-    required: true
+    type: Number
   },
   price: {
-    type: Number,
-    require: true
+    type: Number
   },
   supplies: {
     type: String
+  },
+  gameStatus: {
+    type: Boolean
+  },
+  date: {
+    type: Date
+  },
+  elevation: {
+    type: Number
   }
 }, {
   timestamps: true

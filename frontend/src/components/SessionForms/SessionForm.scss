@@ -1,0 +1,89 @@
+.session_wrapper {
+  position: relative;
+  top: -10vh;
+  max-height: 100vh;
+  overflow: hidden;
+
+  h2 {
+    font-size: var(--title-size);
+    margin-bottom: 3vh;
+  }
+
+  .session_content > * {
+    margin: 0 3vw;
+  }
+
+  .session_content {
+    .session-form {
+      width: 30vw;
+      overflow: hidden;
+      font-size: 1.2vw;
+      
+      label {
+        display: flex;
+        flex-direction: column;
+  
+        span {
+          margin-bottom: 1vh;
+        }
+  
+        input {
+          font-size: 1.1vw;
+          border: solid 1px var(--orange);
+          padding: 1vh 1vw;
+          border-radius: var(--border-radius);
+        }
+  
+        input:focus {
+          outline: none;
+        }
+      }
+  
+      .errors {
+        margin-top: 1vh;
+        margin-bottom: 2vh;
+      }
+  
+      input[type="submit"] {
+        border: 1px solid var(--orange);
+        background-color: var(--orange);
+        color: var(--white);
+        padding: 2vh 0;
+        border-radius: var(--border-radius);
+        font-size: 1.2vw;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 3vh;
+        opacity: .9;
+      }
+  
+      input[type="submit"]:hover {
+        opacity: 1;
+      }
+    }
+
+    .border {
+      height: 10vh;
+      border-left: 1px solid var(--orange);
+    }
+
+    .create_account_wrapper {
+      p {
+        margin-bottom: 1vh;
+      }
+
+      a {
+        color: var(--orange);
+      }
+    }
+  }
+}
+
+.session_wrapper.login {
+  top: -10vh;
+}
+
+// Login Page CSS
+.login_page footer {
+  position: absolute;
+}
