@@ -7,11 +7,11 @@ const pinSchema = Schema({
     ref: 'Event'
   },
   location: [{
-    xCoord: {
+    latitude: {
         type: Number,
         required: true
     },
-    yCoord: {
+    longitude: {
         type: Number,
         required: true
     },
@@ -20,27 +20,22 @@ const pinSchema = Schema({
     type: Number,
     required: true
   },
-  clue: [{
-    text: {
+  task: [{
+    prompt: {
         type: String,
         required: true
     },
     image: {
+        type: String
+    },
+    correctAnswer: {
+      type: String
+  },
+  }],
+  directionToPin: [{
+    text: {
         type: String,
         required: true
-    },
-  }],
-  answer: [{
-    text: {
-        type: String
-    },
-    image: {
-        type: String
-    },
-  }],
-  nextAnswer: [{
-    text: {
-        type: String
     },
     image: {
         type: String

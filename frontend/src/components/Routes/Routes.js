@@ -24,12 +24,12 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={props =>
+        <Component {...props} />
         // loggedIn ? (
         //   <Component {...props} />
         // ) : (
         //   <Redirect to="/login" />
         // )
-        <Component {...props} />
       }
     />
   );

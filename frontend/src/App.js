@@ -11,6 +11,7 @@ import EventIndex from './components/Events/EventIndex';
 import EventCompose from './components/Events/EventCompose';
 import Profile from './components/Profile/Profile';
 import Footer from './components/NavBar/Footer';
+import PlanningMap from './components/Maps/PlanningMap';
 import { getCurrentUser } from './store/session';
 
 
@@ -25,7 +26,7 @@ function App() {
 
   return loaded && (
     <>
-      <NavBar />
+      <NavBar/>
       <Switch>
         <AuthRoute exact path="/" component={MainPage} />
         <AuthRoute exact path="/login" component={LoginForm} />
@@ -34,6 +35,7 @@ function App() {
         <ProtectedRoute exact path="/events" component={EventIndex} />
         <ProtectedRoute exact path="/profile" component={Profile} />
         <ProtectedRoute exact path="/events/new" component={EventCompose} />
+        <ProtectedRoute exact path="/testmap" component={PlanningMap} />
       </Switch>
       <Footer />
     </>
