@@ -7,7 +7,6 @@
   h1 {
     font-size: var(--title-size);
     margin-bottom: 5vh;
-    text-align: left;
   }
 
   h2 {
@@ -55,14 +54,27 @@
 
   .profile_details, 
   .profile_link {
-    width: 30vw;
+    width: 35vw;
   }
 
   .profile_link > * {
     margin: 1vh 0;
   }
+
+  .border {
+    margin: 10vh auto;
+    width: 80vw;
+    border: thin solid var(--gray);
+    opacity: .1;
+  }
 }
 
 .profile_event_wrapper {
-  margin-top: 15vh;
+  h2 {
+    margin-bottom: 5vh;
+  }
+
+  p {
+    color: var(--gray);
+  }
 }
