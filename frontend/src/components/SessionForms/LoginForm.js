@@ -1,10 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import { Link } from 'react-router-dom';
 import { login, clearSessionErrors } from '../../store/session';
 import './SessionForm.scss';
 
@@ -28,43 +25,48 @@ function LoginForm () {
     return e => setState(e.currentTarget.value);
   }
 
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login({ email, password })); 
   }
 
   return (
-    <>
-      <form className="session-form" onSubmit={handleSubmit}>
-        <h2>Log In</h2>
-        <div className="errors">{errors?.email}</div>
-        <label>
-          <span>Email</span>
-          <input type="text"
-            value={email}
-            onChange={update('email')}
-            placeholder="Email"
+    <div className='session_wrapper login flex-col justify-center'>
+      <h2 className='text-center'>Log In</h2>
+      <div className='session_content flex-row justify-center align-center'>
+        <form className="session-form flex-col" 
+          onSubmit={handleSubmit}>
+          <div className="errors">{errors?.email}</div>
+          <label>
+            <span>Email</span>
+            <input type="text"
+              value={email}
+              onChange={update('email')}
+              placeholder="Email"
+            />
+          </label>
+          <div className="errors">{errors?.password}</div>
+          <label>
+            <span>Password</span>
+            <input type="password"
+              value={password}
+              onChange={update('password')}
+              placeholder="Password"
+            />
+          </label>
+          <input
+            type="submit"
+            value="Log In"
+            disabled={!email || !password}
           />
-        </label>
-        <div className="errors">{errors?.password}</div>
-        <label>
-          <span>Password</span>
-          <input type="password"
-            value={password}
-            onChange={update('password')}
-            placeholder="Password"
-          />
-        </label>
-        <input
-          type="submit"
-          value="Log In"
-          disabled={!email || !password}
-        />
-      </form>
-    </>
+        </form>
+        <div className='border'></div>
+        <div className='create_account_wrapper'>
+          <p>New to Treasure?</p>
+          <Link to={'/signup'}>Create an account</Link>
+      </div>
+      </div>
+    </div>
   );
 }
 
