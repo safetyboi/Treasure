@@ -5,7 +5,7 @@ const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 const { requireUser } = require('../../config/passport');
 const validateEventInput = require('../../validations/events');
-
+const imageUpload = require('../../services/ImageUpload')
 
 router.get('/', async (req, res) => {
     try {
@@ -43,7 +43,7 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
     }
 })
 
-router.get('/:userId/events', async (req, res, next) => {
+router.get('/events/:userId', async (req, res, next) => {
     let user;
     try {
       user = await User.findById(req.params.userId);
@@ -127,5 +127,70 @@ router.delete('/:id', requireUser, async(req, res, next) => {
         next(err)
     }
 })
+
+router.post("/postImages", function (req, res) {
+    let photoUrl
+    console.log('here2')
+    imageUpload.single("images")(req, res, function (err) {
+        photoUrl = req.file.location
+      if (err) {
+        // return res.json({})
+        console.log(err);
+      }
+    });
+
+    try {
+        Event.findByIdAndUpdate(req.params.id, {
+            creator: req.user._id,
+            name: req.body.name,
+            description: req.body.description,
+            duration: req.body.duration,
+            distance: req.body.distance,
+            price: req.body.price,
+            supplies: req.body.supplies,
+            elevation: req.body.elevation,
+            image: file
+        })
+        .exec()
+        .then((event) => {
+            if(!event) {
+                res.status(400).send(`Event ${req.params.id} was not found`);
+            } else {
+                res.status(200).send(`Event ${req.params.id} was updated`)
+            }
+    })
+    }
+    catch(err) {
+        next(err)
+    }
+
+
+});
+
+// router.post("/postImages", requireUser, function (req, res) {
+//     console.log('here')
+//     const uid = req.user._id;
+  
+//     imageUpload(req, res, function (err) {
+  
+//       if (err) {
+//         return res.json({
+//           success: false,
+//           errors: {
+//             title: "Image Upload Error",
+//             detail: err.message,
+//             error: err,
+//           },
+//         });
+//       }
+//       console.log(req)
+//       let update = { profilePicture: req.file.location };
+  
+//       Event.findByIdAndUpdate(uid, update, { new: true })
+//         .then((user) => res.status(200).json({ success: true, user: user }))
+//         .catch((err) => res.status(400).json({ success: false, error: err }));
+//     });
+//   });
+
 
 module.exports = router;

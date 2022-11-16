@@ -8,15 +8,15 @@ const eventSchema = Schema({
   },
   name: {
     type: String,
-    required: true
+    // required: true
   },
   description: {
     type: String,
-    required: true
+    // required: true
   },
   location: {
     type: String,
-    required: true
+    // required: true
   },
   duration: {
     type: Number
@@ -38,6 +38,9 @@ const eventSchema = Schema({
   },
   elevation: {
     type: Number
+  },
+  image: {
+    type: String
   }
 }, {
   timestamps: true

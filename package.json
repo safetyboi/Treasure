@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "multer-s3": "^2.10.0"
+  }
+}
