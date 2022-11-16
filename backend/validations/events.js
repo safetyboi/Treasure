@@ -13,9 +13,6 @@ const validateEventInput = [
     .exists({ checkFalsy: true })
     .isLength({ min: 0, max: 500 })
     .withMessage('Event description must be less than 500 characters'),
-    check('duration')
-    .exists({ checkFalsy: true })
-    .withMessage('Event description must be less than 500 characters'),
   handleValidationErrors
 ];
 
