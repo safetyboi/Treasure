@@ -18,6 +18,7 @@ export const PlanningMap = () => {
   const [showPinEditForm, setShowPinEditForm] = useState(false);
   let [numPoints, setNumPoints] = useState(0);
   const [pins, setPins] = useState([]);
+  const [mapData, setMapData] = useState({})
 
   useEffect(() => {
     if (!map) {
