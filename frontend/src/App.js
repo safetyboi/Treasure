@@ -12,6 +12,7 @@ import Profile from './components/Profile/Profile';
 import EventCompose from './components/Events/EventCompose';
 import PlanningMap from './components/Maps/PlanningMap';
 import { getCurrentUser } from './store/session';
+import ImageUploader from '../src/components/AWSTest/ImageUploader'
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <ProtectedRoute exact path="/profile" component={Profile} />
         <ProtectedRoute exact path="/events/new" component={EventCompose} />
         <ProtectedRoute exact path="/testmap" component={PlanningMap} />
+        <ProtectedRoute exact path="/imageupload" component={ImageUploader} />
       </Switch>
     </>
   );
