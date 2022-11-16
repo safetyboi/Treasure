@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <>
+    <footer>
       <div className='spacer layer_down'></div>
-      <footer className="flex-row align-center justify-between">
+      <div className="footer_content flex-row align-center justify-between">
         <p>Copyright <i class="fa-regular fa-copyright"></i> 2022 Treasure</p>
         {/* <div className="author_github">
           <p>Made with <i class="fa-solid fa-heart"></i> by</p>
@@ -21,8 +21,8 @@ function Footer() {
             Vince Memmo
           </Link>
         </div> */}
-      </footer>
-    </>
+      </div>
+    </footer>
   )
 }
 

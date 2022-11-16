@@ -39,7 +39,6 @@ function App() {
         <ProtectedRoute exact path="/testmap" component={PlanningMap} />
         <ProtectedRoute exact path="/imageupload" component={ImageUploader} />
       </Switch>
-      <Footer />
     </>
   );
 }

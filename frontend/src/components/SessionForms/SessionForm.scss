@@ -1,6 +1,8 @@
 .session_wrapper {
   position: relative;
-  top: -20vh;
+  top: -10vh;
+  max-height: 100vh;
+  overflow: hidden;
 
   h2 {
     font-size: var(--title-size);
@@ -79,4 +81,9 @@
 
 .session_wrapper.login {
   top: -10vh;
+}
+
+// Login Page CSS
+.login_page footer {
+  position: absolute;
 }
