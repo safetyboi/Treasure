@@ -168,7 +168,7 @@ export const PlanningMap = () => {
       const request = {
           origin: coords[0],
           destination: coords[coords.length - 1],
-          travelMode: 'BICYCLING',
+          travelMode: 'WALKING',
           unitSystem: window.google.maps.UnitSystem.METRIC,
           waypoints: midpoints
       }
