@@ -1,20 +1,28 @@
+import Button from 'react-bootstrap/Button';
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import './Profile.scss'
 
 const Profile = () => {
   const user = useSelector(state => state.session.user);
 
   return (
-    <section className="profile_wrapper">
-      <div className="profile_content flex-row">
-        <div className="profile_details">
+    <section className="profile_wrapper flex-col align-center">
+      <h1>Profile</h1>
+      <div className="profile_content flex-row justify-between align-center">
+        <div className="profile_details flex-row">
           <picture>
             <img src='' alt='user_images' />
           </picture>
+          <div className="user_details">
+            <h2>{user.username}</h2>
+            <h3>{user.email}</h3>
+            <p className="join">Joined in {user.createdAt}</p>
+          </div>
         </div>
-        <div className="profile_button">
-          <Link to={'/events/new'}>Create Event</Link>
-          <Link to={'/events'}>Find events to join</Link>
+        <div className="profile_link flex-col align-end">
+          <Link to={'/events/new'}><Button>Create Event</Button></Link>
+          <Link to={'/events'}><Button>Find events to join</Button></Link>
         </div>
       </div>
 

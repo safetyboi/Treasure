@@ -1,0 +1,55 @@
+.profile_wrapper {
+  position: relative;
+  top: -15vh;
+  margin: 0 auto;
+  width: 80vw;
+
+  h1 {
+    font-size: var(--title-size);
+    margin-bottom: 5vh;
+    text-align: left;
+  }
+
+  h2 {
+    font-size: 1.5vw;
+    margin-bottom: 1vh;
+  }
+
+  h3 {
+    font-size: 1.3vw;
+    color: grey;
+    margin-bottom: 1vh;
+  }
+
+  p.join {
+    font-size: 1vw;
+    color: grey;
+    margin-bottom: 2vh;
+  }
+
+  picture {
+    margin-right: 2vw;
+  }
+
+  button {
+    background-color: transparent;
+    border: 1px solid var(--orange);
+    color: var(--black);
+    width: 14vw;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: var(--orange);
+    color: var(--white);
+  }
+
+  .profile_details, 
+  .profile_link {
+    width: 30vw;
+  }
+
+  .profile_link > * {
+    margin: 1vh 0;
+  }
+}
