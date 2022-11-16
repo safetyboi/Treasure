@@ -2,40 +2,63 @@ import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import {useParams} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useSelector } from "react-redux";
+import ClueForm from "./ClueForm";
+// import { getEvent } from '______';
+// import { getEventPins } from '_____';
 
 export const ViewingMap = () => {
+  // const event = useSelector(getEvent(eventId));
+  // const currentUser = useSelector(getCurrentUser);
+  // const participants = useSelector(getEventParticipants(event.id));
+  // const [participantPositions, setParticipantPositions] = useState(updateParticipantPositions());
   const dispatch = useDispatch();
   const {eventId} = useParams();
-  const event = useSelector(getEvent(eventId));
+  const event = 3;
+  // const eventPins = useSelector(getEventPins(eventId));
+  const eventPins = [{order: 1}, {order: 2}, {order: 3}];
   const [map, setMap] = useState(null);
   const mapRef = useRef(null);
-  const currentUser = useSelector(getCurrentUser);
-  const [currentPosition, setCurrentPosition] = useState(getUserPosition(currentUser.id));
-  const participants = useSelector(getEventParticipants(event.id));
-  const [participantPositions, setParticipantPositions] = useState(updateParticipantPositions());
+  // const [currentPosition, setCurrentPosition] = event?.pins[0].location;
+  const [currentPosition, setCurrentPosition] = useState({lat: 37.773972, lng: -122.431297});
+  const [coords, setCoords] = useState([]);
   const [clueForm, setClueForm] = useState(1);
-  const [currentPin, setCurrentPin] = useState(1);
+  const [currentPinOrder, setCurrentPinOrder] = useState(1);
+  const [distance, setDistance] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [remainingTime, setRemainingTime] = useState(event?.duration);
+  let [numPoints, setNumPoints] = useState(0);
 
-  useEffect(() => {
-    if (eventId) dispatch(fetchEvent(eventId))
-  },[eventId])
+  setTimeout(() => {
+    setRemainingTime(remainingTime--)
+  }, 60000)
+
+  // useEffect(() => {
+  //   if (eventId) dispatch(fetchEvent(eventId))
+  // },[eventId])
   
   useEffect(() => {
     if (!map) {
-      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: (event?.pins[0].location.latitude), lng: (event?.pins[0].location.latitude)}}))
+      // setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: (event?.pins[0].location.latitude), lng: (event?.pins[0].location.latitude)}}))
+      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773972, lng: -122.431297}}))
     };
-    renderPins();
+    setCoords(allCoords => [...allCoords, {lat: 37.773972, lng: -122.431297}]);
+    addLocationPin({lat: 37.773972, lng: -122.431297}, map);
     
   }, [mapRef]);
+
+  useEffect(() => {
+    renderEventPins();
+  }, [currentPinOrder])
 
   // todo: differentiate playerpin and event pins, tie the markers to the pin info somehow
 
   const renderEventPins = () => {
-    event.pins.forEach(eventPin => {
-      if (eventPin.order <= currentPin) {
+    eventPins.forEach(eventPin => {
+      if (eventPin.order <= currentPinOrder) {
         const marker = new window.google.maps.Marker({
-          order: numPoints,
-          position: location,
+          order: eventPin.order,
+          position: eventPin.position,
           map: map,
           icon: {
             path: window.google.maps.SymbolPath.CIRCLE,
@@ -69,6 +92,7 @@ export const ViewingMap = () => {
     // setMarkers(marks => [...marks, marker])
     // addPinToArray(blankPin(marker))
     // setClueForm(marker)
+    setCurrentPosition(marker.position);
   };
 
   useEffect(() => {
@@ -123,13 +147,9 @@ export const ViewingMap = () => {
 
                   
                 })
-
-              const pathPointSet = response.routes[0].overview_path;
               
               setDistance(Math.round(totalDistance * 10) / 10);
-              setPolyline(poly);
               setDuration(Math.round(totalDuration / 60 * 10) / 10);
-              setPathPoints(pathPointSet);
 
               directionsRenderer.setDirections(response);
           }
@@ -137,24 +157,11 @@ export const ViewingMap = () => {
       
   };
 
-  const renderParticipantPositions = () => {
-    participantPositions.forEach(position => {
-      addMarker(position, map)
-    })
-  };
-
-  const updateParticipantPositions = () => {
-    setParticipantPositions(fetchParticipantPositions());
-    renderParticipantPositions();
-  };
-
-  setInterval(updateParticipantPositions, 30000);
-
-  const renderPins = () => {
-    event.pins.forEach(pin => {
-      addMarker(pin.location, map)
-    })
-  }
+  // const renderPins = () => {
+  //   event.pins.forEach(pin => {
+  //     addMarker(pin.location, map)
+  //   })
+  // }
 
   useEffect(() => {
 
@@ -166,8 +173,22 @@ export const ViewingMap = () => {
 
   return (
     <>
+      <div className='game-info'>
+        <h1>{event?.title}</h1>
+        <form>
+          <label>Remaining Time
+            <input type='text' value={remainingTime} readOnly/>
+          </label>
+          <label>Distance Traveled
+            <input type='text' value={distance} readOnly/>
+          </label>
+          <label>Total Time Walked
+            <input type='text' value={duration} readOnly/>
+          </label>
+        </form>
+      </div>
       <div className="google-map-container" ref={mapRef}>Map</div>
-      <ClueForm pinOrder={currentPin}/>
+      <ClueForm eventPins={eventPins} currentPinOrder={currentPinOrder}/>
     </>
   )
 

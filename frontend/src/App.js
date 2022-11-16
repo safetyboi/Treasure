@@ -13,6 +13,7 @@ import Profile from './components/Profile/Profile';
 import Footer from './components/NavBar/Footer';
 import PlanningMap from './components/Maps/PlanningMap';
 import { getCurrentUser } from './store/session';
+import OnlineGameMap from './components/Maps/OnlineGameMap';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <ProtectedRoute exact path="/profile" component={Profile} />
         <ProtectedRoute exact path="/events/new" component={EventCompose} />
         <ProtectedRoute exact path="/testmap" component={PlanningMap} />
+        <ProtectedRoute exact path="/onlinegame" component={OnlineGameMap} />
       </Switch>
       <Footer />
     </>
