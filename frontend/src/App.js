@@ -9,6 +9,8 @@ import LoginForm from './components/SessionForms/LoginForm';
 import SignupForm from './components/SessionForms/SignupForm';
 import EventIndex from './components/Events/EventIndex';
 import EventCompose from './components/Events/EventCompose';
+import Profile from './components/Profile/Profile';
+import Footer from './components/NavBar/Footer';
 import PlanningMap from './components/Maps/PlanningMap';
 import { getCurrentUser } from './store/session';
 
@@ -35,6 +37,7 @@ function App() {
         <ProtectedRoute exact path="/events/new" component={EventCompose} />
         <ProtectedRoute exact path="/testmap" component={PlanningMap} />
       </Switch>
+      <Footer />
     </>
   );
 }

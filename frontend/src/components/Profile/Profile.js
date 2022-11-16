@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ProfileEvent from './ProfileEvent';
 import './Profile.scss'
 
-const Profile = () => {
+function Profile() {
   const user = useSelector(state => state.session.user);
 
   return (
