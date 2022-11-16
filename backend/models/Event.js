@@ -15,19 +15,19 @@ const eventSchema = Schema({
     required: true
   },
   duration: {
-    type: Number,
-    required: true
+    type: Number
   },
   distance: {
-    type: Number,
-    required: true
+    type: Number
   },
   price: {
-    type: Number,
-    require: true
+    type: Number
   },
   supplies: {
     type: String
+  },
+  elevation: {
+    type: Number
   }
 }, {
   timestamps: true

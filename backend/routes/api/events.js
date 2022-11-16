@@ -26,7 +26,8 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
             duration: req.body.duration,
             distance: req.body.distance,
             price: req.body.price,
-            supplies: req.body.supplies
+            supplies: req.body.supplies,
+            elevation: req.body.elevation
         })
 
         let event = await newEvent.save()
@@ -49,25 +50,27 @@ router.get('/:userId', async (req, res, next) => {
       return next(error);
     }
     try {
-      const tweets = await Event.find({ creator: user._id })
+      const events = await Event.find({ creator: user._id })
                                 .sort({ createdAt: -1 })
                                 .populate("creator", "_id, username");
-      return res.json(tweets);
+      return res.json(events);
     }
     catch(err) {
       return res.json([]);
     }
-  })
+})
 
 router.patch('/:id', requireUser, validateEventInput, async (req, res, next) => {    
     try {
         Event.findByIdAndUpdate(req.params.id, {
+            creator: req.user._id,
             name: req.body.name,
             description: req.body.description,
             duration: req.body.duration,
             distance: req.body.distance,
             price: req.body.price,
-            supplies: req.body.supplies
+            supplies: req.body.supplies,
+            elevation: req.body.elevation
         })
         .exec()
         .then((event) => {
