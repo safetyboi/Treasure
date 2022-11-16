@@ -1,19 +1,41 @@
 import './PinEditForm.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const PinEditForm = ({marker, handlePinSubmit, deletePin}) => {
-  const [directions, setDirections] = useState('');
-  const [challengePrompt, setChallengePrompt] = useState('');
-  const [challengeAnswser, setChallengeAnswser] = useState('');
-  const [supplies, setSupplies] = useState('');
-  const [activityDuration, setActivityDuration] = useState('');
-  const [price, setPrice] = useState('');
+const PinEditForm = ({marker, pin, addPinToArray, deletePin}) => {
+  // const pin = pins.filter(pin => {
+  //   return pin.order === pin.order
+  // })[0] 
+  const [directions, setDirections] = useState(pin.directionToPin.text);
+  const [challengePrompt, setChallengePrompt] = useState(pin.challengePrompt);
+  const [challengeAnswser, setChallengeAnswser] = useState(pin.challengeAnswser);
+  const [supplies, setSupplies] = useState(pin.supplies);
+  const [activityDuration, setActivityDuration] = useState(pin.activityDuration);
+  const [price, setPrice] = useState(pin.price);
+  const [pinStatus, setPinStatus] = useState(false);
+  
+  const [currentPin, setcurrentPin] = useState(pin);
+  
+  useEffect(() => {
+    if (pin) {
+      setDirections(pin.directionToPin?.text);
+      setChallengePrompt(pin.task?.prompt);
+      setChallengeAnswser(pin.task?.correctAnswer);
+      setSupplies(pin?.supplies);
+      setActivityDuration(pin?.duration);
+      setPrice(pin?.price);
+    } else {
+      setDirections('');
+      setChallengePrompt('');
+      setChallengeAnswser('');
+      setSupplies('');
+      setActivityDuration(0);
+      setPrice(0);
+    }
+  }, [pin.order])
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newPin = {
-      order: marker.order,
+  useEffect(() => {
+    setcurrentPin({
+      order: pin.order,
       location: {
         latitude: marker.position.lat(),
         longitude: marker.position.lng(),
@@ -26,20 +48,45 @@ const PinEditForm = ({marker, handlePinSubmit, deletePin}) => {
       supplies: supplies,
       price: parseInt(price),
       duration: parseInt(activityDuration)
-    };
+    })
+  }, [directions, challengeAnswser, challengePrompt, supplies, activityDuration, price, ])
 
-    handlePinSubmit(newPin);
-  }
+  useEffect(() => {
+    addPinToArray(currentPin)
+  }, [currentPin])
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   const newPin = {
+  //     order: pin.order,
+  //     location: {
+  //       latitude: pin.position.lat(),
+  //       longitude: pin.position.lng(),
+  //     },
+  //     directionToPin: {text: directions},
+  //     task: {
+  //       prompt: challengePrompt,
+  //       correctAnswer: challengeAnswser,
+  //     },
+  //     supplies: supplies,
+  //     price: parseInt(price),
+  //     duration: parseInt(activityDuration)
+  //   };
+
+  //   addPinToArray(newPin);
+  //   setPinStatus(true);
+  // };
 
   return (
     <>
       <div className="pin-edit-form">
-        <form className="pin-edit-form" onSubmit={handleSubmit}>
+        <form className="pin-edit-form">
           <label>Pin Order
-            <input disabled placeholder="" value={marker.order}/>
+            <input disabled placeholder="" value={pin.order}/>
           </label>
           <label>Directions to get to this pin
-            <input placeholder="" onChange={e => {setDirections(e.target.value)}} value={directions}/>
+            <input placeholder="*Required*" onChange={e => {setDirections(e.target.value)}} value={directions}/>
           </label>
           <label>Challenge Prompt
             <input placeholder="" onChange={e => {setChallengePrompt(e.target.value)}} value={challengePrompt}/>
@@ -56,8 +103,9 @@ const PinEditForm = ({marker, handlePinSubmit, deletePin}) => {
           <label>Activity Duration
             <input placeholder="" onChange={e => {setActivityDuration(e.target.value)}} value={activityDuration}/>
           </label>
-          <button>Set Pin</button>
-          <button onClick={deletePin}>Delete Pin</button>
+          {/* <button>Set Pin</button>
+          <p>{`Pin is ${pinStatus ? `set!` : `unset!`}`}</p>
+          <button onClick={e => {deletePin(pin)}}>Delete Pin</button> */}
         </form>
       </div>
     </>
