@@ -1,6 +1,6 @@
 import './Profile.scss'
 
-const ProfileEvent = () => {
+function ProfileEvent() {
   return (
     <div className='profile_event_wrapper'>
       <div className='event_wrapper'>

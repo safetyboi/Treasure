@@ -1,4 +1,4 @@
-const EventIndex = () => {
+function EventIndex() {
   <h1>Events</h1>
 }
 

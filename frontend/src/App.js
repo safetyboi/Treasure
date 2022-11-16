@@ -10,6 +10,7 @@ import SignupForm from './components/SessionForms/SignupForm';
 import EventIndex from './components/Events/EventIndex';
 import EventCompose from './components/Events/EventCompose';
 import Profile from './components/Profile/Profile';
+import Footer from './components/NavBar/Footer';
 import { getCurrentUser } from './store/session';
 
 
@@ -34,6 +35,7 @@ function App() {
         <ProtectedRoute exact path="/profile" component={Profile} />
         <ProtectedRoute exact path="/events/new" component={EventCompose} />
       </Switch>
+      <Footer />
     </>
   );
 }
