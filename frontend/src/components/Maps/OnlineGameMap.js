@@ -23,15 +23,27 @@ export const ViewingMap = () => {
   const [currentPosition, setCurrentPosition] = useState({lat: 37.773972, lng: -122.431297});
   const [coords, setCoords] = useState([]);
   const [clueForm, setClueForm] = useState(1);
-  const [currentPinOrder, setCurrentPinOrder] = useState(1);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const [remainingTime, setRemainingTime] = useState(event?.duration);
   let [numPoints, setNumPoints] = useState(0);
+  const [thinkingTime, setThinkingTime] = useState(0);
+  const [showClue, setShowClue] = useState(false);
+  const [showWrong, setShowWrong] = useState(false);
+  
+  const setPin = (order) => {
+    return eventPins.filter(pin => pin.order === order)[0]
+  }
+  
+  const [currentPin, setCurrentPin] = useState(setPin(1));
 
   setTimeout(() => {
-    setRemainingTime(remainingTime--)
+    setThinkingTime(thinkingTime + 1)
   }, 60000)
+
+  useEffect(() => {
+    setRemainingTime(event?.duration - thinkingTime - duration)
+  }, [thinkingTime, duration])
 
   // useEffect(() => {
   //   if (eventId) dispatch(fetchEvent(eventId))
@@ -49,13 +61,17 @@ export const ViewingMap = () => {
 
   useEffect(() => {
     renderEventPins();
-  }, [currentPinOrder])
+  }, [currentPin])
+
+  useEffect(() => {
+    releaseClue();
+  }, [currentPosition])
 
   // todo: differentiate playerpin and event pins, tie the markers to the pin info somehow
 
   const renderEventPins = () => {
     eventPins.forEach(eventPin => {
-      if (eventPin.order <= currentPinOrder) {
+      if (eventPin.order <= currentPin.order) {
         const marker = new window.google.maps.Marker({
           order: eventPin.order,
           position: eventPin.position,
@@ -100,10 +116,43 @@ export const ViewingMap = () => {
       window.google.maps.event.addListener(map, "click", (event) => {
         setCoords(allCoords => [...allCoords, event.latLng])
         addLocationPin(event.latLng, map);
+
       });
     };
     
   }, [map]) ;
+
+
+  function haversineDistance(mk1, mk2) {
+    const R = 6.378e+6; // Radius of the Earth in meters
+    const rlat1 = mk1.position.lat() * (Math.PI/180); // Convert degrees to radians
+    const rlat2 = mk2.position.lat() * (Math.PI/180); // Convert degrees to radians
+    const difflat = rlat2-rlat1; // Radian difference (latitudes)
+    const difflon = (mk2.position.lng()-mk1.position.lng()) * (Math.PI/180); // Radian difference (longitudes)
+
+    const d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+    return d;
+  }
+
+  const pointReached = () => {
+    return haversineDistance(currentPosition, currentPin.position) < currentPin.radius
+  }
+
+  const releaseClue = () => {
+    if (pointReached()) {
+      setShowClue(true)
+      setShowWrong(false)
+    } else {
+      setShowWrong(true)
+    }
+  }
+
+  const checkResponse = (response, currentPin) => {
+    if (response === currentPin.task.correctAnswer) {
+      setCurrentPin(currentPin.order + 1)
+      setShowClue(false)
+    }
+  }
 
   const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
   directionsRenderer.setMap(map);
@@ -157,12 +206,6 @@ export const ViewingMap = () => {
       
   };
 
-  // const renderPins = () => {
-  //   event.pins.forEach(pin => {
-  //     addMarker(pin.location, map)
-  //   })
-  // }
-
   useEffect(() => {
 
     if (coords.length > 1) {
@@ -175,6 +218,8 @@ export const ViewingMap = () => {
     <>
       <div className='game-info'>
         <h1>{event?.title}</h1>
+        <p>{currentPin?.directionsToPin}</p>
+        {showWrong && <h2>You're at the wrong location!</h2>}
         <form>
           <label>Remaining Time
             <input type='text' value={remainingTime} readOnly/>
@@ -182,13 +227,16 @@ export const ViewingMap = () => {
           <label>Distance Traveled
             <input type='text' value={distance} readOnly/>
           </label>
-          <label>Total Time Walked
+          <label>Time "Walked"
             <input type='text' value={duration} readOnly/>
+          </label>
+          <label>Time Pondered
+            <input type='text' value={thinkingTime} readOnly/>
           </label>
         </form>
       </div>
       <div className="google-map-container" ref={mapRef}>Map</div>
-      <ClueForm eventPins={eventPins} currentPinOrder={currentPinOrder}/>
+      <ClueForm checkResponse={checkResponse} currentPin={currentPin}/>
     </>
   )
 

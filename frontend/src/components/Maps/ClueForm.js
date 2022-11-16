@@ -1,11 +1,14 @@
 import { useState } from "react";
 
 
-const ClueForm = ({currentPinOrder, eventPins}) => {
+const ClueForm = ({checkResponse, currentPin}) => {
 
   const [response, setResponse] = useState('');
-  const currentPin = eventPins.filter(pin => pin.order === currentPinOrder)[0]
 
+  const handleChange = (e) => {
+    setResponse(e.target.value);
+    checkResponse(response, currentPin);
+  }
 
   return (
     <div className="clue-form-box">
@@ -14,7 +17,7 @@ const ClueForm = ({currentPinOrder, eventPins}) => {
         <h4>Directions To This Pin</h4>
         <p>{currentPin.directionsToPin}</p>
         <label>My Response
-          <input type='text' value={response} onChange={e => setResponse(e.target.value)}/>
+          <input type='text' value={response} onChange={handleChange}/>
         </label>
       </form>
     </div>
