@@ -46,6 +46,10 @@ function EventCreate ({pins, mapData}) {
         }
       });
 
+      const firstPin = pins.filter(pin => {
+        return pin.order === 1
+      })[0]
+
       newEvent = {
         name: name,
         description: description,
@@ -55,7 +59,8 @@ function EventCreate ({pins, mapData}) {
         supplies: totalSupplies(),
         elevation: mapData.elevation,
         date: date,
-        status: false
+        status: false,
+        initCoords: firstPin.location
       }
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
       if (eventExists) {
