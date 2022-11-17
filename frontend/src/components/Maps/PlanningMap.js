@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
-import './Map.css';
-import './PinEditForm.css'
 import PinEditForm from "./EditPinForm";
 import EventCreate from '../Events/EventCreate';
+import './Map.scss';
+import './PinEditForm.scss';
 
 export const PlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -225,29 +225,50 @@ export const PlanningMap = () => {
   //   passUpMapData(distance, duration, polyline, elevationArray, elevation);
   // }, [distance, duration, polyline, elevationArray, elevation])
 
+	// const height = document.getElementById('accordion').clientHeight();
+  // document.getElementById('google-map-container').style.height = height
 
   return (
-    <>
-      <EventCreate pins={pins} mapData={mapData}/>
-      <div className="google-map-container" ref={mapRef}>Map</div>
-      {showPinEditForm && <PinEditForm deletePin={deletePin} addPinToArray={addPinToArray} marker={showPinEditForm} pin={selectedPin(showPinEditForm.order)}/>}  
+    <div className="planning_map_area flex-row">
+			<div className="planning_map_form">
+				<div id="accordion">
+					<div className="accordion_title">
+						<h2>Event Details</h2> 
+						<div className='border'></div>
+					</div>
+					<div className="accordion_body">
+						<EventCreate pins={pins} mapData={mapData}/>
+					</div>
+				</div>
+			</div>
+      <div id="google-map-container" ref={mapRef}>
+        Map
+        {showPinEditForm && 
+					<PinEditForm 
+						deletePin={deletePin} 
+						addPinToArray={addPinToArray} 
+						marker={showPinEditForm} 
+						pin={selectedPin(showPinEditForm.order)}
+					/>
+				}  
+      </div>
       {/* TODO grab the correct marker */}
-    </>
+    </div>
   )
 
 };
 
-
-
-
-
-
 const PlanningMapWrapper = () => {
-
   return (
-    <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} >
-      <PlanningMap/>
-    </Wrapper>
+		<section className="planning_map_wrapper flex-col align-center">
+			<h1>Plan an Event</h1>
+      <p>(Click anywhere on the map to create a pin)</p>
+			<Wrapper 
+				apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
+				className="flex-row justify-center">
+				<PlanningMap/>
+			</Wrapper>
+		</section>
   )
 };
 

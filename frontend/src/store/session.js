@@ -65,13 +65,12 @@ export const updateUserImage = (user, formData) => async dispatch => {
     method: "PATCH",
     body: formData,
   })
-  const updatedUser = await res.json()
-  console.log(res, "res")
+}
 
-  debugger
-    // .then((res) => res.json())
-    // .then((data) => console.log(data));  
-  return dispatch(receiveCurrentUser(updatedUser)); 
+export const fetchUser = () => async dispatch => {
+  const res = await jwtFetch(`/api/users/current`)
+  const user = await res.json();
+  return dispatch(receiveCurrentUser(user));
 }
 
 //----------------logout---------------------
