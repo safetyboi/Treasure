@@ -26,11 +26,6 @@ function EventCreate ({pins, mapData}) {
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
   
-    
-
-  
-
-  
     useEffect(() => {
       return () => dispatch(clearEventErrors());
     }, [dispatch]);
@@ -70,7 +65,7 @@ function EventCreate ({pins, mapData}) {
       }
         //Redirect to "/" or eventually the eventShow for newlycreated Event:
         // <Redirect to="/"/>
-        history.push(`/events/${eventExists._id}`)
+        // history.push(`/events/${eventExists._id}`)
     };
   
     const updateName = e => setName(e.currentTarget.value);
