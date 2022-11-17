@@ -1,10 +1,8 @@
 import jwtFetch from './jwt';
-import { RECEIVE_USER_LOGOUT } from './session';
 
 const RECEIVE_EVENTS = "events/RECEIVE_EVENTS";
 const RECEIVE_EVENT = "events/RECEIVE_EVENT";
 const RECEIVE_USER_EVENTS = "events/RECEIVE_USER_EVENTS";
-const RECEIVE_NEW_EVENT = "events/RECEIVE_NEW_EVENT";
 const RECEIVE_EVENT_ERRORS = "events/RECEIVE_EVENT_ERRORS";
 const CLEAR_EVENT_ERRORS = "events/CLEAR_EVENT_ERRORS";
 
@@ -22,11 +20,6 @@ const receiveEvent = event => ({
 const receiveUserEvents = events => ({
   type: RECEIVE_USER_EVENTS,
     events
-});
-
-const receiveNewEvent = event => ({
-  type: RECEIVE_NEW_EVENT,
-  event
 });
 
 const receiveErrors = errors => ({
@@ -85,7 +78,7 @@ export const fetchEvents = () => async dispatch => {
         body: JSON.stringify(data)
       });
       const event = await res.json();
-      dispatch(receiveNewEvent(event));
+      dispatch(receiveEvent(event));
       return event;
     } catch(err) {
       const resBody = await err.json();
@@ -110,16 +103,14 @@ export const eventErrorsReducer = (state = nullErrors, action) => {
   }
 };
 
-const eventsReducer = (state = { all: {}, user: {}, new: undefined }, action) => {
+const eventsReducer = (state = {}, action) => {
     switch(action.type) {
       case RECEIVE_EVENTS:
-        return { ...state, all: action.events, new: undefined};
+        return action.events;
+      case RECEIVE_EVENT:
+        return {...state, [action.event.id]: action.event} 
       case RECEIVE_USER_EVENTS:
-        return { ...state, user: action.events, new: undefined};
-      case RECEIVE_NEW_EVENT:
-        return { ...state, new: action.event};
-      case RECEIVE_USER_LOGOUT:
-        return { ...state, user: {}, new: undefined }
+        return action.events;
       default:
         return state;
     }
