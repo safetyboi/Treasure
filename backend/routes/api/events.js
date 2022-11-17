@@ -8,12 +8,34 @@ const validateEventInput = require('../../validations/events');
 const imageUpload = require('../../services/ImageUpload')
 
 router.get('/', async (req, res) => {
-    try {
-        const events = await Event.find().populate("creator", "_id, username");
-        return res.json(events);
-    }
-    catch(err) {
-        return res.json([]);
+    if(req.query["userId"]) {
+        let user;
+        console.log(req.query["userId"])
+        try {
+            user = await User.findById(req.query["userId"]);
+        } catch(err) {
+            const error = new Error('User not found');
+            error.statusCode = 404;
+            error.errors = { message: "No user found with that id" };
+            return next(error);
+        }
+        try {
+            const events = await Event.find({ creator: user._id })
+                                        .sort({ createdAt: -1 })
+                                        .populate("creator", "_id, username");
+            return res.json(events);
+            }
+        catch(err) {
+            return res.json([]);
+        }
+    } else {
+        try {
+            const events = await Event.find().populate("creator", "_id, username");
+            return res.json(events);
+        }
+        catch(err) {
+            return res.json([]);
+        }
     }
 });
 
@@ -35,7 +57,7 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
         })
 
         let event = await newEvent.save()
-        event = await Event.populate("name", "description _id")
+        // event = await Event.populate("name", "description _id")
         return res.json(event)
     }
     catch(err) {
@@ -43,26 +65,27 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
     }
 })
 
-router.get('/events/:userId', async (req, res, next) => {
-    let user;
-    try {
-      user = await User.findById(req.params.userId);
-    } catch(err) {
-      const error = new Error('User not found');
-      error.statusCode = 404;
-      error.errors = { message: "No user found with that id" };
-      return next(error);
-    }
-    try {
-      const events = await Event.find({ creator: user._id })
-                                .sort({ createdAt: -1 })
-                                .populate("creator", "_id, username");
-      return res.json(events);
-    }
-    catch(err) {
-      return res.json([]);
-    }
-})
+// router.get('/userId', async (req, res, next) => {
+//     let user;
+//     console.log(req.params.userId)
+//     try {
+//       user = await User.findById(req.params.userId);
+//     } catch(err) {
+//       const error = new Error('User not found');
+//       error.statusCode = 404;
+//       error.errors = { message: "No user found with that id" };
+//       return next(error);
+//     }
+//     try {
+//       const events = await Event.find({ creator: user._id })
+//                                 .sort({ createdAt: -1 })
+//                                 .populate("creator", "_id, username");
+//       return res.json(events);
+//     }
+//     catch(err) {
+//       return res.json([]);
+//     }
+// })
 
 router.get('/:eventId', async (req, res, next) => {
     let event;
