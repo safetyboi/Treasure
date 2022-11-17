@@ -4,6 +4,7 @@ import { signup, clearSessionErrors, updateUserImage } from '../../store/session
 import UploadImages from '../AWSTest/ImageUploader';
 import Footer from '../NavBar/Footer';
 import './SessionForm.scss';
+import { useHistory } from 'react-router-dom';
 
 function SignupForm () {
   const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ function SignupForm () {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   let imageFile
+  const history = useHistory()
   const errors = useSelector(state => state.errors.session);
   const dispatch = useDispatch();
 
@@ -74,10 +76,14 @@ function SignupForm () {
 
     dispatch(signup(user)) 
     .then((newUser) => {
-      debugger
       if (newUser.currentUser) {
         dispatch(updateUserImage(newUser, formData) )
       }
+    })
+    .then(() => {
+      setTimeout(function(){
+        history.push('./profile')
+     }, 2000);
     })
   }
 
