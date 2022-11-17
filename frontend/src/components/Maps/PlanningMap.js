@@ -3,6 +3,7 @@ import { Wrapper } from "@googlemaps/react-wrapper";
 import './Map.css';
 import './PinEditForm.css'
 import PinEditForm from "./EditPinForm";
+import EventCreate from '../Events/EventCreate';
 
 export const PlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -229,7 +230,7 @@ export const PlanningMap = () => {
 
   return (
     <>
-      {/* <EventCreate pins={pins} mapData={mapData}/> */}
+      <EventCreate pins={pins} mapData={mapData}/>
       <div className="google-map-container" ref={mapRef}>Map</div>
       {showPinEditForm && <PinEditForm deletePin={deletePin} addPinToArray={addPinToArray} marker={showPinEditForm} pin={selectedPin(showPinEditForm.order)}/>}  
       {/* TODO grab the correct marker */}
