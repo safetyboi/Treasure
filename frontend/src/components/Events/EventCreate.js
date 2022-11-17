@@ -6,6 +6,7 @@ import { PinBox } from './PinBox'
 import * as pinReducerActions from '../../store/pins'
 import * as eventReducerActions from '../../store/events';
 import { Redirect } from 'react-router-dom';
+import { useHistory} from "react-router-dom";
 
 
 
@@ -24,6 +25,7 @@ function EventCreate ({pins, mapData}) {
     //add missing columns
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
+    const history = useHistory();
   
     
 
@@ -71,6 +73,7 @@ function EventCreate ({pins, mapData}) {
       }
         //Redirect to "/" or eventually the eventShow for newlycreated Event:
         // <Redirect to="/"/>
+        history.push(`/events/${eventExists._id}`)
     };
   
     const updateName = e => setName(e.currentTarget.value);
