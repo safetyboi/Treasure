@@ -3,11 +3,13 @@ import thunk from 'redux-thunk';
 import session from './session';
 import errors from './errors';
 import events from './events';
+import pins from './pins';
 
 const rootReducer = combineReducers({
   session, //this is syntactic sugar for 'session: sessionReducer'
   errors,
-  events
+  events,
+  pins
 });
 
 let enhancer;

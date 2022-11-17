@@ -11,7 +11,6 @@ import { Redirect } from 'react-router-dom';
 
 function EventCreate ({pins, mapData}) {
     let newEvent;
-    const New = useSelector(state => state.new);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [duration, setDuration] = useState(0);
@@ -51,30 +50,27 @@ function EventCreate ({pins, mapData}) {
       newEvent = {
         name: name,
         description: description,
-        duration: duration,
-        distance: distance,
-        price: price, 
-        supplies: supplies,
-        elevation: elevation,
+        duration: mapData.duration,
+        distance: mapData.distance,
+        price: totalPrice(), 
+        supplies: totalSupplies(),
+        elevation: mapData.elevation,
         date: date,
         status: false
       }
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
       if (eventExists) {
-        console.log(eventExists)
         // before we dispatch the createPin thunk, we need to add the event's id to the pin:
         // we theoretically have this information in the state, or will, if the event is successfully created
         const mappedPins = pins.map(pin=> { //is pins an array or an object holding an array? I don't know if '.map' is smart enough by itself to handle an object
-          return {...pin, event: New.id}
+          return {...pin, event: eventExists._id}
         })
-        
         mappedPins.forEach(pin=> {
           dispatch(pinReducerActions.createPin(pin))
           })
       }
         //Redirect to "/" or eventually the eventShow for newlycreated Event:
         // <Redirect to="/"/>
-        console.log('completed handlesubmit')
     };
   
     const updateName = e => setName(e.currentTarget.value);
@@ -113,8 +109,17 @@ function EventCreate ({pins, mapData}) {
     const totalSupplies = () => {
       let total = ""
       pins.forEach(pin=> {
-        total += pin.supplies;
+        if (pin.supplies.length > 0) return total += `${pin.supplies}, `;
       })
+      return total;
+    }
+
+    const totalDuration = () => {
+      let total = mapData.duration;
+      pins.forEach(pin=> {
+        return total += pin.duration;
+      })
+      return total;
     }
 
 
@@ -137,51 +142,6 @@ function EventCreate ({pins, mapData}) {
             placeholder="Include a description..."
           />
           </label>
-          <label>Estimated Walking Duration
-            <input 
-            disabled
-              type="number" //can you do 'number'?
-              value={mapData.duration} //this will get passed down as a key on 'pins' prop
-              onChange={updateDuration}
-              placeholder="Apx how long should attendees expect this event to run?"
-            />
-            </label>          
-          <label>Total Distance
-            <input 
-            disabled
-              type="text"
-              value={mapData.distance} //this will get passed down as a key on 'pins' prop
-              onChange={updateDistance}
-              placeholder="Let them know how much ground they'll be covering"
-            />
-            </label>
-          <label>Estimated Supplies Cost
-            <input 
-            disabled
-              type="number" //are numbers allowed?
-              value={totalPrice()} //helper function
-              onChange={updatePrice}
-              placeholder="Including a cost estimate helps other users decide whether this is a realistic event for them to host"
-            />            
-            </label>
-          <label> Supplies Needed
-            <input 
-            disabled
-              type="textarea"
-              value={totalSupplies} //helper function
-              onChange={updateSupplies}
-              placeholder="(Same with supplies)"
-            />
-          </label>
-          <label> Total Elevation Gain
-            <input 
-              disabled
-              type="number"
-              value={mapData.elevation} //helper function
-              onChange={updateElevation}
-              placeholder="(Same with supplies)"
-            />
-          </label>
           <label>Date
             <input 
             type="date" //what type?
@@ -203,7 +163,51 @@ function EventCreate ({pins, mapData}) {
             onChange={updateLocation}
             />
           </label>
-
+          <label>Estimated Event Duration
+            <input 
+            disabled
+              type="number" //can you do 'number'?
+              value={totalDuration()} //this will get passed down as a key on 'pins' prop
+              placeholder="Apx how long should attendees expect this event to run?"
+            />
+            </label>      
+          <label>Estimated Walking Duration
+            <input 
+            disabled
+              type="number" //can you do 'number'?
+              value={mapData.duration} //this will get passed down as a key on 'pins' prop
+              placeholder="Apx how long should attendees expect this event to run?"
+            />
+            </label>          
+          <label>Total Distance
+            <input 
+            disabled
+              type="text"
+              value={mapData.distance} //this will get passed down as a key on 'pins' prop
+              placeholder="Let them know how much ground they'll be covering"
+            />
+            </label>
+            <label> Total Elevation Gain
+            <input 
+              disabled
+              type="number"
+              value={mapData.elevation} //helper function            
+            />
+          </label>
+          <label> Supplies List
+            <input 
+            disabled
+              type="textarea"
+              value={totalSupplies()} //helper function
+            />
+          </label>
+          <label>Estimated Supplies Cost
+            <input 
+            disabled
+              type="number" //are numbers allowed?
+              value={totalPrice()} //helper function
+            />            
+            </label>
 
           <div className="errors">{errors && errors.text}</div>
           <input type="submit" value="Submit" />
