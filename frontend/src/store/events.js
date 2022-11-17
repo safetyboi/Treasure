@@ -39,7 +39,12 @@ export const clearEventErrors = errors => ({
     errors
 });
 
+export const loadEvents = state => {
+  return state.events ? Object.values(state.events.all) : [];
+}
+
 export const fetchEvents = () => async dispatch => {
+  console.log('hey')
     try {
       const res = await jwtFetch ('/api/events');
       const events = await res.json();
@@ -96,7 +101,7 @@ export const fetchEvents = () => async dispatch => {
     }
   };
 
-  const nullErrors = null;
+const nullErrors = null;
 
 export const eventErrorsReducer = (state = nullErrors, action) => {
   switch(action.type) {
