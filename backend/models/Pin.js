@@ -23,7 +23,6 @@ const pinSchema = Schema({
   task: [{
     prompt: {
         type: String,
-        required: true
     },
     image: {
         type: String
@@ -43,7 +42,6 @@ const pinSchema = Schema({
   }],
   price: {
     type: Number,
-    require: true
   },
   supplies: {
     type: String

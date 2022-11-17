@@ -1,9 +1,8 @@
 import jwtFetch from './jwt';
-import { RECEIVE_USER_LOGOUT } from './session';
 
 const RECEIVE_EVENTS = "events/RECEIVE_EVENTS";
+const RECEIVE_EVENT = "events/RECEIVE_EVENT";
 const RECEIVE_USER_EVENTS = "events/RECEIVE_USER_EVENTS";
-const RECEIVE_NEW_EVENT = "events/RECEIVE_NEW_EVENT";
 const RECEIVE_EVENT_ERRORS = "events/RECEIVE_EVENT_ERRORS";
 const CLEAR_EVENT_ERRORS = "events/CLEAR_EVENT_ERRORS";
 
@@ -12,14 +11,15 @@ const receiveEvents = events => ({
   events
 });
 
+const receiveEvent = event => ({
+    type: RECEIVE_EVENT,
+    event
+
+})
+
 const receiveUserEvents = events => ({
   type: RECEIVE_USER_EVENTS,
     events
-});
-
-const receiveNewEvent = event => ({
-  type: RECEIVE_NEW_EVENT,
-  event
 });
 
 const receiveErrors = errors => ({
@@ -32,7 +32,16 @@ export const clearEventErrors = errors => ({
     errors
 });
 
+export const loadEvents = state => {
+  return state.events ? Object.values(state.events) : [];
+}
+
+export const loadEvent = eventId => state => {
+  return state.events ? Object.values(state.events).filter(event => event._id === eventId)[0] : null
+}
+
 export const fetchEvents = () => async dispatch => {
+  console.log('hey')
     try {
       const res = await jwtFetch ('/api/events');
       const events = await res.json();
@@ -44,6 +53,19 @@ export const fetchEvents = () => async dispatch => {
       }
     }
   };
+
+  export const fetchEvent = (eventId) => async dispatch => {
+    try {
+        const res = await jwtFetch (`/api/events/${eventId}`);
+        const event = await res.json();
+        dispatch(receiveEvent(event));
+      } catch (err) {
+        const resBody = await err.json();
+        if (resBody.statusCode === 400) {
+          dispatch(receiveErrors(resBody.errors));
+        }
+      }
+  }
   
   export const fetchUserEvents = id => async dispatch => {
     try {
@@ -65,22 +87,27 @@ export const fetchEvents = () => async dispatch => {
         body: JSON.stringify(data)
       });
       const event = await res.json();
-      dispatch(receiveNewEvent(event));
+      dispatch(receiveEvent(event));
+      return event;
     } catch(err) {
       const resBody = await err.json();
       if (resBody.statusCode === 400) {
-        return dispatch(receiveErrors(resBody.errors));
+        // return dispatch(receiveErrors(resBody.errors));
+        return null;
       }
     }
   };
 
-  const nullErrors = null;
+const nullErrors = null;
 
 export const eventErrorsReducer = (state = nullErrors, action) => {
   switch(action.type) {
     case RECEIVE_EVENT_ERRORS:
       return action.errors;
-    case RECEIVE_NEW_EVENT:
+<<<<<<< HEAD
+    // case RECEIVE_NEW_EVENT:
+=======
+>>>>>>> main
     case CLEAR_EVENT_ERRORS:
       return nullErrors;
     default:
@@ -88,16 +115,14 @@ export const eventErrorsReducer = (state = nullErrors, action) => {
   }
 };
 
-const eventsReducer = (state = { all: {}, user: {}, new: undefined }, action) => {
+const eventsReducer = (state = {}, action) => {
     switch(action.type) {
       case RECEIVE_EVENTS:
-        return { ...state, all: action.events, new: undefined};
+        return action.events;
+      case RECEIVE_EVENT:
+        return {...state, [action.event._id]: action.event} 
       case RECEIVE_USER_EVENTS:
-        return { ...state, user: action.events, new: undefined};
-      case RECEIVE_NEW_EVENT:
-        return { ...state, new: action.event};
-      case RECEIVE_USER_LOGOUT:
-        return { ...state, user: {}, new: undefined }
+        return action.events;
       default:
         return state;
     }

@@ -1,6 +1,7 @@
 import './Profile.scss'
 
 function ProfileEventItem() {
+  
   return (
     <div className='profile_event_item flex-row justify-between'>
       <picture>
