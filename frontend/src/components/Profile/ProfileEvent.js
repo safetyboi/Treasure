@@ -1,7 +1,20 @@
-import './Profile.scss'
 import ProfileEventItem from './ProfileEventItem';
+import './Profile.scss'
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchUserEvents } from '../../store/events';
+import { useParams } from 'react-router-dom';
 
 function ProfileEvent() {
+  const dispatch = useDispatch();
+  const {userId} = useParams();
+  const userEvents = useSelector(state => state.session.user);
+
+  useEffect(() => {
+    dispatch(fetchUserEvents(userId));
+  }, [dispatch, userId]);
+
+
   return (
     <div className='profile_event_wrapper'>
       <div className='event_wrapper'>

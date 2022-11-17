@@ -5,9 +5,9 @@ function Footer() {
     <footer>
       <div className='spacer layer_down'></div>
       <div className="footer_content flex-row align-center justify-between">
-        <p>Copyright <i class="fa-regular fa-copyright"></i> 2022 Treasure</p>
+        <p>Copyright <i className="fa-regular fa-copyright"></i> 2022 Treasure</p>
         {/* <div className="author_github">
-          <p>Made with <i class="fa-solid fa-heart"></i> by</p>
+          <p>Made with <i className="fa-solid fa-heart"></i> by</p>
           <Link to={{ pathname: "https://github.com/safetyboi" }} target="_blank">
             Dan Culbertson
           </Link>
