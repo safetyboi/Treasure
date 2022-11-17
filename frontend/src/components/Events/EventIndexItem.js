@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 
 function EventIndexItem({event}) {
-  const dateVal = event.date;
-  const dateObj = new Date(dateVal);
+  const dateObj = new Date(event.date);
+  const dateStrg = String(dateObj)
   const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat']
   const day = dateObj.getDay();
-  const index = dateVal.indexOf('T');
-  const dateDash = dateVal.slice(0, index);
+  const index = dateStrg.indexOf('T');
+  const dateDash = dateStrg.slice(0, index);
   const date = dateDash.split('-').join('/');
   const localTime = dateObj.toLocaleString('en-eg', {timeZone:"America/Los_Angeles"});
   const comaIdx = localTime.indexOf(' ');

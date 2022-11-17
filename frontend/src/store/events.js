@@ -41,7 +41,6 @@ export const loadEvent = eventId => state => {
 }
 
 export const fetchEvents = () => async dispatch => {
-  console.log('hey')
     try {
       const res = await jwtFetch ('/api/events');
       const events = await res.json();
@@ -104,10 +103,6 @@ export const eventErrorsReducer = (state = nullErrors, action) => {
   switch(action.type) {
     case RECEIVE_EVENT_ERRORS:
       return action.errors;
-<<<<<<< HEAD
-    // case RECEIVE_NEW_EVENT:
-=======
->>>>>>> main
     case CLEAR_EVENT_ERRORS:
       return nullErrors;
     default:
