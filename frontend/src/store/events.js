@@ -32,7 +32,12 @@ export const clearEventErrors = errors => ({
     errors
 });
 
+export const loadEvents = state => {
+  return state.events ? Object.values(state.events.all) : [];
+}
+
 export const fetchEvents = () => async dispatch => {
+  console.log('hey')
     try {
       const res = await jwtFetch ('/api/events');
       const events = await res.json();

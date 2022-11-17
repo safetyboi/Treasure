@@ -1,6 +1,55 @@
-.events_wrapper {
+.events_page {
+  top: -15vh;
+  margin: -10vh auto;
 
-  footer {
-    position: absolute;
+  .event_index_wrapper {
+    margin-bottom: 20vh;
+    
+    h1 {
+      margin-bottom: 10vh;
+    }
+
+    .event_list_wrapper {
+      width: 25vw;
+
+      .event_list {
+        li {
+          margin-bottom: 3vh;
+          background-color: white;
+          padding: 3vh 2vw;
+          border-radius: var(--border-radius);
+          box-shadow: var(--box-shadow);
+
+          h2 {
+            margin-bottom: 2vh;
+            font-size: 1.2vw;
+          }
+
+          p {
+            font-size: 1vw;
+            margin-bottom: 1vh;
+          }
+
+          .btn {
+            margin-top: 2vh;
+            padding: 1vh 1vw;
+            font-size: 1vw;
+            cursor: pointer;
+          }
+        }
+
+        .event_list_details {
+          width: 75%;
+        }
+
+        .event_list_img {
+          width: 15%;
+        }
+      }
+    }
+
+    #event_map {
+      width: 60vw;
+    }
   }
 }
