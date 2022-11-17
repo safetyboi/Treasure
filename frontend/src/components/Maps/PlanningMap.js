@@ -61,7 +61,6 @@ export const PlanningMap = () => {
     }
   };
 
-  console.log(pins)
 
   const deletePin = (marker) => {
     // TODO: figure out how to delete a pin
@@ -86,7 +85,6 @@ export const PlanningMap = () => {
   };
 
   const blankPin = (marker) => {
-    console.log(marker)
 
     return {
       order: marker.order,

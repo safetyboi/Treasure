@@ -66,10 +66,12 @@ export const fetchEvents = () => async dispatch => {
       });
       const event = await res.json();
       dispatch(receiveNewEvent(event));
+      return event;
     } catch(err) {
       const resBody = await err.json();
       if (resBody.statusCode === 400) {
-        return dispatch(receiveErrors(resBody.errors));
+        // return dispatch(receiveErrors(resBody.errors));
+        return null;
       }
     }
   };
