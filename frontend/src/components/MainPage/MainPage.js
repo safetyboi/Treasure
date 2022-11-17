@@ -16,7 +16,7 @@ function MainPage() {
             <div className='hero_button flex-row justify-start'>
               <Link to={'/signup'}><Button className='border-btn'>Sign up</Button></Link>
               <Link to={'/login'}><Button className='border-btn'>Log in</Button></Link>
-              <Link to={'#'}><Button className='demo-btn'>DEMO</Button></Link>
+              <Link to={'/demo-lobby'}><Button className='demo-btn'>DEMO</Button></Link>
             </div>
           </div>
           <div className='hero_img flex-row justify-center'>

@@ -5,6 +5,7 @@ import { Switch } from 'react-router-dom';
 import { AuthRoute, ProtectedRoute } from './components/Routes/Routes';
 import NavBar from './components/NavBar/NavBar';
 import MainPage from './components/MainPage/MainPage';
+import DemoLobby from './components/DemoLobby/DemoLobby';
 import LoginForm from './components/SessionForms/LoginForm';
 import SignupForm from './components/SessionForms/SignupForm';
 import EventIndex from './components/Events/EventIndex';
@@ -41,8 +42,11 @@ function App() {
         <ProtectedRoute exact path="/events" component={EventIndex} />
         <ProtectedRoute exact path="/profile" component={Profile} />
         {/* <ProtectedRoute exact path="/events/new" component={EventCompose} /> */}
+        <ProtectedRoute exact path="/testmap" component={PlanningMapWrapper} />
+        <ProtectedRoute exact path="/online-game" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/onlinegame" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/imageupload" component={ImageUploader} />
+        <ProtectedRoute exact path="/demo-lobby" component={DemoLobby} />
       </Switch>
     </>
   );
