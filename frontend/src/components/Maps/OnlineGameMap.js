@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from "react-redux";
 import ClueForm from "./ClueForm";
+import { fetchEvent  } from "../../store/events";
 // import { getEvent } from '______';
 // import { getEventPins } from '_____';
 
