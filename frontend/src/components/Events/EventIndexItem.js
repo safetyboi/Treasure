@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 
 function EventIndexItem({event}) {
-  if (event) {
-    console.log(event._id)
-  }
+  // if (event) {
+  //   console.log(event._id)
+  // }
 
   return (
     <li className="event_index_list">
