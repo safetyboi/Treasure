@@ -44,7 +44,7 @@
   width: 100%;
   min-width: 400px;
   min-height: 300px;
-  z-index: 1000;
+  z-index: 10;
 }
 
 .outer-map-container-show {
@@ -55,7 +55,7 @@
 .planning_map_form {
   width: 40vw;
   
-  .accordion {
+  #accordion {
     background-color: white;
     padding: 5vh 2vw;
     border-radius: var(--border-radius);

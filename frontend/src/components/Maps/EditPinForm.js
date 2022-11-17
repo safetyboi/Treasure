@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './PinEditForm.scss';
+import './Map.scss';
 
 const PinEditForm = ({marker, pin, addPinToArray, deletePin}) => {
   // const pin = pins.filter(pin => {
@@ -79,7 +80,10 @@ const PinEditForm = ({marker, pin, addPinToArray, deletePin}) => {
   // };
 
   return (
-    <div className="pin-edit-form">
+    <div className="pin-edit-area">
+      <h2>Edit Pins</h2>
+      <div className='border'></div>
+
       <form className="pin-edit-form">
         <label>Pin Order
           <input disabled placeholder="" value={pin.order}/>

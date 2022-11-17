@@ -3,7 +3,7 @@ import { Wrapper } from "@googlemaps/react-wrapper";
 import PinEditForm from "./EditPinForm";
 import EventCreate from '../Events/EventCreate';
 import './Map.scss';
-import './PinEditForm.scss'
+import './PinEditForm.scss';
 
 export const PlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -225,22 +225,25 @@ export const PlanningMap = () => {
   //   passUpMapData(distance, duration, polyline, elevationArray, elevation);
   // }, [distance, duration, polyline, elevationArray, elevation])
 
-	// const height = document.getElementById('google-map-container').offsetHeight;
+	// const height = document.getElementById('accordion').clientHeight();
+  // document.getElementById('google-map-container').style.height = height
 
   return (
     <div className="planning_map_area flex-row">
-			<div id="planning_map_form">
-				<div className="accordion">
+			<div className="planning_map_form">
+				<div id="accordion">
 					<div className="accordion_title">
-						<h2>Event Details</h2>
+						<h2>Event Details</h2> 
 						<div className='border'></div>
 					</div>
 					<div className="accordion_body">
 						<EventCreate pins={pins} mapData={mapData}/>
 					</div>
 				</div>
-				
-				{showPinEditForm && 
+			</div>
+      <div id="google-map-container" ref={mapRef}>
+        Map
+        {showPinEditForm && 
 					<PinEditForm 
 						deletePin={deletePin} 
 						addPinToArray={addPinToArray} 
@@ -248,8 +251,7 @@ export const PlanningMap = () => {
 						pin={selectedPin(showPinEditForm.order)}
 					/>
 				}  
-			</div>
-      <div id="google-map-container" ref={mapRef}>Map</div>
+      </div>
       {/* TODO grab the correct marker */}
     </div>
   )
