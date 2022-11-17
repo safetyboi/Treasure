@@ -6,8 +6,6 @@ import EventBox from './EventBox';
 import { PinBox } from './PinBox'
 import * as pinReducerActions from '../../store/pins'
 import * as eventReducerActions from '../../store/events';
-import { Redirect } from 'react-router-dom';
-import { useHistory} from "react-router-dom";
 
 
 
