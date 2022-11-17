@@ -4,10 +4,12 @@ import {useParams} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from "react-redux";
 import ClueForm from "./ClueForm";
+import { fetchEvent  } from "../../store/events";
+import { fetchEventPins } from "../../store/pins";
 // import { getEvent } from '______';
 // import { getEventPins } from '_____';
 
-export const ViewingMap = () => {
+export const OnlineGameMap = () => {
   // const event = useSelector(getEvent(eventId));
   // const currentUser = useSelector(getCurrentUser);
   // const participants = useSelector(getEventParticipants(event.id));
@@ -15,14 +17,18 @@ export const ViewingMap = () => {
   const dispatch = useDispatch();
   const {eventId} = useParams();
   const event = 3;
-  // const eventPins = useSelector(getEventPins(eventId));
-  const eventPins = [{order: 1}, {order: 2}, {order: 3}];
+  // const eventPins = [{order: 1}, {order: 2}, {order: 3}];
   const [map, setMap] = useState(null);
   const mapRef = useRef(null);
   // const [currentPosition, setCurrentPosition] = event?.pins[0].location;
-  const [currentPosition, setCurrentPosition] = useState({lat: 37.773972, lng: -122.431297});
+  const getEventPins = (eventId) => (state) => {
+    if (state.events) return Object.values(state.events);
+    return [];
+  }
+  const eventPins = useSelector(getEventPins(eventId));
+  const [currentPosition, setCurrentPosition] = useState(eventPins[0]?.location);
   const [coords, setCoords] = useState([]);
-  const [clueForm, setClueForm] = useState(1);
+  // const [clueForm, setClueForm] = useState(1);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const [remainingTime, setRemainingTime] = useState(event?.duration);
@@ -36,6 +42,8 @@ export const ViewingMap = () => {
   }
   
   const [currentPin, setCurrentPin] = useState(setPin(1));
+  
+  
 
   setTimeout(() => {
     setThinkingTime(thinkingTime + 1)
@@ -45,9 +53,12 @@ export const ViewingMap = () => {
     setRemainingTime(event?.duration - thinkingTime - duration)
   }, [thinkingTime, duration])
 
-  // useEffect(() => {
-  //   if (eventId) dispatch(fetchEvent(eventId))
-  // },[eventId])
+  useEffect(() => {
+    if (eventId) {
+      dispatch(fetchEvent(eventId));
+      dispatch(fetchEventPins(eventId));
+    }
+  },[eventId])
   
   useEffect(() => {
     if (!map) {
@@ -135,7 +146,7 @@ export const ViewingMap = () => {
   }
 
   const pointReached = () => {
-    return haversineDistance(currentPosition, currentPin.position) < currentPin.radius
+    // return haversineDistance(currentPosition, currentPin?.position) < currentPin.radius
   }
 
   const releaseClue = () => {
@@ -236,7 +247,9 @@ export const ViewingMap = () => {
         </form>
       </div>
       <div className="google-map-container" ref={mapRef}>Map</div>
+      {showClue &&
       <ClueForm checkResponse={checkResponse} currentPin={currentPin}/>
+      }
     </>
   )
 
@@ -247,14 +260,14 @@ export const ViewingMap = () => {
 
 
 
-const ViewingMapWrapper = ({event}) => {
+const OnlineGameMapWrapper = ({event}) => {
 
   return (
     <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} libraries={["geometry"]}>
-      <ViewingMap event={event}/>
+      <OnlineGameMap event={event}/>
     </Wrapper>
   )
 };
 
 
-export default ViewingMapWrapper;
+export default OnlineGameMapWrapper;
