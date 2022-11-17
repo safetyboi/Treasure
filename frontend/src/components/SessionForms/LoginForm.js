@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { login, clearSessionErrors } from '../../store/session';
 import Footer from '../NavBar/Footer';
 import './SessionForm.scss';
@@ -10,6 +10,7 @@ import './SessionForm.scss';
 function LoginForm () {
   const dispatch = useDispatch();
   const errors = useSelector(state => state.errors.session);
+  const history = useHistory();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,7 +29,8 @@ function LoginForm () {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login({ email, password })); 
+    dispatch(login({ email, password }));
+    history.push('/events');
   }
 
   return (

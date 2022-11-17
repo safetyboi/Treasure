@@ -13,6 +13,8 @@ function EventIndex() {
     dispatch(fetchEvents());
   }, [dispatch]);
 
+  if (!events) return null;
+
   return (
     <section className='events_page'>
       <div className='event_index_wrapper flex-col align-center'>
