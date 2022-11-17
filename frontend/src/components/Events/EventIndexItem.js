@@ -9,7 +9,7 @@ function EventIndexItem({event}) {
   const index = dateVal.indexOf('T');
   const dateDash = dateVal.slice(0, index);
   const date = dateDash.split('-').join('/');
-  const localTime = dateObj.toLocaleString('en-eg', {timeZone:"Africa/Cairo"});
+  const localTime = dateObj.toLocaleString('en-eg', {timeZone:"America/Los_Angeles"});
   const comaIdx = localTime.indexOf(' ');
   const hour = localTime.slice(comaIdx, comaIdx + 5);
   const ampm = localTime.slice(-2);
