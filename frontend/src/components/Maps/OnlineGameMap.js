@@ -80,11 +80,11 @@ export const OnlineGameMap = () => {
   
   const renderEventPin = (order) => {
     const pin = grabPin(order)
-    console.log(pin)
+    console.log(pin?.location)
     if (pin) {
       const marker = new window.google.maps.Marker({
-        order: pin.order,
-        position: pin.location,
+        order: pin?.order,
+        position: pin?.location[0],
         map: map,
         icon: {
           path: window.google.maps.SymbolPath.CIRCLE,

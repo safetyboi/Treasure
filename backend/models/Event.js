@@ -21,11 +21,11 @@ const eventSchema = Schema({
   initCoords: [{
     lat: {
         type: Number,
-        required: true
+        // required: true
     },
     lng: {
         type: Number,
-        required: true
+        // required: true
     },
   }],
   duration: {

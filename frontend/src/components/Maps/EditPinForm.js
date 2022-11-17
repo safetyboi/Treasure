@@ -37,8 +37,8 @@ const PinEditForm = ({marker, pin, addPinToArray, deletePin}) => {
     setcurrentPin({
       order: pin.order,
       location: {
-        latitude: marker.position.lat(),
-        longitude: marker.position.lng(),
+        lat: marker.position.lat(),
+        lng: marker.position.lng(),
       },
       directionToPin: {text: directions},
       task: {
