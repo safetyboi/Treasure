@@ -84,7 +84,7 @@ export const OnlineGameMap = () => {
     if (pin) {
       const marker = new window.google.maps.Marker({
         order: pin.order,
-        position: {lat: 37.783972, lng: -122.431297},
+        position: pin.location,
         map: map,
         icon: {
           path: window.google.maps.SymbolPath.CIRCLE,
