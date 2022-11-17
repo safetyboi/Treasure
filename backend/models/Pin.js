@@ -7,11 +7,11 @@ const pinSchema = Schema({
     ref: 'Event'
   },
   location: [{
-    latitude: {
+    lat: {
         type: Number,
         required: true
     },
-    longitude: {
+    lng: {
         type: Number,
         required: true
     },

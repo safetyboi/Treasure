@@ -58,6 +58,25 @@ const startSession = (userInfo, route) => async dispatch => {
   return dispatch(receiveCurrentUser(user));
 };
 
+//----------------update Image-------------------
+
+export const updateUserImage = (user, formData) => async dispatch => {
+  const res = await jwtFetch(`/api/users/${user.currentUser._id}`, {
+    method: "PATCH",
+    body: formData,
+  })
+  const updatedUser = await res.json()
+  console.log(res, "res")
+
+  debugger
+    // .then((res) => res.json())
+    // .then((data) => console.log(data));  
+  return dispatch(receiveCurrentUser(updatedUser)); 
+}
+
+//----------------logout---------------------
+
+
 export const logout = () => dispatch => {
     localStorage.removeItem('jwtToken');
     dispatch(logoutUser());
@@ -66,7 +85,7 @@ export const logout = () => dispatch => {
   export const getCurrentUser = () => async dispatch => {
     const res = await jwtFetch('/api/users/current');
     const user = await res.json();
-    
+    console.log(user);
     return dispatch(receiveCurrentUser(user));
   };
 
