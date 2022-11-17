@@ -24,7 +24,7 @@ const receiveNewPin = pin => ({
   // });
 
   export const createPin = data => async dispatch => {
-    const res = await jwtFetch('/api/pins/', {
+    const res = await jwtFetch(`/api/pins/${data.event}`, {
         method: 'POST',
         body: JSON.stringify(data)
       });
@@ -36,7 +36,7 @@ const receiveNewPin = pin => ({
   const pinsReducer = (state = {}, action) => {
     switch(action.type) {
         case RECEIVE_NEW_PIN:
-            return {...state, pins: action.pin};
+            return {...state, [action.pin._id]: action.pin};
             //more cases?
         default:
             return state;

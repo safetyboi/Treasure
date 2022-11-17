@@ -57,7 +57,7 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
         })
 
         let event = await newEvent.save()
-        event = await Event.populate("name", "description _id")
+        // event = await Event.populate("name", "description _id")
         return res.json(event)
     }
     catch(err) {

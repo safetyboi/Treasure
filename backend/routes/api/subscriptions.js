@@ -44,7 +44,7 @@ router.post('/:eventId', requireUser, validateSubscriptionInput, async (req, res
         })
 
         let subscription = await newSubscription.save()
-        subscription = await Subscription.populate("name", "description _id")
+        // subscription = await Subscription.populate("name", "description _id")
         return res.json(subscription)
     }
     catch(err) {

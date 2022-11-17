@@ -10,12 +10,10 @@ const validatePinInput = [
     .isLength(2)
     .withMessage('Location must have two values'),
   check('task')
-    .exists({ checkFalsy: true })
-    .isLength({ min: 0, max: 1000 })
+    .isLength({ max: 1000 })
     .withMessage('Instructions must be less than 1000 characters'),
   check('supplies')
-    .exists({ checkFalsy: true })
-    .isLength({ min: 0, max: 500 })
+    .isLength({ max: 500 })
     .withMessage('Supplies must be less than 500 characters'),
   check('order')
     .exists({ checkFalsy: true })

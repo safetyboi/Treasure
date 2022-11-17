@@ -53,7 +53,7 @@ router.post('/:eventId', requireUser, validatePinInput, async (req, res, next) =
         })
 
         let pin = await newPin.save()
-        pin = await Pin.populate("name", "description _id")
+        // pin = await Pin.populate("name", "description _id")
         return res.json(pin)
     }
     catch(err) {

@@ -103,9 +103,6 @@ const PinEditForm = ({marker, pin, addPinToArray, deletePin}) => {
           <label>Activity Duration
             <input placeholder="" onChange={e => {setActivityDuration(e.target.value)}} value={activityDuration}/>
           </label>
-          {/* <button>Set Pin</button>
-          <p>{`Pin is ${pinStatus ? `set!` : `unset!`}`}</p>
-          <button onClick={e => {deletePin(pin)}}>Delete Pin</button> */}
         </form>
       </div>
     </>
