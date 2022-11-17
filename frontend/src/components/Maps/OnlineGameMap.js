@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from "react-redux";
 import ClueForm from "./ClueForm";
 import { fetchEvent  } from "../../store/events";
+import { fetchEventPins } from "../../store/pins";
 // import { getEvent } from '______';
 // import { getEventPins } from '_____';
 
@@ -16,12 +17,16 @@ export const OnlineGameMap = () => {
   const dispatch = useDispatch();
   const {eventId} = useParams();
   const event = 3;
-  const eventPins = useSelector(getEventPins(eventId));
   // const eventPins = [{order: 1}, {order: 2}, {order: 3}];
   const [map, setMap] = useState(null);
   const mapRef = useRef(null);
   // const [currentPosition, setCurrentPosition] = event?.pins[0].location;
-  const [currentPosition, setCurrentPosition] = useState(eventPins[0].location);
+  const getEventPins = (eventId) => (state) => {
+    if (state.events) return Object.values(state.events);
+    return [];
+  }
+  const eventPins = useSelector(getEventPins(eventId));
+  const [currentPosition, setCurrentPosition] = useState(eventPins[0]?.location);
   const [coords, setCoords] = useState([]);
   // const [clueForm, setClueForm] = useState(1);
   const [distance, setDistance] = useState(0);
@@ -37,11 +42,8 @@ export const OnlineGameMap = () => {
   }
   
   const [currentPin, setCurrentPin] = useState(setPin(1));
-
-  const getEventPins = (eventId) => (state) => {
-    if (state.events) return Object.values(state.events);
-    return [];
-  }
+  
+  
 
   setTimeout(() => {
     setThinkingTime(thinkingTime + 1)
@@ -144,7 +146,7 @@ export const OnlineGameMap = () => {
   }
 
   const pointReached = () => {
-    return haversineDistance(currentPosition, currentPin.position) < currentPin.radius
+    // return haversineDistance(currentPosition, currentPin?.position) < currentPin.radius
   }
 
   const releaseClue = () => {

@@ -13,7 +13,7 @@ const receiveNewPin = pin => ({
     pin
   });
 
-  const receiveEventPins = eventId => ({
+  const receiveEventPins = events => ({
     type: RECEIVE_EVENT_PINS,
     events
   });
@@ -30,11 +30,11 @@ const receiveNewPin = pin => ({
       dispatch(receiveEventPins(eventPins));
     } catch (err) {
       const resBody = await err.json();
-      if (resBody.statusCode === 400) {
-        dispatch(receiveErrors(resBody.errors));
-      }
+      // if (resBody.statusCode === 400) {
+      //   dispatch(receiveErrors(resBody.errors));
+      // }
     }
-   
+  
   }
 
   export const createPin = data => async dispatch => {
