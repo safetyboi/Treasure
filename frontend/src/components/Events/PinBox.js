@@ -1,7 +1,7 @@
 export const PinBox = ({pin})=> {
     return (
         <>
-        <div>{`${pin.order}: ${pin.location.latitude},${pin.location.longitude}`}</div>
+        <div>{`Pin ${pin.order}`}</div>
         {/* <div>{`${pin.location.latitude},${pin.location.longitude}`}</div>  */}
         {/* note: we want to be able to click on this pinbox and trigger a re-render of the pin editor */}
         </>
