@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { signup, clearSessionErrors } from '../../store/session';
+import { signup, clearSessionErrors, updateUserImage } from '../../store/session';
+import UploadImages from '../AWSTest/ImageUploader';
 import Footer from '../NavBar/Footer';
 import './SessionForm.scss';
 
@@ -9,6 +10,7 @@ function SignupForm () {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+  let imageFile
   const errors = useSelector(state => state.errors.session);
   const dispatch = useDispatch();
 
@@ -17,6 +19,23 @@ function SignupForm () {
       dispatch(clearSessionErrors());
     };
   }, [dispatch]);
+
+  const updateImage = async (e) => {
+    // console.log(e.target.files[0])
+    // const file = e.target.files[0];
+    imageFile = e.target.files[0]
+    
+    // const formData = new FormData();
+    // formData.append("images", file);
+
+    // await jwtFetch("/api/events/postImages", {
+    //     method: "POST",
+    //     body: formData,
+    //   })
+    //     .then((res) => res.json())
+    //     .then((data) => console.log(data));   
+  };
+
 
   const update = field => {
     let setState;
@@ -41,15 +60,25 @@ function SignupForm () {
     return e => setState(e.currentTarget.value);
   }
 
-  const usernameSubmit = e => {
+  const usernameSubmit = async e => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("images", imageFile);
+
     const user = {
       email,
       username,
       password
     };
 
-    dispatch(signup(user)); 
+    dispatch(signup(user)) 
+    .then((newUser) => {
+      debugger
+      if (newUser.currentUser) {
+        dispatch(updateUserImage(newUser, formData) )
+      }
+    })
   }
 
   return (
@@ -58,7 +87,7 @@ function SignupForm () {
       <h2 className='text-center'>Sign Up</h2>
         <div className='session_content flex-row align-center'>
           <form className="session-form flex-col" 
-            onSubmit={usernameSubmit}>
+            onSubmit={usernameSubmit} encType="multipart/form-data">
             <label>
               <span>Email</span>
               <input type="email"
@@ -97,6 +126,7 @@ function SignupForm () {
             <div className="errors">
               {password !== password2 && 'Confirm Password field must match'}
             </div>
+            <input type="file" onChange={updateImage} multiple />
             <input
               type="submit"
               value="Sign Up"
@@ -112,3 +142,4 @@ function SignupForm () {
 }
 
 export default SignupForm;
+

@@ -47,6 +47,7 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
             description: req.body.description,
             duration: req.body.duration,
             distance: req.body.distance,
+            initCoords: req.body.initCoords,
             price: req.body.price,
             supplies: req.body.supplies,
             gameStatus: req.body.status,
@@ -116,9 +117,14 @@ router.patch('/:id', requireUser, validateEventInput, async (req, res, next) => 
             description: req.body.description,
             duration: req.body.duration,
             distance: req.body.distance,
+            initCoords: req.body.initCoords,
             price: req.body.price,
             supplies: req.body.supplies,
+            gameStatus: req.body.status,
             elevation: req.body.elevation,
+            date: req.body.date,
+            status: req.body.status,
+            location: req.body.location
         })
         .exec()
         .then((event) => {
@@ -169,10 +175,14 @@ router.post("/postImages", function (req, res) {
             description: req.body.description,
             duration: req.body.duration,
             distance: req.body.distance,
+            initCoords: req.body.initCoords,
             price: req.body.price,
             supplies: req.body.supplies,
+            gameStatus: req.body.status,
             elevation: req.body.elevation,
-            image: file
+            date: req.body.date,
+            status: req.body.status,
+            location: req.body.location
         })
         .exec()
         .then((event) => {

@@ -77,7 +77,7 @@ export const ViewingMap = () => {
 
   return (
     <>
-      <button onClick={openOnlineGame} />
+      <button onClick={openOnlineGame}>Play Online Game</button>
       <div className="google-map-container" ref={mapRef}>Map</div>
     </>
   )

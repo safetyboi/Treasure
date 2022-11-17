@@ -41,7 +41,6 @@ export const loadEvent = eventId => state => {
 }
 
 export const fetchEvents = () => async dispatch => {
-  console.log('hey')
     try {
       const res = await jwtFetch ('/api/events');
       const events = await res.json();

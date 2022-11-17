@@ -6,6 +6,7 @@ const handleValidationErrors = require('./handleValidationErrors');
 // validateRegisterInput is a combination Express middleware that uses the 
 // `check` middleware to validate the keys in the body of a request to 
 // register a user
+
 const validateRegisterInput = [
   check('email')
     .exists({ checkFalsy: true })
