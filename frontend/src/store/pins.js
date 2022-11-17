@@ -15,7 +15,7 @@ const receiveNewPin = pin => ({
 
   const receiveEventPins = eventId => ({
     type: RECEIVE_EVENT_PINS,
-    events
+    eventId
   });
 
   // const removeEventPins = eventId => ({
@@ -30,9 +30,9 @@ const receiveNewPin = pin => ({
       dispatch(receiveEventPins(eventPins));
     } catch (err) {
       const resBody = await err.json();
-      if (resBody.statusCode === 400) {
-        dispatch(receiveErrors(resBody.errors));
-      }
+      // if (resBody.statusCode === 400) {
+      //   dispatch(receiveErrors(resBody.errors));
+      // }
     }
    
   }
