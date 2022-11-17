@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
+import { Redirect } from "react-router-dom";
 
 export const ViewingMap = ({event}) => {
   const [map, setMap] = useState(null);
@@ -17,6 +18,11 @@ export const ViewingMap = ({event}) => {
     renderPins();
     
   }, [mapRef]);
+
+  const openOnlineGame = (e) => {
+    e.preventDefault();
+    return <Redirect to={`/events/${event.id}/online-game`} />
+  };
 
   // todo: differentiate playerpin and event pins, tie the markers to the pin info somehow
 
@@ -64,7 +70,10 @@ export const ViewingMap = ({event}) => {
   }, [coords])
 
   return (
-    <div className="google-map-container" ref={mapRef}>Map</div>
+    <>
+      <button onClick={openOnlineGame}></button>
+      <div className="google-map-container" ref={mapRef}>Map</div>
+    </>
   )
 
 };

@@ -11,10 +11,11 @@ import EventIndex from './components/Events/EventIndex';
 // import EventCompose from './components/Events/EventCompose';
 import Profile from './components/Profile/Profile';
 import Footer from './components/NavBar/Footer';
-import PlanningMap from './components/Maps/PlanningMap';
+import PlanningMapWrapper from './components/Maps/PlanningMap';
 import { getCurrentUser } from './store/session';
-import OnlineGameMap from './components/Maps/OnlineGameMap';
-import ImageUploader from '../src/components/AWSTest/ImageUploader'
+import OnlineGameMapWrapper from './components/Maps/OnlineGameMap';
+import ImageUploader from '../src/components/AWSTest/ImageUploader';
+import ViewingMapWrapper from './components/Maps/ViewingMap';
 
 
 function App() {
@@ -35,10 +36,12 @@ function App() {
         <AuthRoute exact path="/signup" component={SignupForm} />
 
         <ProtectedRoute exact path="/events" component={EventIndex} />
+        <ProtectedRoute exact path="/events/:eventId" component={ViewingMapWrapper} />
+        <ProtectedRoute exact path="/events/:eventId/online-game" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/profile" component={Profile} />
         {/* <ProtectedRoute exact path="/events/new" component={EventCompose} /> */}
-        <ProtectedRoute exact path="/testmap" component={PlanningMap} />
-        <ProtectedRoute exact path="/onlinegame" component={OnlineGameMap} />
+        <ProtectedRoute exact path="/testmap" component={PlanningMapWrapper} />
+        <ProtectedRoute exact path="/onlinegame" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/imageupload" component={ImageUploader} />
       </Switch>
     </>
