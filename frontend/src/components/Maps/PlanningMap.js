@@ -225,7 +225,7 @@ export const PlanningMap = () => {
   //   passUpMapData(distance, duration, polyline, elevationArray, elevation);
   // }, [distance, duration, polyline, elevationArray, elevation])
 
-	const height = document.getElementById('google-map-container').offsetHeight;
+	// const height = document.getElementById('google-map-container').offsetHeight;
 
   return (
     <div className="planning_map_area flex-row">
