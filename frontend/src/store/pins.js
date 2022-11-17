@@ -13,15 +13,29 @@ const receiveNewPin = pin => ({
     pin
   });
 
-  // const receiveEventPins = eventId => ({
-  //   type: RECEIVE_EVENT_PINS,
-  //   events
-  // });
+  const receiveEventPins = eventId => ({
+    type: RECEIVE_EVENT_PINS,
+    events
+  });
 
   // const removeEventPins = eventId => ({
   //   type: REMOVE_EVENT_PINS,
   //   events
   // });
+
+  export const fetchEventPins = eventId => async dispatch => {
+    try {
+        const res = await jwtFetch(`api/pins/${eventId}`);
+        const eventPins = await res.json();
+      dispatch(receiveEventPins(eventPins));
+    } catch (err) {
+      const resBody = await err.json();
+      if (resBody.statusCode === 400) {
+        dispatch(receiveErrors(resBody.errors));
+      }
+    }
+   
+  }
 
   export const createPin = data => async dispatch => {
     const res = await jwtFetch(`/api/pins/${data.event}`, {
