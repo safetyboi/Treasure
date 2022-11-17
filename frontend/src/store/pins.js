@@ -13,9 +13,9 @@ const receiveNewPin = pin => ({
     pin
   });
 
-  const receiveEventPins = events => ({
+  const receiveEventPins = pins => ({
     type: RECEIVE_EVENT_PINS,
-    events
+    pins
   });
 
   // const removeEventPins = eventId => ({
@@ -25,7 +25,7 @@ const receiveNewPin = pin => ({
 
   export const fetchEventPins = eventId => async dispatch => {
     try {
-        const res = await jwtFetch(`api/pins/${eventId}`);
+        const res = await jwtFetch(`/api/pins/${eventId}`);
         const eventPins = await res.json();
       dispatch(receiveEventPins(eventPins));
     } catch (err) {
@@ -51,7 +51,8 @@ const receiveNewPin = pin => ({
     switch(action.type) {
         case RECEIVE_NEW_PIN:
             return {...state, [action.pin._id]: action.pin};
-            //more cases?
+        case RECEIVE_EVENT_PINS:
+            return action.pins;
         default:
             return state;
     }

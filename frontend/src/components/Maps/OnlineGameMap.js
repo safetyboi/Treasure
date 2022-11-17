@@ -81,6 +81,7 @@ export const OnlineGameMap = () => {
   // todo: differentiate playerpin and event pins, tie the markers to the pin info somehow
 
   const renderEventPins = () => {
+    console.log(eventPins)
     eventPins.forEach(eventPin => {
       if (eventPin.order <= currentPin.order) {
         const marker = new window.google.maps.Marker({
