@@ -2,11 +2,19 @@ import Button from 'react-bootstrap/Button';
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ProfileEvent from './ProfileEvent';
+import { useDispatch } from 'react-redux';
 import Footer from '../NavBar/Footer';
 import './Profile.scss'
+import { useEffect } from 'react';
+import { fetchUser } from '../../store/session';
 
 function Profile() {
+  const dispatch = useDispatch()
   const user = useSelector(state => state.session.user);
+
+  useEffect(() => {
+    dispatch(fetchUser())
+  }, [dispatch])
 
   return (
     <section className='profile_page'>

@@ -89,10 +89,12 @@ router.get('/current', restoreUser, (req, res) => {
     res.cookie("CSRF-TOKEN", csrfToken);
   }
   if (!req.user) return res.json(null);
+  console.log(req.user)
   res.json({
     _id: req.user._id,
     username: req.user.username,
-    email: req.user.email
+    email: req.user.email,
+    image: req.user.image
   });
 });
 
@@ -126,8 +128,6 @@ router.patch('/:userId', async (req, res, next) => {
             res.status(200).send(`Id ${req.params.id} was updated`)
         }
     }) }, 1000);
-
-  // update user
   
 });
 
