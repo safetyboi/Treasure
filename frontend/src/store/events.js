@@ -74,7 +74,7 @@ export const fetchEvents = () => async dispatch => {
     }
   };
 
-  const nullErrors = null;
+const nullErrors = null;
 
 export const eventErrorsReducer = (state = nullErrors, action) => {
   switch(action.type) {

@@ -2,8 +2,8 @@ import Button from 'react-bootstrap/Button';
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ProfileEvent from './ProfileEvent';
-import './Profile.scss'
 import Footer from '../NavBar/Footer';
+import './Profile.scss'
 
 function Profile() {
   const user = useSelector(state => state.session.user);
