@@ -104,6 +104,10 @@ export const eventErrorsReducer = (state = nullErrors, action) => {
   switch(action.type) {
     case RECEIVE_EVENT_ERRORS:
       return action.errors;
+<<<<<<< HEAD
+    // case RECEIVE_NEW_EVENT:
+=======
+>>>>>>> main
     case CLEAR_EVENT_ERRORS:
       return nullErrors;
     default:
