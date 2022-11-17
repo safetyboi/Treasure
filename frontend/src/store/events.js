@@ -2,6 +2,7 @@ import jwtFetch from './jwt';
 import { RECEIVE_USER_LOGOUT } from './session';
 
 const RECEIVE_EVENTS = "events/RECEIVE_EVENTS";
+const RECEIVE_EVENT = "events/RECEIVE_EVENT";
 const RECEIVE_USER_EVENTS = "events/RECEIVE_USER_EVENTS";
 const RECEIVE_NEW_EVENT = "events/RECEIVE_NEW_EVENT";
 const RECEIVE_EVENT_ERRORS = "events/RECEIVE_EVENT_ERRORS";
@@ -11,6 +12,12 @@ const receiveEvents = events => ({
   type: RECEIVE_EVENTS,
   events
 });
+
+const receiveEvent = event => ({
+    type: RECEIVE_EVENT,
+    event
+
+})
 
 const receiveUserEvents = events => ({
   type: RECEIVE_USER_EVENTS,
@@ -32,7 +39,12 @@ export const clearEventErrors = errors => ({
     errors
 });
 
+export const loadEvents = state => {
+  return state.events ? Object.values(state.events.all) : [];
+}
+
 export const fetchEvents = () => async dispatch => {
+  console.log('hey')
     try {
       const res = await jwtFetch ('/api/events');
       const events = await res.json();
@@ -44,6 +56,19 @@ export const fetchEvents = () => async dispatch => {
       }
     }
   };
+
+  export const fetchEvent = (eventId) => async dispatch => {
+    try {
+        const res = await jwtFetch (`/api/events/${eventId}`);
+        const event = await res.json();
+        dispatch(receiveEvent(event));
+      } catch (err) {
+        const resBody = await err.json();
+        if (resBody.statusCode === 400) {
+          dispatch(receiveErrors(resBody.errors));
+        }
+      }
+  }
   
   export const fetchUserEvents = id => async dispatch => {
     try {
@@ -76,7 +101,7 @@ export const fetchEvents = () => async dispatch => {
     }
   };
 
-  const nullErrors = null;
+const nullErrors = null;
 
 export const eventErrorsReducer = (state = nullErrors, action) => {
   switch(action.type) {
