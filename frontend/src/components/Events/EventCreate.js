@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom'; 
 import { clearEventErrors, createEvent } from '../../store/events';
 import EventBox from './EventBox';
 import { PinBox } from './PinBox'
 import * as pinReducerActions from '../../store/pins'
 import * as eventReducerActions from '../../store/events';
-import { Redirect } from 'react-router-dom';
-
-
+import './Event.scss'
 
 function EventCreate ({pins, mapData}) {
     let newEvent;
@@ -25,16 +24,9 @@ function EventCreate ({pins, mapData}) {
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
   
-    
-
-  
-
-  
     useEffect(() => {
       return () => dispatch(clearEventErrors());
     }, [dispatch]);
-
-    
   
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -126,8 +118,8 @@ function EventCreate ({pins, mapData}) {
 
 
     return (
-      <>
-        <form className="createEvent" onSubmit={handleSubmit}>
+      <div className='form_area'>
+        <form className="create_event" onSubmit={handleSubmit}>
           <label>Event Name
             <input 
                 type="text"
@@ -215,8 +207,7 @@ function EventCreate ({pins, mapData}) {
           <input type="submit" value="Submit" />
         </form>
         <div>{displayPins()}</div>
-
-      </>
+      </div>
     )
   }
   

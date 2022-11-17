@@ -53,3 +53,32 @@
     }
   }
 }
+
+
+// Create Form CSS
+.form_area {
+  .create_event {
+    padding: 2vh .5vw;
+    width: 100%;
+
+    input {
+      display: block;
+      margin: 1vh 0 2vh 0;
+      width: 100%;
+      padding: 1vh 1vw;
+      border-radius: var(--border-radius);
+      font-size: 1vw;
+      border: 1px solid var(--orange);
+    }
+  
+    input:disabled {
+      background-color: lightgrey;
+    }
+
+    input[type="submit"] {
+      cursor: pointer;
+    }
+  }
+
+  
+}

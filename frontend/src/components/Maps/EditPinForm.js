@@ -1,5 +1,5 @@
-import './PinEditForm.css';
 import { useEffect, useState } from 'react';
+import './PinEditForm.scss';
 
 const PinEditForm = ({marker, pin, addPinToArray, deletePin}) => {
   // const pin = pins.filter(pin => {
@@ -79,33 +79,31 @@ const PinEditForm = ({marker, pin, addPinToArray, deletePin}) => {
   // };
 
   return (
-    <>
-      <div className="pin-edit-form">
-        <form className="pin-edit-form">
-          <label>Pin Order
-            <input disabled placeholder="" value={pin.order}/>
-          </label>
-          <label>Directions to get to this pin
-            <input placeholder="*Required*" onChange={e => {setDirections(e.target.value)}} value={directions}/>
-          </label>
-          <label>Challenge Prompt
-            <input placeholder="" onChange={e => {setChallengePrompt(e.target.value)}} value={challengePrompt}/>
-          </label>
-          <label>Correct Answer
-            <input placeholder="" onChange={e => {setChallengeAnswser(e.target.value)}} value={challengeAnswser}/>
-          </label>
-          <label>Supplies Needed
-            <input placeholder="" onChange={e => {setSupplies(e.target.value)}} value={supplies}/>
-          </label>
-          <label>Price
-            <input placeholder="" onChange={e => {setPrice(e.target.value)}} value={price}/>
-          </label>
-          <label>Activity Duration
-            <input placeholder="" onChange={e => {setActivityDuration(e.target.value)}} value={activityDuration}/>
-          </label>
-        </form>
-      </div>
-    </>
+    <div className="pin-edit-form">
+      <form className="pin-edit-form">
+        <label>Pin Order
+          <input disabled placeholder="" value={pin.order}/>
+        </label>
+        <label>Directions to get to this pin
+          <input placeholder="*Required*" onChange={e => {setDirections(e.target.value)}} value={directions}/>
+        </label>
+        <label>Challenge Prompt
+          <input placeholder="" onChange={e => {setChallengePrompt(e.target.value)}} value={challengePrompt}/>
+        </label>
+        <label>Correct Answer
+          <input placeholder="" onChange={e => {setChallengeAnswser(e.target.value)}} value={challengeAnswser}/>
+        </label>
+        <label>Supplies Needed
+          <input placeholder="" onChange={e => {setSupplies(e.target.value)}} value={supplies}/>
+        </label>
+        <label>Price
+          <input placeholder="" onChange={e => {setPrice(e.target.value)}} value={price}/>
+        </label>
+        <label>Activity Duration
+          <input placeholder="" onChange={e => {setActivityDuration(e.target.value)}} value={activityDuration}/>
+        </label>
+      </form>
+    </div>
   )
 
 };

@@ -1,8 +1,0 @@
-.pin-edit-form {
-  width: 400px;
-  height: 400px;
-  background-color: red;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
