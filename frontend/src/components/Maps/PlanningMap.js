@@ -262,6 +262,7 @@ const PlanningMapWrapper = () => {
   return (
 		<section className="planning_map_wrapper flex-col align-center">
 			<h1>Plan an Event</h1>
+      <p>(Click anywhere on the map to create a pin)</p>
 			<Wrapper 
 				apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
 				className="flex-row justify-center">

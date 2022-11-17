@@ -81,8 +81,9 @@ const PinEditForm = ({marker, pin, addPinToArray, deletePin}) => {
 
   return (
     <div className="pin-edit-area">
-      <h2>Edit Pins</h2>
-      <div className='border'></div>
+      <div className='flex-row justify-between'>
+        <h2>Edit Pins</h2>
+      </div>
 
       <form className="pin-edit-form">
         <label>Pin Order
