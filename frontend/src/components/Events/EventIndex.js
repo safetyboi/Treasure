@@ -23,7 +23,7 @@ function EventIndex() {
           <div className='event_list_wrapper'>
             <ul className='event_list'>
               {events.map(event => (
-                <EventIndexItem key={event.id} event={event} />
+                <EventIndexItem key={event._id} event={event} />
               ))}
               {}
             </ul>
