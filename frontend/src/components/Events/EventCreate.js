@@ -6,7 +6,10 @@ import EventBox from './EventBox';
 import { PinBox } from './PinBox'
 import * as pinReducerActions from '../../store/pins'
 import * as eventReducerActions from '../../store/events';
-import './Event.scss'
+import { Redirect } from 'react-router-dom';
+import { useHistory} from "react-router-dom";
+
+
 
 function EventCreate ({pins, mapData}) {
     let newEvent;
@@ -24,6 +27,11 @@ function EventCreate ({pins, mapData}) {
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
+  
+    
+
+  
+
   
     useEffect(() => {
       return () => dispatch(clearEventErrors());
@@ -64,7 +72,7 @@ function EventCreate ({pins, mapData}) {
       }
         //Redirect to "/" or eventually the eventShow for newlycreated Event:
         // <Redirect to="/"/>
-        history.push(`/events/${eventExists._id}`);
+        history.push(`/events/${eventExists._id}`)
     };
   
     const updateName = e => setName(e.currentTarget.value);

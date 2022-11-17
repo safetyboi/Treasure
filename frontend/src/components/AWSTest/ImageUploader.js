@@ -27,26 +27,17 @@ const UploadImages = () => {
   const handleFiles = async (e) => {
     console.log(e.target.files[0])
     const file = e.target.files[0];
-    // dispatch(uploadPhoto(currentUser._id, file));
 
     const formData = new FormData();
 
     formData.append("images", file);
 
-    // for (let i = 0; i < imageFiles.length; i++) {
-    //   formData.append("image", imageFiles[i]);
-    // }
-
-
-    await jwtFetch("/api/events/postImages", {
-        method: "POST",
-        body: formData,
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data));
-
-    
-        
+    // await jwtFetch(`/api/events/postImages/${user._id}`, {
+    //     method: "POST",
+    //     body: formData,
+    //   })
+    //     .then((res) => res.json())
+    //     .then((data) => console.log(data));   
   };
 
   return (
