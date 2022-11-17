@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom'; 
+import { Redirect, useHistory } from 'react-router-dom'; 
 import { clearEventErrors, createEvent } from '../../store/events';
 import EventBox from './EventBox';
 import { PinBox } from './PinBox'
@@ -23,6 +23,7 @@ function EventCreate ({pins, mapData}) {
     //add missing columns
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
+    const history = useHistory();
   
     useEffect(() => {
       return () => dispatch(clearEventErrors());
@@ -37,7 +38,7 @@ function EventCreate ({pins, mapData}) {
           return 
           //render error 'directions to `${pin.order} are required!
         }
-      })
+      });
 
       newEvent = {
         name: name,
@@ -63,6 +64,7 @@ function EventCreate ({pins, mapData}) {
       }
         //Redirect to "/" or eventually the eventShow for newlycreated Event:
         // <Redirect to="/"/>
+        history.push(`/events/${eventExists._id}`);
     };
   
     const updateName = e => setName(e.currentTarget.value);
@@ -79,7 +81,7 @@ function EventCreate ({pins, mapData}) {
     const displayPins = ()=> {
         if (pins?.length) {
         return (
-          <ul>
+          <ul className='pin_box'>
             {pins.map(pin=>{
               return (
               <li>
@@ -115,7 +117,6 @@ function EventCreate ({pins, mapData}) {
       })
       return total;
     }
-
 
     return (
       <div className='form_area'>
