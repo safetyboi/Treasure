@@ -9,8 +9,10 @@ const { loginUser, restoreUser } = require('../../config/passport');
 const { isProduction } = require('../../config/keys');
 const validateRegisterInput = require('../../validations/register');
 const validateLoginInput = require('../../validations/login');
-const upload = require("../../services/ImageUpload");
-const singleUpload = upload.single("image");
+// const upload = require("../../services/ImageUpload");
+// const singleUpload = upload.single("image");
+const imageUpload = require('../../services/ImageUpload')
+
 const { requireUser } = require('../../config/passport');
 
 
@@ -21,7 +23,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register',validateRegisterInput, async (req, res, next) => {
-  // Your code will go here
+
   const user = await User.findOne({
     $or: [{ email: req.body.email }, { username: req.body.username }]
   });
@@ -43,7 +45,8 @@ router.post('/register',validateRegisterInput, async (req, res, next) => {
 
   const newUser = new User({
     username: req.body.username,
-    email: req.body.email
+    email: req.body.email,
+    image: ''
   });
 
   bcrypt.genSalt(10, (err, salt) => {
@@ -91,6 +94,41 @@ router.get('/current', restoreUser, (req, res) => {
     username: req.user.username,
     email: req.user.email
   });
+});
+
+//-----------ROUTER PATCH----------------//
+
+router.patch('/:userId', async (req, res, next) => {
+  const userId = req.params.userId
+
+  console.log('backend')  
+  let photoUrl
+  //upload to AWS
+  await imageUpload.single("images")(req, res, async function (err) {
+    photoUrl =  await req.file.location
+    console.log(photoUrl, "photoUrl -1")
+    if (err) {
+      // return res.json({})
+      console.log(err);
+    }
+  })
+
+  setTimeout(function(){
+    console.log(photoUrl, "photourl-2")
+    User.findByIdAndUpdate((userId),
+    {image: photoUrl}
+    )
+    .exec()
+    .then((event) => {
+        if(!event) {
+            res.status(400).send(`Id ${req.params.id} was not found`);
+        } else {
+            res.status(200).send(`Id ${req.params.id} was updated`)
+        }
+    }) }, 1000);
+
+  // update user
+  
 });
 
 

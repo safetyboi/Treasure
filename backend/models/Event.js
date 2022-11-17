@@ -18,6 +18,16 @@ const eventSchema = Schema({
     type: String,
     // required: true
   },
+  initCoords: [{
+    lat: {
+        type: Number,
+        required: true
+    },
+    lng: {
+        type: Number,
+        required: true
+    },
+  }],
   duration: {
     type: Number
   },
