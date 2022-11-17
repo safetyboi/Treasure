@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Redirect, useHistory } from 'react-router-dom'; 
 import { clearEventErrors, createEvent } from '../../store/events';
 import EventBox from './EventBox';
 import { PinBox } from './PinBox'
@@ -35,8 +36,6 @@ function EventCreate ({pins, mapData}) {
     useEffect(() => {
       return () => dispatch(clearEventErrors());
     }, [dispatch]);
-
-    
   
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -47,7 +46,7 @@ function EventCreate ({pins, mapData}) {
           return 
           //render error 'directions to `${pin.order} are required!
         }
-      })
+      });
 
       newEvent = {
         name: name,
@@ -90,7 +89,7 @@ function EventCreate ({pins, mapData}) {
     const displayPins = ()=> {
         if (pins?.length) {
         return (
-          <ul>
+          <ul className='pin_box'>
             {pins.map(pin=>{
               return (
               <li>
@@ -127,10 +126,9 @@ function EventCreate ({pins, mapData}) {
       return total;
     }
 
-
     return (
-      <>
-        <form className="createEvent" onSubmit={handleSubmit}>
+      <div className='form_area'>
+        <form className="create_event" onSubmit={handleSubmit}>
           <label>Event Name
             <input 
                 type="text"
@@ -218,8 +216,7 @@ function EventCreate ({pins, mapData}) {
           <input type="submit" value="Submit" />
         </form>
         <div>{displayPins()}</div>
-
-      </>
+      </div>
     )
   }
   
