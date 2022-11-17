@@ -85,13 +85,15 @@ function EventCreate ({pins, mapData}) {
     const updateLocation = e => setLocation(e.currentTarget.value);
 
     const displayPins = ()=> {
-        if (pins.length) {
+        if (pins?.length) {
         return (
           <ul>
-            {pins.forEach(pin=>{
+            {pins.map(pin=>{
+              return (
               <li>
                 <PinBox pin={pin}/>
               </li>
+              )
             })}
             </ul>
         )
@@ -212,7 +214,7 @@ function EventCreate ({pins, mapData}) {
           <div className="errors">{errors && errors.text}</div>
           <input type="submit" value="Submit" />
         </form>
-        <div>{displayPins}</div>
+        <div>{displayPins()}</div>
 
       </>
     )
