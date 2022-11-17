@@ -36,6 +36,10 @@ export const loadEvents = state => {
   return state.events ? Object.values(state.events) : [];
 }
 
+export const loadEvent = eventId => state => {
+  return state.events ? Object.values(state.events).filter(event => event._id === eventId)[0] : null
+}
+
 export const fetchEvents = () => async dispatch => {
   console.log('hey')
     try {
@@ -100,7 +104,10 @@ export const eventErrorsReducer = (state = nullErrors, action) => {
   switch(action.type) {
     case RECEIVE_EVENT_ERRORS:
       return action.errors;
+<<<<<<< HEAD
     // case RECEIVE_NEW_EVENT:
+=======
+>>>>>>> main
     case CLEAR_EVENT_ERRORS:
       return nullErrors;
     default:
@@ -113,7 +120,7 @@ const eventsReducer = (state = {}, action) => {
       case RECEIVE_EVENTS:
         return action.events;
       case RECEIVE_EVENT:
-        return {...state, [action.event.id]: action.event} 
+        return {...state, [action.event._id]: action.event} 
       case RECEIVE_USER_EVENTS:
         return action.events;
       default:

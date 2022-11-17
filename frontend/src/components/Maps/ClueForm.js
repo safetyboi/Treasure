@@ -12,7 +12,7 @@ const ClueForm = ({checkResponse, currentPin}) => {
 
   return (
     <div className="clue-form-box">
-      <h2>{`Current Clue: ${3}`}</h2>
+      <h2>{`Current Clue: ${currentPin.order}`}</h2>
       <form className="clue-form">
         <h4>Directions To This Pin</h4>
         <p>{currentPin.directionsToPin}</p>
