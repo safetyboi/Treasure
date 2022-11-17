@@ -36,6 +36,10 @@ export const loadEvents = state => {
   return state.events ? Object.values(state.events) : [];
 }
 
+export const loadEvent = eventId => state => {
+  return state.events ? Object.values(state.events).filter(event => event._id === eventId)[0] : null
+}
+
 export const fetchEvents = () => async dispatch => {
   console.log('hey')
     try {

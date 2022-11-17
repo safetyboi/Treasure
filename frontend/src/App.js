@@ -35,9 +35,9 @@ function App() {
         <AuthRoute exact path="/login" component={LoginForm} />
         <AuthRoute exact path="/signup" component={SignupForm} />
 
+        <ProtectedRoute exact path="/events/:eventId/online-game" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/events" component={EventIndex} />
         <ProtectedRoute exact path="/events/:eventId" component={ViewingMapWrapper} />
-        <ProtectedRoute exact path="/events/:eventId/online-game" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/profile" component={Profile} />
         {/* <ProtectedRoute exact path="/events/new" component={EventCompose} /> */}
         <ProtectedRoute exact path="/testmap" component={PlanningMapWrapper} />
