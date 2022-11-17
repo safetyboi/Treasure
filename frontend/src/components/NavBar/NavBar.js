@@ -29,7 +29,7 @@ function NavBar () {
         <div className="links-auth flex-row justify-evenly align-center">
           <Link to={'/signup'}>Signup</Link>
           <Link to={'/login'}>Login</Link>
-          <Link to="#" className='demo-btn'>DEMO</Link>
+          <Link to="/demo-lobby" className='demo-btn'>DEMO</Link>
         </div>
       );
     }
