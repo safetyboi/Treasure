@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ClueForm from "./ClueForm";
 import { fetchEvent, loadEvent  } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
+import GameOver from '../GameOver/GameOver';
 
 export const OnlineGameMap = () => {
   const dispatch = useDispatch();
@@ -94,7 +95,7 @@ export const OnlineGameMap = () => {
   }, 60000)
 
   useEffect(() => {
-    if (event) setRemainingTime(event?.duration - thinkingTime - duration)
+    if (event && event.duration > 0 && duration > 0) setRemainingTime(event.duration - thinkingTime - duration)
   }, [thinkingTime, duration])
 
   
@@ -166,7 +167,6 @@ export const OnlineGameMap = () => {
     
   function haversineDistance(mk1, mk2) {
     if (mk2) {
-      console.log(mk1, mk2)
       const R = 6.378e+6; // Radius of the Earth in meters
       const rlat1 = mk1.lat * (Math.PI/180); // Convert degrees to radians
       const rlat2 = mk2.lat * (Math.PI/180); // Convert degrees to radians
@@ -174,7 +174,6 @@ export const OnlineGameMap = () => {
       const difflon = (mk2.lng-mk1.lng) * (Math.PI/180); // Radian difference (longitudes)
       
       const d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
-      console.log(d)
       return d;
     }
   }
@@ -193,8 +192,8 @@ export const OnlineGameMap = () => {
   }
   
   const nextPin = () => {
-      setCurrentPinOrder(currentPinOrder + 1)
-      setShowClue(true)
+      setCurrentPinOrder(currentPinOrder + 1);
+      setShowClue(false);
   }
 
   const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
@@ -268,30 +267,19 @@ export const OnlineGameMap = () => {
         <p> Pin {currentPinOrder && grabPin(currentPinOrder)?.directionsToPin}</p>
         {showWrong && <h2>You're at the wrong location!</h2>}
         <ul>
-          <li>Remaining Time: {remainingTime}</li>
-          <li>Distance Traveled: {distance}</li>
-          <li>Time "Walked": {duration}</li>
-          <li>Time Pondered: {thinkingTime}</li>
+          <li>Remaining Time: {duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</li>
+          <li>Distance Traveled: {distance} km</li>
+          <li>Time "Walked": {duration} minutes</li>
+          <li>Time Pondered: {thinkingTime} minutes</li>
         </ul>
-          {/* <label>Remaining Time
-            <input type='text' value={remainingTime} readOnly/>
-          </label>
-          <label>Distance Traveled
-            <input type='text' value={distance} readOnly/>
-          </label>
-          <label>Time "Walked"
-            <input type='text' value={duration} readOnly/>
-          </label>
-          <label>Time Pondered
-            <input type='text' value={thinkingTime} readOnly/>
-          </label> */}
+
 
       </div>
       <div className="google-map-container" ref={mapRef}>Map</div>
-      {showClue &&
-      <ClueForm setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
-      }
-      {/* {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />} */}
+
+      <ClueForm showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
+
+      {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />}
     </>
   )
 

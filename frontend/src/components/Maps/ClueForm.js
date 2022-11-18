@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-const ClueForm = ({setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
+const ClueForm = ({showClue, setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
 
   const [response, setResponse] = useState('');
   const currentPin = grabPin(currentPinOrder)
@@ -13,10 +13,10 @@ const ClueForm = ({setShowEndGame, nextPin, grabPin, checkResponse, currentPinOr
     }
 
     else if (response === currentPin.task[0].correctAnswer) {
-      console.log('Correct Response! You can now head for the next event pin.')
+      alert('Correct Response! You can now head for the next event pin.')
       nextPin();
     } else {
-      console.log('Incorrect! Try again.')
+      alert('Incorrect! Try again.')
     }
   }
 
@@ -28,11 +28,17 @@ const ClueForm = ({setShowEndGame, nextPin, grabPin, checkResponse, currentPinOr
       <form onSubmit={checkAnswer} className="clue-form">
         <h4>Directions To This Pin</h4>
         <p>{currentPin?.directionToPin[0].text}</p>
-        <p>{currentPin?.task[0].prompt}</p>
-        <label>My Response
-          <input type='text' value={response} onChange={e => setResponse(e.target.value)}/>
-        </label>
-        <button>Submit Response</button>
+        <h4>My Status</h4>
+        <p>{showClue ? `You've arrived!` : `You're not there yet!`}</p>
+        { showClue &&
+        <>
+          <p>{currentPin?.task[0].prompt}</p>
+          <label>My Response
+            <input type='text' value={response} onChange={e => setResponse(e.target.value)}/>
+          </label>
+          <button>Submit Response</button>
+        </>
+        }
       </form>
     </div>
   )
