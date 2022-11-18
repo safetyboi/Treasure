@@ -56,32 +56,21 @@ export const OnlineGameMap = () => {
 
   useEffect(() => {
     if (!map && event) {
-      // setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: (event?.pins[0].location.latitude), lng: (event?.pins[0].location.latitude)}}))
       setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: event.initCoords[0]}))
     };
     
   }, [mapRef, event]);
 
-  let listener;
-
-  // useEffect(() => {
-  //   if (map) {
-  //     listener = window.google.maps.event.addListener(map, "click", (event) => {
-  //         setCoords(allCoords => [...allCoords, event.latLng])
-  //         addLocationPin(event.latLng, map);     
-  //     });
-
-  //     // setTimeout(() => console.log(event), 5000)
-  //     // addLocationPin(event.initCoords[0], map)
-      
-      
-  //     // if (grabPin(1)) {
-  //     //   setCoords(allCoords => [...allCoords, grabPin(1).location[0]]);
-  //     //   console.log(coords)
-  //     // }
-  //   };
+  useEffect(() => {
+    if (map) {
+      window.google.maps.event.addListener(map, "click", (event) => {
+        console.log('heyyy')
+          setCoords(allCoords => [...allCoords, event.latLng])
+          addLocationPin(event.latLng, map);     
+      });
+    };
     
-  // }, [map]) ;
+  }, [map]) ;
   
 
   
@@ -192,7 +181,7 @@ export const OnlineGameMap = () => {
       alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
       renderEventPin(currentPinOrder);
       setShowClue(true)
-      window.google.maps.event.removeListener(listener);
+      // window.google.maps.event.removeListener(listener);
       setShowWrong(false)
     } else {
       setShowWrong(true)
@@ -202,10 +191,10 @@ export const OnlineGameMap = () => {
   const nextPin = () => {
       setCurrentPinOrder(currentPinOrder + 1);
       setShowClue(false);
-      listener = window.google.maps.event.addListener(map, "click", (event) => {
-        setCoords(allCoords => [...allCoords, event.latLng])
-        addLocationPin(event.latLng, map);     
-    });
+    //   listener = window.google.maps.event.addListener(map, "click", (event) => {
+    //     setCoords(allCoords => [...allCoords, event.latLng])
+    //     addLocationPin(event.latLng, map);     
+    // });
   }
 
   const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
