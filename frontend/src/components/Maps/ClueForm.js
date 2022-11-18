@@ -1,17 +1,26 @@
 import { useState } from "react";
 
 
-const ClueForm = ({grabPin, checkResponse, currentPinOrder, eventPins}) => {
+const ClueForm = ({setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
 
   const [response, setResponse] = useState('');
   const currentPin = grabPin(currentPinOrder)
+
   const checkAnswer = (e) => {
-    checkResponse(response, currentPin);
+    e.preventDefault();
+    if (currentPinOrder === eventPins.length && response === currentPin.task[0].correctAnswer) {
+      setShowEndGame(true);
+    }
+
+    else if (response === currentPin.task[0].correctAnswer) {
+      console.log('Correct Response! You can now head for the next event pin.')
+      nextPin();
+    } else {
+      console.log('Incorrect! Try again.')
+    }
   }
 
   if (eventPins.length < 1) return null;
-
-  console.log(eventPins)
 
   return (
     <div className="clue-form-box">

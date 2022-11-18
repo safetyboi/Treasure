@@ -18,44 +18,29 @@ export const OnlineGameMap = () => {
   const [coords, setCoords] = useState([]);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [remainingTime, setRemainingTime] = useState(event?.duration);
+  const [remainingTime, setRemainingTime] = useState("Click Map to Begin");
   let [numPoints, setNumPoints] = useState(0);
   const [thinkingTime, setThinkingTime] = useState(0);
   const [showClue, setShowClue] = useState(true);
   const [showWrong, setShowWrong] = useState(false);
   const [latestRenderedPin, setlatestRenderedPin] = useState(0);
+  const [currentPinOrder, setCurrentPinOrder] = useState(0);
+  const [showEndGame, setShowEndGame] = useState(false);
+
   let currentLocationPin;
   let firstPin;
   
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
   }
-
-  const [currentPinOrder, setCurrentPinOrder] = useState(0);
-
   
-
-  // const delay = setTimeout(() => {
-  //   clearTimeout(delay)
-  //   renderEventPin(1);
-  //   addLocationPin(grabPin(1).location[0], map);
-  // }, 1000)
-  
-  setInterval(() => {
-    setThinkingTime(thinkingTime + 1)
-  }, 60000)
-
-  useEffect(() => {
-    setRemainingTime(event?.duration - thinkingTime - duration)
-  }, [thinkingTime, duration])
-
   useEffect(() => {
     if (eventId) {
       dispatch(fetchEvent(eventId));
       dispatch(fetchEventPins(eventId));
     }
   },[eventId])
-  
+
   useEffect(() => {
     if (!map) {
       // setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: (event?.pins[0].location.latitude), lng: (event?.pins[0].location.latitude)}}))
@@ -63,11 +48,48 @@ export const OnlineGameMap = () => {
     };
     
   }, [mapRef]);
-  
+
   useEffect(() => {
-    renderEventPin(currentPinOrder);
-    if (currentPinOrder === 0) setCurrentPinOrder(1)
-  }, [eventPins, currentPinOrder])
+    if (map) {
+      window.google.maps.event.addListener(map, "click", (event) => {
+        setCoords(allCoords => [...allCoords, event.latLng])
+        // addLocationPin(event.latLng, map);
+        // if (currentLocationPin) {
+        //   currentLocationPin.position = event.latLng;
+        // }
+        setCurrentPosition(event.latLng);
+        
+        
+      });
+
+      // setTimeout(() => console.log(event), 5000)
+      // addLocationPin(event.initCoords[0], map)
+      
+      
+      // if (grabPin(1)) {
+      //   setCoords(allCoords => [...allCoords, grabPin(1).location[0]]);
+      //   console.log(coords)
+      // }
+    };
+    
+  }, [map]) ;
+  
+
+  
+  
+  setInterval(() => {
+    setThinkingTime(thinkingTime + 1)
+  }, 60000)
+
+  useEffect(() => {
+    if (event) setRemainingTime(event?.duration - thinkingTime - duration)
+  }, [thinkingTime, duration])
+
+  
+  // useEffect(() => {
+  //   renderEventPin(currentPinOrder);
+  //   if (currentPinOrder === 0) setCurrentPinOrder(1)
+  // }, [eventPins, currentPinOrder])
 
   // useEffect(()=> {
   //   console.log(currentPinOrder)
@@ -106,7 +128,6 @@ export const OnlineGameMap = () => {
   // }
 
   const addLocationPin = (location, map) => {
-    console.log(map)
     setNumPoints(numPoints++)
     const marker = new window.google.maps.Marker({
       order: numPoints,
@@ -129,32 +150,7 @@ export const OnlineGameMap = () => {
     setCurrentPosition(marker.position);
   };
   
-  useEffect(() => {
-    if (map) {
-      window.google.maps.event.addListener(map, "click", (event) => {
-        setCoords(allCoords => [...allCoords, event.latLng])
-        // addLocationPin(event.latLng, map);
-        // if (currentLocationPin) {
-        //   currentLocationPin.position = event.latLng;
-        // }
-        setCurrentPosition(event.latLng);
-        
-        
-      });
 
-      // setTimeout(() => console.log(event), 5000)
-      // addLocationPin(event.initCoords[0], map)
-      
-      
-      // if (grabPin(1)) {
-      //   setCoords(allCoords => [...allCoords, grabPin(1).location[0]]);
-      //   console.log(coords)
-      // }
-    };
-    
-  }, [map]) ;
-
-  console.log(currentPosition)
     
   function haversineDistance(mk1, mk2) {
     const R = 6.378e+6; // Radius of the Earth in meters
@@ -180,12 +176,10 @@ export const OnlineGameMap = () => {
     }
   }
   
-  const checkResponse = (response, currentPin) => {
-    if (response === currentPin.task.correctAnswer) {
-      // setCurrentPin(currentPin.order + 1)
-      setCurrentPinOrder(currentPinOrder++)
-      setShowClue(false)
-    }
+  const nextPin = () => {
+      console.log(currentPinOrder)
+      setCurrentPinOrder(currentPinOrder + 1)
+      setShowClue(true)
   }
 
   const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
@@ -246,7 +240,8 @@ export const OnlineGameMap = () => {
       renderPath();
     } 
     
-  }, [coords])
+  }, [coords]);
+
   
   if (!mapRef) return null;
 
@@ -278,15 +273,13 @@ export const OnlineGameMap = () => {
       </div>
       <div className="google-map-container" ref={mapRef}>Map</div>
       {showClue &&
-      <ClueForm grabPin={grabPin} eventPins={eventPins} checkResponse={checkResponse} currentPinOrder={currentPinOrder}/>
+      <ClueForm setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
       }
+      {/* {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />} */}
     </>
   )
 
 };
-
-
-
 
 
 
