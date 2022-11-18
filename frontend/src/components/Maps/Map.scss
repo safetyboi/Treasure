@@ -61,21 +61,5 @@
 }
 
 .planning_map_form {
-  width: 40vw;
-  
-  #accordion {
-    background-color: white;
-    padding: 5vh 2vw;
-    border-radius: var(--border-radius);
-  }
-
-  h2 {
-    font-size: 1.3vw;
-    padding: 0 .5vw;
-  }
-
-  .border {
-    border-bottom: 1px solid rgba(170, 170, 170, 0.5);
-    margin: 2vh 0;
-  }
+  width: 30vw;
 }

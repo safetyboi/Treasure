@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom'; 
+import { useHistory } from 'react-router-dom'; 
 import { clearEventErrors, createEvent } from '../../store/events';
 import EventBox from './EventBox';
 import { PinBox } from './PinBox'
 import * as pinReducerActions from '../../store/pins'
 import * as eventReducerActions from '../../store/events';
-
+import jwtFetch from '../../store/jwt';
+import './Event.scss'
 
 
 function EventCreate ({pins, mapData}) {
@@ -25,18 +26,21 @@ function EventCreate ({pins, mapData}) {
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
-  
-    
-
-  
-
+    let imageFile;
   
     useEffect(() => {
       return () => dispatch(clearEventErrors());
     }, [dispatch]);
+
+    const updateImage = async (e) => {
+      imageFile = e.target.files[0] 
+    };
   
     const handleSubmit = async (e) => {
       e.preventDefault();
+
+      const formData = new FormData();
+      formData.append("images", imageFile);
 
       pins.forEach(pin=> {
         if (!pin.directionToPin.text) {
@@ -63,6 +67,17 @@ function EventCreate ({pins, mapData}) {
         initCoords: firstPin.location
       }
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
+      
+      if (eventExists) { 
+        console.log("go to patch")
+        console.log(imageFile)
+        debugger
+        await jwtFetch(`/api/events/addImage/${eventExists._id}`, {
+          method: "PATCH",
+          body: formData,
+        })
+      }
+      
       if (eventExists) {
         // before we dispatch the createPin thunk, we need to add the event's id to the pin:
         // we theoretically have this information in the state, or will, if the event is successfully created
@@ -75,7 +90,7 @@ function EventCreate ({pins, mapData}) {
       }
         //Redirect to "/" or eventually the eventShow for newlycreated Event:
         // <Redirect to="/"/>
-        history.push(`/events/${eventExists._id}`)
+        // history.push(`/events/${eventExists._id}`)
     };
   
     const updateName = e => setName(e.currentTarget.value);
@@ -130,96 +145,126 @@ function EventCreate ({pins, mapData}) {
     }
 
     return (
-      <div className='form_area'>
-        <form className="create_event" onSubmit={handleSubmit}>
-          <label>Event Name
-            <input 
-                type="text"
-                value={name}
-                onChange={updateName}
-                placeholder="What's in a name?"
-              />
-          </label>
-          <label> Description
-          <input 
-            type="textarea"
-            value={description}
-            onChange={updateDescription}
-            placeholder="Include a description..."
-          />
-          </label>
-          <label>Date
-            <input 
-            type="date" //what type?
-            value={date}
-            onChange={updateDate}
-            />
-          </label>
-          <label>Time
-            <input
-            type="time" //what type?
-            value={time}
-            onChange={updateTime}
-            />
-          </label>
-          <label>Location
-            <input
-            type="text"
-            value={location}
-            onChange={updateLocation}
-            />
-          </label>
-          <label>Estimated Event Duration
-            <input 
-            disabled
-              type="number" //can you do 'number'?
-              value={totalDuration()} //this will get passed down as a key on 'pins' prop
-              placeholder="Apx how long should attendees expect this event to run?"
-            />
-            </label>      
-          <label>Estimated Walking Duration
-            <input 
-            disabled
-              type="number" //can you do 'number'?
-              value={mapData.duration} //this will get passed down as a key on 'pins' prop
-              placeholder="Apx how long should attendees expect this event to run?"
-            />
-            </label>          
-          <label>Total Distance
-            <input 
-            disabled
-              type="text"
-              value={mapData.distance} //this will get passed down as a key on 'pins' prop
-              placeholder="Let them know how much ground they'll be covering"
-            />
+      <>
+        <div className='form_area'>
+          <form className="create_event" onSubmit={handleSubmit}>
+            <h2>Event Details</h2> 
+            <div className='border'></div>
+            <label>Event Name
+              <input 
+                  type="text"
+                  value={name}
+                  onChange={updateName}
+                  placeholder="What's in a name?"
+                />
             </label>
-            <label> Total Elevation Gain
-            <input 
-              disabled
-              type="number"
-              value={mapData.elevation} //helper function            
-            />
-          </label>
-          <label> Supplies List
-            <input 
-            disabled
-              type="textarea"
-              value={totalSupplies()} //helper function
-            />
-          </label>
-          <label>Estimated Supplies Cost
-            <input 
-            disabled
-              type="number" //are numbers allowed?
-              value={totalPrice()} //helper function
-            />            
+            <div className='date_time_form flex-row justify-between'>
+              <label>Date
+                <input 
+                type="date" //what type?
+                value={date}
+                onChange={updateDate}
+                />
+              </label>
+              <label>Time
+                <input
+                type="time" //what type?
+                value={time}
+                onChange={updateTime}
+                />
+              </label>
+            </div>
+            <label>Location
+              <input
+              type="text"
+              value={location}
+              onChange={updateLocation}
+              />
+            </label>
+            <div className='textarea'>
+              <label> Description</label>
+              <textarea 
+                value={description}
+                onChange={updateDescription}
+                className="textarea"
+                placeholder="Include a description...">
+              </textarea>
+            </div>
+            <div className='textarea'>
+              <label> Supplies List</label>
+              <textarea 
+                disabled
+                className="textarea"
+                value={totalSupplies()}>
+              </textarea> 
+            </div>
+            
+            <label>Estimated Supplies Cost
+              <input 
+                disabled
+                type="number" //are numbers allowed?
+                value={totalPrice()} //helper function
+              />            
             </label>
 
-          <div className="errors">{errors && errors.text}</div>
-          <input type="submit" value="Submit" />
-        </form>
-        <div>{displayPins()}</div>
-      </div>
+            <div className="errors">{errors && errors.text}</div>
+            <input type="file" onChange={updateImage} multiple />
+            <input type="submit" value="Submit" />
+          </form>
+          {/* <div>{displayPins()}</div> */}
+
+          {/* <label>Estimated Event Duration
+              <input 
+              disabled
+                type="number" //can you do 'number'?
+                value={totalDuration()} //this will get passed down as a key on 'pins' prop
+                placeholder="Apx how long should attendees expect this event to run?"
+              />
+              </label>      
+            <label>Estimated Walking Duration
+              <input 
+              disabled
+                type="number" //can you do 'number'?
+                value={mapData.duration} //this will get passed down as a key on 'pins' prop
+                placeholder="Apx how long should attendees expect this event to run?"
+              />
+              </label>          
+            <label>Total Distance
+              <input 
+              disabled
+                type="text"
+                value={mapData.distance} //this will get passed down as a key on 'pins' prop
+                placeholder="Let them know how much ground they'll be covering"
+              />
+              </label>
+            <label> Total Elevation Gain
+              <input 
+                disabled
+                type="number"
+                value={mapData.elevation} //helper function            
+              />
+            </label> */}
+        </div>
+
+        <div className='map_stat_wrapper'>
+          <div className='flex-row'>
+            <p className='stat_key'>Estimated Event Duration</p>
+            <p className='stat_value'>{totalDuration()}</p>
+          </div>
+          <div className='flex-row'>
+            <p className='stat_key'>Estimated Walking Duration</p>
+            <p className='stat_value'>{mapData.duration}</p>
+          </div>
+          <div className='flex-row'>
+            <p className='stat_key'>Total Distance</p>
+            <p className='stat_value'>{mapData.distance}</p>
+          </div>
+          <div className='flex-row'>
+            <p className='stat_key'>Total Elevation Gain</p>
+            <p className='stat_value'>{mapData.elevation}</p>
+          </div>
+        </div>
+      </>
     )
   }
   
