@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
-import {useParams} from 'react-router-dom';
+import {useHistory, useParams, Link} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from "react-redux";
 import ClueForm from "./ClueForm";
@@ -8,6 +8,7 @@ import { fetchEvent, loadEvent  } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
 import GameOver from '../GameOver/GameOver';
 import './GameMap.scss'
+import { Button } from "react-bootstrap";
 
 export const OnlineGameMap = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export const OnlineGameMap = () => {
   const [currentPinOrder, setCurrentPinOrder] = useState(1);
   const [showEndGame, setShowEndGame] = useState(false);
   const[markers, setMarkers] = useState([]);
+  const history = useHistory();
   
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
@@ -228,6 +230,10 @@ export const OnlineGameMap = () => {
     
   }, [coords]);
 
+  const handleRoute = () => {
+    history.push('/events');
+  }
+
   
   if (!mapRef) return null;
 
@@ -264,7 +270,7 @@ export const OnlineGameMap = () => {
       <div className="google-map-container" ref={mapRef}>Map</div>
       {/* <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime}  /> */}
       <ClueForm showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
-
+      <Link className="back" to='/events'><Button>BACK</Button></Link>
       {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />}
     </section>
   )
