@@ -89,7 +89,7 @@ function EventCreate ({pins, mapData}) {
       }
         //Redirect to "/" or eventually the eventShow for newlycreated Event:
         // <Redirect to="/"/>
-        // history.push(`/events/${eventExists._id}`)
+        history.push(`/events`)
     };
   
     const updateName = e => setName(e.currentTarget.value);
