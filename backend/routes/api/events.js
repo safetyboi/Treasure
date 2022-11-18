@@ -54,8 +54,7 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
             elevation: req.body.elevation,
             date: req.body.date,
             status: req.body.status,
-            location: req.body.location,
-            image: 'https://treasure-photos.s3.us-west-1.amazonaws.com/scavenge.jpeg'
+            location: req.body.location
         })
 
         let event = await newEvent.save()
