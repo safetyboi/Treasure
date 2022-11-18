@@ -1,3 +1,18 @@
+.view_map {
+  padding: 0 10vw;
+  position: relative;
+  top: -10vh;
+
+  button.btn {
+    margin: 0 auto;
+  }
+
+  img {
+    width: 25%;
+    margin-bottom: 10vh;
+  }
+}
+
 .game_page {
   position: relative;
   top: -40vh;
@@ -15,6 +30,10 @@
 
     h1, h2 {
       margin-bottom: 2vh;
+    }
+
+    h2 {
+      font-size: 1.2vw;
     }
 
     ul > * {
@@ -47,17 +66,33 @@
   background-color: rgba(0,0,0, 0.75);
   color: var(--white);
   padding: 2vh 1vw;
-  top: 50vh;
+  top: 45vh;
   left: .5vw;
 
-  h2, p {
-    margin-bottom: 3vh;
+  h2 {
+    font-size: 1.3vw;
+    line-height: 1.2;
+  }
+
+  h2, p, input {
+    margin-bottom: 2vh;
+  }
+
+  h4 {
+    margin-bottom: 1vh
   }
 
   input {
     display: block;
     margin-top: 1vh;
-    width: 90%;
+    width: 85%;
+    padding: .5vh .5vw;
+  }
+
+  button {
+    border: 0;
+    padding: 1vh .75vw;
+    cursor: pointer;
   }
 }
 

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import PinEditForm from "./EditPinForm";
 import EventCreate from '../Events/EventCreate';
+import Footer from "../NavBar/Footer";
 import './Map.scss';
 import './PinEditForm.scss';
 
@@ -252,15 +253,18 @@ export const PlanningMap = () => {
 
 const PlanningMapWrapper = () => {
   return (
-		<section className="planning_map_wrapper flex-col align-center">
-			<h1>Plan an Event</h1>
-      <p>(Click anywhere on the map to create a pin)</p>
-			<Wrapper 
-				apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
-				className="flex-row justify-center">
-				<PlanningMap/>
-			</Wrapper>
-		</section>
+    <div className="planning_map">
+      <section className="planning_map_wrapper flex-col align-center">
+        <h1>Plan an Event</h1>
+        <p>(Click anywhere on the map to create a pin)</p>
+        <Wrapper 
+          apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
+          className="flex-row justify-center">
+          <PlanningMap/>
+        </Wrapper>
+      </section>
+      <Footer />
+    </div>
   )
 };
 
