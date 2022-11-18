@@ -1,3 +1,6 @@
+
+
+
 import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import {useParams} from 'react-router-dom';
@@ -7,7 +10,6 @@ import ClueForm from "./ClueForm";
 import { fetchEvent, loadEvent  } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
 import GameOver from '../GameOver/GameOver';
-import './GameMap.scss'
 
 export const OnlineGameMap = () => {
   const dispatch = useDispatch();
@@ -25,9 +27,9 @@ export const OnlineGameMap = () => {
   const [thinkingTime, setThinkingTime] = useState(0);
   const [showClue, setShowClue] = useState(true);
   const [showWrong, setShowWrong] = useState(false);
+  const [latestRenderedPin, setlatestRenderedPin] = useState(0);
   const [currentPinOrder, setCurrentPinOrder] = useState(1);
   const [showEndGame, setShowEndGame] = useState(false);
-  const[markers, setMarkers] = useState([]);
   
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
@@ -64,30 +66,18 @@ export const OnlineGameMap = () => {
   useEffect(() => {
     if (map) {
       window.google.maps.event.addListener(map, "click", (event) => {
-          setCoords(allCoords => [...allCoords, event.latLng])
-          addLocationPin(event.latLng, map);     
+        setCoords(allCoords => [...allCoords, event.latLng])
+        addLocationPin(event.latLng, map);      
       });
     };
-
-    console.log('interval')
-    setInterval(() => {
-      setThinkingTime(thinkingTime + 1)
-    }, 60000)
-
-
     
   }, [map]) ;
-
-  useEffect(() => {
-    if (remainingTime < 1) {
-      setShowEndGame(true)
-      console.log('end game')
-    }
-  }, [remainingTime])
+  
 
   useEffect(() => {
     if (event && event.duration > 0 && duration > 0) setRemainingTime(event.duration - thinkingTime - duration)
   }, [thinkingTime, duration])
+
   
   const mIcon = {
     path: window.google.maps.SymbolPath.CIRCLE,
@@ -101,6 +91,7 @@ export const OnlineGameMap = () => {
 
   const renderEventPin = (order) => {
     const pin = grabPin(order)
+    console.log(order)
     if (pin) {
       const marker = new window.google.maps.Marker({
         order: pin?.order,
@@ -108,15 +99,13 @@ export const OnlineGameMap = () => {
         map: map,
         icon: mIcon,
         label: {color: '#000', fontSize: '12px', fontWeight: '600',
-    text: String(pin?.order)}
+    text: '1'}
       });
       marker.setAnimation(window.google.maps.Animation.BOUNCE);
-      if (markers.length) {
-        markers[markers.length - 1].setAnimation(null);
-      }
-      setMarkers(markers => [...markers, marker])
+      // firstPin.position = grabPin(2).location[0]
     }
   };
+
 
   const addLocationPin = (location, map) => {
     setNumPoints(numPoints++)
@@ -230,45 +219,35 @@ export const OnlineGameMap = () => {
     
   }, [coords]);
 
+  if (remainingTime <= 0) {
+    setShowEndGame(true);
+  }
+
   
   if (!mapRef) return null;
 
   return (
-    <section className="game_page">
+    <>
       <div className='game-info'>
         <h1>{event?.name}</h1>
-        <h2>CURRENT TASK <br />{showClue ? `Respond to the clue below` : `Follow the directions and click the map to travel to the next location` }</h2>
+        <p>Current Position: {String(currentPosition)}</p>
+        <p> Pin {currentPinOrder && grabPin(currentPinOrder)?.directionsToPin}</p>
+        {showWrong && <h2>You're at the wrong location!</h2>}
         <ul>
-          <li className='flex-row'>
-            <p className="game_key">Remaining Time</p>
-            <p className="game_value">{duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</p>
-          </li>
-          <li className='flex-row'>
-            <p className="game_key">Distance Traveled</p>
-            <p className="game_value">{distance} km</p>
-          </li>
-          <li className='flex-row'>
-            <p className="game_key">Time "Walked"</p>
-            <p className="game_value">{duration} minutes</p>
-          </li>
-          <li className='flex-row'>
-            <p className="game_key">Time Pondered</p>
-            <p className="game_value">{thinkingTime} minutes</p>
-          </li>
-
-          {/* <li>Remaining Time: {duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</li>
+          <li>Remaining Time: {duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</li>
           <li>Distance Traveled: {distance} km</li>
           <li>Time "Walked": {duration} minutes</li>
-          <li>Time Pondered: {thinkingTime} minutes</li> */}
+          <li>Time Pondered: {thinkingTime} minutes</li>
         </ul>
-      </div>
 
+
+      </div>
       <div className="google-map-container" ref={mapRef}>Map</div>
-      {/* <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime}  /> */}
+
       <ClueForm showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
 
       {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />}
-    </section>
+    </>
   )
 
 };
