@@ -279,8 +279,7 @@ export const OnlineGameMap = () => {
     <section className="game_page">
       <div className='game-info'>
         <h1>{event?.name}</h1>
-        <p>Current Position: {String(currentPosition)}</p>
-        <h2>Current Task: {showClue ? `Respond to the clue below.` : `Follow the directions and click the map to travel to the next location` }</h2>
+        <h2>CURRENT TASK <br />{showClue ? `Respond to the clue below` : `Follow the directions and click the map to travel to the next location` }</h2>
         <ul>
           <li className='flex-row'>
             <p className="game_key">Remaining Time</p>
