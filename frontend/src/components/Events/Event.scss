@@ -11,6 +11,8 @@
 
     .event_list_wrapper {
       width: 25vw;
+      height: 90vh;
+      overflow: scroll;
 
       .event_list {
         li {
