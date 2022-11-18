@@ -278,7 +278,7 @@ export const OnlineGameMap = () => {
 const OnlineGameMapWrapper = ({event}) => {
 
   return (
-    <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} libraries={["geometry"]}>
+    <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} >
       <OnlineGameMap event={event}/>
     </Wrapper>
   )
