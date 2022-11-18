@@ -14,7 +14,7 @@ export const OnlineGameMap = () => {
   const [map, setMap] = useState(null);
   const mapRef = useRef(null);
   const eventPins = useSelector(getEventPins(eventId));
-  const [currentPosition, setCurrentPosition] = useState(eventPins[0]?.location[0]);
+  const [currentPosition, setCurrentPosition] = useState(null);
   const [coords, setCoords] = useState([]);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -24,7 +24,7 @@ export const OnlineGameMap = () => {
   const [showClue, setShowClue] = useState(true);
   const [showWrong, setShowWrong] = useState(false);
   const [latestRenderedPin, setlatestRenderedPin] = useState(0);
-  const [currentPinOrder, setCurrentPinOrder] = useState(0);
+  const [currentPinOrder, setCurrentPinOrder] = useState(1);
   const [showEndGame, setShowEndGame] = useState(false);
 
   let currentLocationPin;
@@ -42,22 +42,34 @@ export const OnlineGameMap = () => {
   },[eventId])
 
   useEffect(() => {
-    if (!map) {
+    if (grabPin(currentPinOrder)) pointReached();
+
+  }, [currentPosition])
+
+  useEffect(() => {
+    if (event) {
+      setCurrentPosition(event.initCoords[0]);
+
+    }
+  }, [event])
+
+  useEffect(() => {
+    if (!map && event) {
       // setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: (event?.pins[0].location.latitude), lng: (event?.pins[0].location.latitude)}}))
-      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773972, lng: -122.431297}}))
+      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: event.initCoords[0]}))
     };
     
-  }, [mapRef]);
+  }, [mapRef, event]);
 
   useEffect(() => {
     if (map) {
       window.google.maps.event.addListener(map, "click", (event) => {
         setCoords(allCoords => [...allCoords, event.latLng])
-        // addLocationPin(event.latLng, map);
+        addLocationPin(event.latLng, map);
         // if (currentLocationPin) {
         //   currentLocationPin.position = event.latLng;
         // }
-        setCurrentPosition(event.latLng);
+        // setCurrentPosition(event.latLng.getPosition());
         
         
       });
@@ -105,7 +117,7 @@ export const OnlineGameMap = () => {
   const renderEventPin = (order) => {
     const pin = grabPin(order)
     if (pin) {
-      firstPin = new window.google.maps.Marker({
+      const marker = new window.google.maps.Marker({
         order: pin?.order,
         position: pin?.location[0],
         map: map,
@@ -117,7 +129,7 @@ export const OnlineGameMap = () => {
           strokeWeight: 0
         }
       });
-      firstPin.setAnimation(window.google.maps.Animation.BOUNCE);
+      marker.setAnimation(window.google.maps.Animation.BOUNCE);
       // firstPin.position = grabPin(2).location[0]
     }
   };
@@ -147,24 +159,28 @@ export const OnlineGameMap = () => {
     // setMarkers(marks => [...marks, marker])
     // addPinToArray(blankPin(marker))
     // setClueForm(marker)
-    setCurrentPosition(marker.position);
+    setCurrentPosition({lat: marker.position.lat(), lng: marker.position.lng()});
   };
   
 
     
   function haversineDistance(mk1, mk2) {
-    const R = 6.378e+6; // Radius of the Earth in meters
-    const rlat1 = mk1.position.lat() * (Math.PI/180); // Convert degrees to radians
-    const rlat2 = mk2.position.lat() * (Math.PI/180); // Convert degrees to radians
-    const difflat = rlat2-rlat1; // Radian difference (latitudes)
-    const difflon = (mk2.position.lng()-mk1.position.lng()) * (Math.PI/180); // Radian difference (longitudes)
-    
-    const d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
-    return d;
+    if (mk2) {
+      console.log(mk1, mk2)
+      const R = 6.378e+6; // Radius of the Earth in meters
+      const rlat1 = mk1.lat * (Math.PI/180); // Convert degrees to radians
+      const rlat2 = mk2.lat * (Math.PI/180); // Convert degrees to radians
+      const difflat = rlat2-rlat1; // Radian difference (latitudes)
+      const difflon = (mk2.lng-mk1.lng) * (Math.PI/180); // Radian difference (longitudes)
+      
+      const d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+      console.log(d)
+      return d;
+    }
   }
   
   const pointReached = () => {
-    // return haversineDistance(currentPosition, currentPin?.position) < currentPin.radius
+    return haversineDistance(currentPosition, grabPin(currentPinOrder).location[0]) < 500
   }
 
   const releaseClue = () => {
@@ -177,7 +193,6 @@ export const OnlineGameMap = () => {
   }
   
   const nextPin = () => {
-      console.log(currentPinOrder)
       setCurrentPinOrder(currentPinOrder + 1)
       setShowClue(true)
   }
@@ -249,7 +264,8 @@ export const OnlineGameMap = () => {
     <>
       <div className='game-info'>
         <h1>{event?.name}</h1>
-        <p>{currentPinOrder && grabPin(currentPinOrder)?.directionsToPin}</p>
+        <p>Current Position: {String(currentPosition)}</p>
+        <p> Pin {currentPinOrder && grabPin(currentPinOrder)?.directionsToPin}</p>
         {showWrong && <h2>You're at the wrong location!</h2>}
         <ul>
           <li>Remaining Time: {remainingTime}</li>
