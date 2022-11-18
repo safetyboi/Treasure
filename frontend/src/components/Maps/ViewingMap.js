@@ -3,6 +3,9 @@ import { Wrapper } from "@googlemaps/react-wrapper";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { loadEvent } from "../../store/events";
+import { Button } from "react-bootstrap";
+import './GameMap.scss'
+import PlayGame from '../../assets/images/PlayGame.svg';
 
 export const ViewingMap = () => {
   const history = useHistory();
@@ -26,13 +29,13 @@ export const ViewingMap = () => {
     history.push(`/events/${eventId}/online-game`)
   }
 
-  useEffect(() => {
-    if (!map) {
-      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773972, lng: -122.431297}}))
-    };
-    renderPins();
+  // useEffect(() => {
+  //   if (!map) {
+  //     setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773972, lng: -122.431297}}))
+  //   };
+  //   renderPins();
     
-  }, [mapRef]);
+  // }, [mapRef]);
 
   // todo: differentiate playerpin and event pins, tie the markers to the pin info somehow
 
@@ -76,10 +79,10 @@ export const ViewingMap = () => {
   // }, [coords])
 
   return (
-    <>
-      <button onClick={openOnlineGame}>Play Online Game</button>
-      <div className="google-map-container" ref={mapRef}>Map</div>
-    </>
+    <div className="view_map flex-col align-center">
+      <img src={PlayGame} alt="play game" />
+      <Button onClick={openOnlineGame}>Play Online Game</Button>
+    </div>
   )
 
 };

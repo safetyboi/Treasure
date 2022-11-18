@@ -1,3 +1,18 @@
+.view_map {
+  padding: 0 10vw;
+  position: relative;
+  top: -10vh;
+
+  button.btn {
+    margin: 0 auto;
+  }
+
+  img {
+    width: 25%;
+    margin-bottom: 10vh;
+  }
+}
+
 .game_page {
   position: relative;
   top: -30vh;
