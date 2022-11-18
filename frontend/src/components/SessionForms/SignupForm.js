@@ -23,19 +23,7 @@ function SignupForm () {
   }, [dispatch]);
 
   const updateImage = async (e) => {
-    // console.log(e.target.files[0])
-    // const file = e.target.files[0];
-    imageFile = e.target.files[0]
-    
-    // const formData = new FormData();
-    // formData.append("images", file);
-
-    // await jwtFetch("/api/events/postImages", {
-    //     method: "POST",
-    //     body: formData,
-    //   })
-    //     .then((res) => res.json())
-    //     .then((data) => console.log(data));   
+    imageFile = e.target.files[0] 
   };
 
 
@@ -58,7 +46,6 @@ function SignupForm () {
       default:
         throw Error('Unknown field in Signup Form');
     }
-
     return e => setState(e.currentTarget.value);
   }
 
@@ -148,4 +135,5 @@ function SignupForm () {
 }
 
 export default SignupForm;
+
 
