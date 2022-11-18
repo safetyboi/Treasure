@@ -138,3 +138,27 @@
     width: 11vw;
   }
 }
+
+
+// Popup Box SCSS
+.popup-box {
+  position: absolute;
+  top: 55vh;
+  left: 28vw;
+  z-index: 99;
+  list-style: none;
+  background-color: var(--orange);
+  padding: 2vh 2vw;
+  border-radius: var(--border-radius);
+  
+  p {
+    margin-bottom: 1vh;
+    font-size: 1vw;
+  }
+
+  button {
+    background-color: var(--white);
+    color: var(--orange);
+    cursor: pointer;
+  }
+}
