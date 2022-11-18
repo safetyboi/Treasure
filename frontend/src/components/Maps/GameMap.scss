@@ -15,19 +15,21 @@
 
 .game_page {
   position: relative;
-  top: -30vh;
+  top: -40vh;
 
   .game-info {
-    top: 20vh;
     z-index: 10;
     background-color: rgba(0,0,0, 0.75);
     color: var(--white);
     margin-bottom: 2vh;
     padding: 2vh 1vw;
     width: 20vw;
+    position: absolute;
+    top: 10vh;
+    left: .5vw;
 
-    h1 {
-      margin-bottom: 3vh;
+    h1, h2 {
+      margin-bottom: 2vh;
     }
 
     ul > * {
@@ -48,15 +50,32 @@
     width: 100vw;
     height: 100vh;
     position: absolute;
-    z-index: -1;
+    z-index: 0;
     top: 0;
   }
 }
 
 .clue-form-box {
+  position: absolute;
   width: 20vw;
   z-index: 10;
   background-color: rgba(0,0,0, 0.75);
   color: var(--white);
   padding: 2vh 1vw;
+  top: 50vh;
+  left: .5vw;
+
+  h2, p {
+    margin-bottom: 3vh;
+  }
+
+  input {
+    display: block;
+    margin-top: 1vh;
+    width: 90%;
+  }
+}
+
+.clue-form-box > * {
+  margin-bottom: 1vh;
 }
