@@ -8,7 +8,7 @@ import './MainPage.scss';
 import Footer from '../NavBar/Footer';
 
 function MainPage() {
-  dispatch = useDispatch();
+  const dispatch = useDispatch();
   return (
     <section className='main_page'>
       <div className='hero_wrapper'>
