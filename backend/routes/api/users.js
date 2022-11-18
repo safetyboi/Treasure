@@ -9,10 +9,7 @@ const { loginUser, restoreUser } = require('../../config/passport');
 const { isProduction } = require('../../config/keys');
 const validateRegisterInput = require('../../validations/register');
 const validateLoginInput = require('../../validations/login');
-// const upload = require("../../services/ImageUpload");
-// const singleUpload = upload.single("image");
 const imageUpload = require('../../services/ImageUpload')
-
 const { requireUser } = require('../../config/passport');
 
 
@@ -89,7 +86,6 @@ router.get('/current', restoreUser, (req, res) => {
     res.cookie("CSRF-TOKEN", csrfToken);
   }
   if (!req.user) return res.json(null);
-  console.log(req.user)
   res.json({
     _id: req.user._id,
     username: req.user.username,
@@ -103,20 +99,16 @@ router.get('/current', restoreUser, (req, res) => {
 router.patch('/:userId', async (req, res, next) => {
   const userId = req.params.userId
 
-  console.log('backend')  
   let photoUrl
   //upload to AWS
   await imageUpload.single("images")(req, res, async function (err) {
     photoUrl =  await req.file.location
-    console.log(photoUrl, "photoUrl -1")
     if (err) {
       // return res.json({})
-      console.log(err);
     }
   })
 
   setTimeout(function(){
-    console.log(photoUrl, "photourl-2")
     User.findByIdAndUpdate((userId),
     {image: photoUrl}
     )
