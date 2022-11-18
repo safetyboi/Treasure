@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import eventsReducer, { fetchEvents, loadEvents } from "../../store/events";
+import myIcon from './MapMarker.png'
 
 
 export const EventIndexMap = () => {
@@ -34,6 +35,14 @@ export const EventIndexMap = () => {
   //   labelOrigin: window.google.maps.Point(20, 40)
   // };
 
+  var markerIcon = {
+    url: myIcon,
+    scaledSize: new window.google.maps.Size(30, 30),
+
+    // anchor: new window.google.maps.Point(32,65),
+    labelOrigin: new window.google.maps.Point(50,20)
+  };
+
   useEffect(() => {
     if (map && events.length) {
       events.forEach(event => {
@@ -41,6 +50,7 @@ export const EventIndexMap = () => {
           position: event.initCoords[0],
           map: map,
           label: {color: '#000', fontSize: '12px', fontWeight: '600', text: String(event.name)},
+          icon: markerIcon
         });
         marker.addListener('click', async () => {
           history.push(`/events/${event._id}`);
