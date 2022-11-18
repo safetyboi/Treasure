@@ -19,10 +19,10 @@
   }
 
   .planning_map_area {
-    width: 95vw;
+    width: 100vw;
 
     #google-map-container {
-      height: 140vh;
+      height: 100vh;
       position: relative;
       border-radius: var(--border-radius);
     }
@@ -56,8 +56,4 @@
       border: 1px solid var(--orange);
     }
   }
-}
-
-.pin-edit-form {
-  // display: none;
 }
