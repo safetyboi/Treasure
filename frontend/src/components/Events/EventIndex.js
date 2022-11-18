@@ -4,6 +4,7 @@ import { fetchEvents, loadEvents } from '../../store/events';
 import EventIndexItem from './EventIndexItem';
 import './Event.scss';
 import Footer from '../NavBar/Footer';
+import EventIndexMapWrapper from './EventIndexMap';
 
 function EventIndex() {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ function EventIndex() {
             </ul>
           </div>
           <div id='event_map'>
-            
+            <EventIndexMapWrapper/>
           </div>
         </div>
       </div>
