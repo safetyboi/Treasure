@@ -71,7 +71,6 @@ export const OnlineGameMap = () => {
       });
     };
 
-    console.log('interval')
     setInterval(() => {
       setThinkingTime(thinkingTime + 1)
     }, 60000)
@@ -83,7 +82,6 @@ export const OnlineGameMap = () => {
   useEffect(() => {
     if (remainingTime < 1) {
       setShowEndGame(true)
-      console.log('end game')
     }
   }, [remainingTime])
 

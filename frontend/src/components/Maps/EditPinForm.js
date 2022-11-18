@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react';
 import './PinEditForm.scss';
 import './Map.scss';
 
-const PinEditForm = ({marker, pin, addPinToArray, deletePin}) => {
-  // const pin = pins.filter(pin => {
-  //   return pin.order === pin.order
-  // })[0] 
+const PinEditForm = ({marker, pin, addPinToArray}) => {
   const [directions, setDirections] = useState(pin.directionToPin.text);
   const [challengePrompt, setChallengePrompt] = useState(pin.challengePrompt);
   const [challengeAnswser, setChallengeAnswser] = useState(pin.challengeAnswser);

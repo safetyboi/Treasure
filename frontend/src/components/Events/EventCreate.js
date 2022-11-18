@@ -71,7 +71,6 @@ function EventCreate ({pins, mapData}) {
       if (eventExists) { 
         console.log("go to patch")
         console.log(imageFile)
-        debugger
         await jwtFetch(`/api/events/addImage/${eventExists._id}`, {
           method: "PATCH",
           body: formData,

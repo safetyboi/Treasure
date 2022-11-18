@@ -25,7 +25,6 @@ export const ViewingMap = () => {
   
   const openOnlineGame = (e) => {
     e.preventDefault();
-    console.log(eventId)
     history.push(`/events/${eventId}/online-game`)
   }
 

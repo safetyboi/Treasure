@@ -91,7 +91,6 @@ export const OnlineGameMap = () => {
 
   const renderEventPin = (order) => {
     const pin = grabPin(order)
-    console.log(order)
     if (pin) {
       const marker = new window.google.maps.Marker({
         order: pin?.order,
