@@ -1,32 +1,30 @@
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-import './DemoLobby.scss';
 import Footer from '../NavBar/Footer';
-// import { Redirect } from 'react-router-dom'
+import './DemoLobby.scss';
+import Calendar from '../../assets/images/Calendar.svg';
+import Treasure from '../../assets/images/Treasure.svg';
 
 const DemoLobby = () => {
-
     return (
-        <>
-        <div className="vertical-container">
-        <div className="horizontal-container">
-        <div className="lobby-buttons-container flex-row">
-                <Link className="lobby-link" to={'/online-game'}>
-            <Button className="lobby-button" >Try Our Demo Hunt!</Button>
-                </Link>
-                <div className="or-container">
-                {/* <div>or...</div> */}
-                </div>
-                <Link className="lobby-link" to={'/testmap'}>
-            <Button className="lobby-button"> Create Your Own!</Button>  
-                </Link>
-        </div>
-        </div>
-        </div>
-        <Footer />
-        </>
-    )
+      <section className='demo_page'>
+        <div className='flex-row justify-center'>
+          <div className='left_demo flex-col align-center'>
+            <img src={Treasure} alt="demo_hunt" />
+            <Link className="lobby-link" to={'/online-game'}>
+              <Button className="lobby-button" >Try Our Demo Hunt!</Button>
+            </Link>
+          </div>
 
+          <div className='rigth_demo flex-col align-center'>
+            <img src={Calendar} alt="demo_book" />
+            <Link className="lobby-link" to={'/testmap'}>
+                <Button className="lobby-button"> Create Your Own!</Button>  
+            </Link>
+          </div>
+        </div>
+      </section>
+    )
 }
 
 export default DemoLobby;
