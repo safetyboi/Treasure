@@ -60,8 +60,22 @@
   .create_event {
     padding: 2vh .5vw;
     width: 100%;
+    background-color: white;
+    padding: 5vh 2vw;
+    border-radius: var(--border-radius);
+    height: 100vh;
 
-    input {
+    h2 {
+      font-size: 1.3vw;
+      padding: 0 .5vw;
+    }
+  
+    .border {
+      border-bottom: 1px solid rgba(170, 170, 170, 0.5);
+      margin: 2vh 0;
+    }
+
+    input, textarea {
       display: block;
       margin: 1vh 0 2vh 0;
       width: 100%;
@@ -77,8 +91,43 @@
 
     input[type="submit"] {
       cursor: pointer;
+      background-color: var(--orange);
+      border: none;
+      color: var(--white);
+      margin-top: 1vh;
+      height: 6vh;
+      opacity: .9;
+    }
+
+    input[type="submit"]:hover {
+      opacity: 1;
+    }
+
+    .date_time_form > * {
+      width: 49%;
     }
   }
+}
 
+
+// Map State CSS
+.map_stat_wrapper {
+  position: absolute;
+  right: 5vw;
+  z-index: 30;
+  top: 17vh;
+  background-color: rgba(0, 0,0, .75);
+  padding: 2vh 1vw;
+  border-radius: var(--border-radius);
   
+  .stat_key, .stat_value {
+    font-size: .8vw;
+    margin-bottom: 1vh;
+    color: white;
+    font-weight: lighter;
+  }
+  
+  .stat_key {
+    width: 11vw;
+  }
 }

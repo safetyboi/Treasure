@@ -231,15 +231,7 @@ export const PlanningMap = () => {
   return (
     <div className="planning_map_area flex-row">
 			<div className="planning_map_form">
-				<div id="accordion">
-					<div className="accordion_title">
-						<h2>Event Details</h2> 
-						<div className='border'></div>
-					</div>
-					<div className="accordion_body">
-						<EventCreate pins={pins} mapData={mapData}/>
-					</div>
-				</div>
+			  <EventCreate pins={pins} mapData={mapData}/>
 			</div>
       <div id="google-map-container" ref={mapRef}>
         Map
@@ -250,7 +242,7 @@ export const PlanningMap = () => {
 						marker={showPinEditForm} 
 						pin={selectedPin(showPinEditForm.order)}
 					/>
-				}  
+				}
       </div>
       {/* TODO grab the correct marker */}
     </div>
