@@ -26,6 +26,7 @@ function EventCreate ({pins, mapData}) {
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
+    let imageFile;
   
     useEffect(() => {
       return () => dispatch(clearEventErrors());

@@ -113,18 +113,20 @@
 // Map State CSS
 .map_stat_wrapper {
   position: absolute;
-  right: 0;
+  right: 5vw;
   z-index: 30;
-  top: 20vh;
-  background-color: var(--white);
+  top: 17vh;
+  background-color: rgba(0, 0,0, .75);
   padding: 2vh 1vw;
   border-radius: var(--border-radius);
-
+  
   .stat_key, .stat_value {
     font-size: .8vw;
     margin-bottom: 1vh;
+    color: white;
+    font-weight: lighter;
   }
-
+  
   .stat_key {
     width: 11vw;
   }
