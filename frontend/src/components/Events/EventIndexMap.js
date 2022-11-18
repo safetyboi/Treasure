@@ -60,7 +60,7 @@ export const EventIndexMap = () => {
 const EventIndexMapWrapper = () => {
 
   return (
-    <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} libraries={["geometry"]}>
+    <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} >
       <EventIndexMap/>
     </Wrapper>
   )

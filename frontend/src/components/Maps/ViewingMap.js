@@ -92,12 +92,20 @@ export const ViewingMap = () => {
 
 
 
-const ViewingMapWrapper = ({event}) => {
+const ViewingMapWrapper = () => {
+  const history = useHistory();
+  const {eventId} = useParams();
+
+  const openOnlineGame = (e) => {
+    e.preventDefault();
+    history.push(`/events/${eventId}/online-game`)
+  }
 
   return (
-    <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} libraries={["geometry"]}>
-      <ViewingMap event={event}/>
-    </Wrapper>
+    <div className="view_map flex-col align-center">
+      <img src={PlayGame} alt="play game" />
+      <Button onClick={openOnlineGame}>Play Online Game</Button>
+    </div>
   )
 };
 
