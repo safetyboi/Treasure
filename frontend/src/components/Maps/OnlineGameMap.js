@@ -24,12 +24,9 @@ export const OnlineGameMap = () => {
   const [thinkingTime, setThinkingTime] = useState(0);
   const [showClue, setShowClue] = useState(true);
   const [showWrong, setShowWrong] = useState(false);
-  const [latestRenderedPin, setlatestRenderedPin] = useState(0);
   const [currentPinOrder, setCurrentPinOrder] = useState(1);
   const [showEndGame, setShowEndGame] = useState(false);
-
-  let currentLocationPin;
-  let firstPin;
+  const[markers, setMarkers] = useState([]);
   
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
@@ -64,37 +61,33 @@ export const OnlineGameMap = () => {
     
   }, [mapRef, event]);
 
-  useEffect(() => {
-    if (map) {
-      window.google.maps.event.addListener(map, "click", (event) => {
-        setCoords(allCoords => [...allCoords, event.latLng])
-        addLocationPin(event.latLng, map);
-        // if (currentLocationPin) {
-        //   currentLocationPin.position = event.latLng;
-        // }
-        // setCurrentPosition(event.latLng.getPosition());
-        
-        
-      });
+  let listener;
 
-      // setTimeout(() => console.log(event), 5000)
-      // addLocationPin(event.initCoords[0], map)
+  // useEffect(() => {
+  //   if (map) {
+  //     listener = window.google.maps.event.addListener(map, "click", (event) => {
+  //         setCoords(allCoords => [...allCoords, event.latLng])
+  //         addLocationPin(event.latLng, map);     
+  //     });
+
+  //     // setTimeout(() => console.log(event), 5000)
+  //     // addLocationPin(event.initCoords[0], map)
       
       
-      // if (grabPin(1)) {
-      //   setCoords(allCoords => [...allCoords, grabPin(1).location[0]]);
-      //   console.log(coords)
-      // }
-    };
+  //     // if (grabPin(1)) {
+  //     //   setCoords(allCoords => [...allCoords, grabPin(1).location[0]]);
+  //     //   console.log(coords)
+  //     // }
+  //   };
     
-  }, [map]) ;
+  // }, [map]) ;
   
 
   
   
   setInterval(() => {
     setThinkingTime(thinkingTime + 1)
-  }, 60000)
+  }, 2000)
 
   useEffect(() => {
     if (event && event.duration > 0 && duration > 0) setRemainingTime(event.duration - thinkingTime - duration)
@@ -136,10 +129,13 @@ export const OnlineGameMap = () => {
         map: map,
         icon: mIcon,
         label: {color: '#000', fontSize: '12px', fontWeight: '600',
-    text: '1'}
+    text: String(pin?.order)}
       });
       marker.setAnimation(window.google.maps.Animation.BOUNCE);
-      // firstPin.position = grabPin(2).location[0]
+      if (markers.length) {
+        markers[markers.length - 1].setAnimation(null);
+      }
+      setMarkers(markers => [...markers, marker])
     }
   };
 
@@ -195,6 +191,7 @@ export const OnlineGameMap = () => {
       alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
       renderEventPin(currentPinOrder);
       setShowClue(true)
+      window.google.maps.event.removeListener(listener);
       setShowWrong(false)
     } else {
       setShowWrong(true)
@@ -204,6 +201,10 @@ export const OnlineGameMap = () => {
   const nextPin = () => {
       setCurrentPinOrder(currentPinOrder + 1);
       setShowClue(false);
+      listener = window.google.maps.event.addListener(map, "click", (event) => {
+        setCoords(allCoords => [...allCoords, event.latLng])
+        addLocationPin(event.latLng, map);     
+    });
   }
 
   const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
@@ -266,6 +267,10 @@ export const OnlineGameMap = () => {
     
   }, [coords]);
 
+  if (remainingTime <= 0) {
+    setShowEndGame(true);
+  }
+
   
   if (!mapRef) return null;
 
@@ -274,8 +279,7 @@ export const OnlineGameMap = () => {
       <div className='game-info'>
         <h1>{event?.name}</h1>
         <p>Current Position: {String(currentPosition)}</p>
-        <p> Pin {currentPinOrder && grabPin(currentPinOrder)?.directionsToPin}</p>
-        {showWrong && <h2>You're at the wrong location!</h2>}
+        <h2>Current Task: {showClue ? `Respond to the clue below.` : `Follow the directions and click the map to travel to the next location` }</h2>
         <ul>
           <li>Remaining Time: {duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</li>
           <li>Distance Traveled: {distance} km</li>
