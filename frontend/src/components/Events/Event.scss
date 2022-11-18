@@ -9,10 +9,15 @@
       margin-bottom: 10vh;
     }
 
+    .event_index > * {
+      margin: 0 .5vw;
+    }
+
     .event_list_wrapper {
       width: 25vw;
       height: 90vh;
       overflow: scroll;
+      padding: 0 .5vw;
 
       .event_list {
         li {
@@ -51,7 +56,7 @@
     }
 
     #event_map {
-      width: 60vw;
+      width: 70vw;
     }
   }
 }
