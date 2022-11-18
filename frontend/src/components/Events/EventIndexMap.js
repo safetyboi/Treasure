@@ -1,11 +1,20 @@
 import { Wrapper } from "@googlemaps/react-wrapper";
 import { useRef, useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import eventsReducer, { fetchEvents, loadEvents } from "../../store/events";
 
 
 export const EventIndexMap = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [map, setMap] = useState(null);
   const mapRef = useRef(null);
+  const events = useSelector(loadEvents);
 
+  useEffect(() => {
+    dispatch(fetchEvents());
+  }, [])
 
   useEffect(() => {
     if (!map) {
@@ -13,6 +22,32 @@ export const EventIndexMap = () => {
     };
     
   }, [mapRef]);
+
+  // const mIcon = {
+  //   path: window.google.maps.SymbolPath.CIRCLE,
+  //   fillOpacity: 1,
+  //   fillColor: 'blue',
+  //   strokeOpacity: 0,
+  //   strokeWeight: 0,
+  //   strokeColor: '#333',
+  //   scale: 6,
+  //   labelOrigin: window.google.maps.Point(20, 40)
+  // };
+
+  useEffect(() => {
+    if (map && events.length) {
+      events.forEach(event => {
+        const marker = new window.google.maps.Marker({
+          position: event.initCoords[0],
+          map: map,
+          label: {color: '#000', fontSize: '12px', fontWeight: '600', text: String(event.name)},
+        });
+        marker.addListener('click', async () => {
+          history.push(`/events/${event._id}`);
+        })
+      })
+    }
+  }, [map, events])
 
   return (
     <div className="google-map-container" ref={mapRef}>Map</div>
