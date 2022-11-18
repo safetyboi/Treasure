@@ -9,6 +9,9 @@ import Footer from '../NavBar/Footer';
 
 function MainPage() {
   const dispatch = useDispatch();
+  const demoLogin = ()=> {
+    dispatch(login({email: 'demo@user.io', password: 'password'}))
+  }
   return (
     <section className='main_page'>
       <div className='hero_wrapper'>
@@ -19,7 +22,7 @@ function MainPage() {
             <div className='hero_button flex-row justify-start'>
               <Link to={'/signup'}><Button className='border-btn'>Sign up</Button></Link>
               <Link to={'/login'}><Button className='border-btn'>Log in</Button></Link>
-              <Link to={'/demo-lobby'}><Button className='demo-btn' onClick={dispatch(login({username: 'DemoUser', password: 'password'}))}>DEMO</Button></Link>
+              <Link to={'/demo-lobby'}><Button className='demo-btn' onClick={demoLogin}>DEMO</Button></Link>
             </div>
           </div>
           <div className='hero_img flex-row justify-center'>
