@@ -7,6 +7,7 @@ import ClueForm from "./ClueForm";
 import { fetchEvent, loadEvent  } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
 import GameOver from '../GameOver/GameOver';
+import './GameMap.scss'
 
 export const OnlineGameMap = () => {
   const dispatch = useDispatch();
@@ -270,27 +271,44 @@ export const OnlineGameMap = () => {
   if (!mapRef) return null;
 
   return (
-    <>
+    <section className="game_page">
       <div className='game-info'>
         <h1>{event?.name}</h1>
-        <p>Current Position: {String(currentPosition)}</p>
-        <p> Pin {currentPinOrder && grabPin(currentPinOrder)?.directionsToPin}</p>
+        {/* <p>Current Position: {String(currentPosition)}</p> */}
+        {/* <p> Pin {currentPinOrder && grabPin(currentPinOrder)?.directionsToPin}</p> */}
         {showWrong && <h2>You're at the wrong location!</h2>}
         <ul>
-          <li>Remaining Time: {duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</li>
+          <li className='flex-row'>
+            <p className="game_key">Remaining Time</p>
+            <p className="game_value">{duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</p>
+          </li>
+          <li className='flex-row'>
+            <p className="game_key">Distance Traveled</p>
+            <p className="game_value">{distance} km</p>
+          </li>
+          <li className='flex-row'>
+            <p className="game_key">Time "Walked"</p>
+            <p className="game_value">{duration} minutes</p>
+          </li>
+          <li className='flex-row'>
+            <p className="game_key">Time Pondered</p>
+            <p className="game_value">{thinkingTime} minutes</p>
+          </li>
+
+          {/* <li>Remaining Time: {duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</li>
           <li>Distance Traveled: {distance} km</li>
           <li>Time "Walked": {duration} minutes</li>
-          <li>Time Pondered: {thinkingTime} minutes</li>
+          <li>Time Pondered: {thinkingTime} minutes</li> */}
         </ul>
-
-
       </div>
+
       <div className="google-map-container" ref={mapRef}>Map</div>
 
       <ClueForm showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
 
-      {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />}
-    </>
+      {/* {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />} */}
+      {/* <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime}  /> */}
+    </section>
   )
 
 };

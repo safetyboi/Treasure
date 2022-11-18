@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import './GameMap.scss';
 
 const ClueForm = ({showClue, setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
 
