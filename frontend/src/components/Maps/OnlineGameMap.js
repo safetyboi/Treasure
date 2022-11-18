@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ClueForm from "./ClueForm";
 import { fetchEvent, loadEvent  } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
+import GameOver from '../GameOver/GameOver';
 
 export const OnlineGameMap = () => {
   const dispatch = useDispatch();
@@ -14,60 +15,95 @@ export const OnlineGameMap = () => {
   const [map, setMap] = useState(null);
   const mapRef = useRef(null);
   const eventPins = useSelector(getEventPins(eventId));
-  const [currentPosition, setCurrentPosition] = useState(eventPins[0]?.location[0]);
+  const [currentPosition, setCurrentPosition] = useState(null);
   const [coords, setCoords] = useState([]);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [remainingTime, setRemainingTime] = useState(event?.duration);
+  const [remainingTime, setRemainingTime] = useState("Click Map to Begin");
   let [numPoints, setNumPoints] = useState(0);
   const [thinkingTime, setThinkingTime] = useState(0);
   const [showClue, setShowClue] = useState(true);
   const [showWrong, setShowWrong] = useState(false);
   const [latestRenderedPin, setlatestRenderedPin] = useState(0);
+  const [currentPinOrder, setCurrentPinOrder] = useState(1);
+  const [showEndGame, setShowEndGame] = useState(false);
+
   let currentLocationPin;
   let firstPin;
   
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
   }
-
-  const [currentPinOrder, setCurrentPinOrder] = useState(0);
-
   
-
-  // const delay = setTimeout(() => {
-  //   clearTimeout(delay)
-  //   renderEventPin(1);
-  //   addLocationPin(grabPin(1).location[0], map);
-  // }, 1000)
-  
-  setInterval(() => {
-    setThinkingTime(thinkingTime + 1)
-  }, 60000)
-
-  useEffect(() => {
-    setRemainingTime(event?.duration - thinkingTime - duration)
-  }, [thinkingTime, duration])
-
   useEffect(() => {
     if (eventId) {
       dispatch(fetchEvent(eventId));
       dispatch(fetchEventPins(eventId));
     }
   },[eventId])
-  
+
   useEffect(() => {
-    if (!map) {
+    if (grabPin(currentPinOrder)) releaseClue();
+
+  }, [currentPosition])
+
+  useEffect(() => {
+    if (event && !coords.length) {
+      // setCurrentPosition(event.initCoords[0]);
+      setCoords(allCoords => [...allCoords, event.initCoords[0]])
+      addLocationPin(event.initCoords[0], map);
+
+    }
+  }, [event])
+
+  useEffect(() => {
+    if (!map && event) {
       // setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: (event?.pins[0].location.latitude), lng: (event?.pins[0].location.latitude)}}))
-      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773972, lng: -122.431297}}))
+      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: event.initCoords[0]}))
     };
     
-  }, [mapRef]);
-  
+  }, [mapRef, event]);
+
   useEffect(() => {
-    renderEventPin(currentPinOrder);
-    if (currentPinOrder === 0) setCurrentPinOrder(1)
-  }, [eventPins, currentPinOrder])
+    if (map) {
+      window.google.maps.event.addListener(map, "click", (event) => {
+        setCoords(allCoords => [...allCoords, event.latLng])
+        addLocationPin(event.latLng, map);
+        // if (currentLocationPin) {
+        //   currentLocationPin.position = event.latLng;
+        // }
+        // setCurrentPosition(event.latLng.getPosition());
+        
+        
+      });
+
+      // setTimeout(() => console.log(event), 5000)
+      // addLocationPin(event.initCoords[0], map)
+      
+      
+      // if (grabPin(1)) {
+      //   setCoords(allCoords => [...allCoords, grabPin(1).location[0]]);
+      //   console.log(coords)
+      // }
+    };
+    
+  }, [map]) ;
+  
+
+  
+  
+  setInterval(() => {
+    setThinkingTime(thinkingTime + 1)
+  }, 60000)
+
+  useEffect(() => {
+    if (event && event.duration > 0 && duration > 0) setRemainingTime(event.duration - thinkingTime - duration)
+  }, [thinkingTime, duration])
+
+  
+  // useEffect(() => {
+  //   renderEventPin(currentPinOrder);
+  // }, [eventPins, currentPinOrder])
 
   // useEffect(()=> {
   //   console.log(currentPinOrder)
@@ -80,22 +116,29 @@ export const OnlineGameMap = () => {
   
   // todo: differentiate playerpin and event pins, tie the markers to the pin info somehow
   
+  const mIcon = {
+    path: window.google.maps.SymbolPath.CIRCLE,
+    fillOpacity: 1,
+    fillColor: 'blue',
+    strokeOpacity: 0,
+    strokeWeight: 0,
+    strokeColor: '#333',
+    scale: 6
+  };
+
   const renderEventPin = (order) => {
     const pin = grabPin(order)
+    console.log(order)
     if (pin) {
-      firstPin = new window.google.maps.Marker({
+      const marker = new window.google.maps.Marker({
         order: pin?.order,
         position: pin?.location[0],
         map: map,
-        icon: {
-          path: window.google.maps.SymbolPath.CIRCLE,
-          scale: 8.5,
-          fillColor: "blue",
-          fillOpacity: 0.8,
-          strokeWeight: 0
-        }
+        icon: mIcon,
+        label: {color: '#000', fontSize: '12px', fontWeight: '600',
+    text: '1'}
       });
-      firstPin.setAnimation(window.google.maps.Animation.BOUNCE);
+      marker.setAnimation(window.google.maps.Animation.BOUNCE);
       // firstPin.position = grabPin(2).location[0]
     }
   };
@@ -106,7 +149,6 @@ export const OnlineGameMap = () => {
   // }
 
   const addLocationPin = (location, map) => {
-    console.log(map)
     setNumPoints(numPoints++)
     const marker = new window.google.maps.Marker({
       order: numPoints,
@@ -126,53 +168,32 @@ export const OnlineGameMap = () => {
     // setMarkers(marks => [...marks, marker])
     // addPinToArray(blankPin(marker))
     // setClueForm(marker)
-    setCurrentPosition(marker.position);
+    setCurrentPosition({lat: marker.position.lat(), lng: marker.position.lng()});
   };
   
-  useEffect(() => {
-    if (map) {
-      window.google.maps.event.addListener(map, "click", (event) => {
-        setCoords(allCoords => [...allCoords, event.latLng])
-        // addLocationPin(event.latLng, map);
-        // if (currentLocationPin) {
-        //   currentLocationPin.position = event.latLng;
-        // }
-        setCurrentPosition(event.latLng);
-        
-        
-      });
 
-      // setTimeout(() => console.log(event), 5000)
-      // addLocationPin(event.initCoords[0], map)
-      
-      
-      // if (grabPin(1)) {
-      //   setCoords(allCoords => [...allCoords, grabPin(1).location[0]]);
-      //   console.log(coords)
-      // }
-    };
-    
-  }, [map]) ;
-
-  console.log(currentPosition)
     
   function haversineDistance(mk1, mk2) {
-    const R = 6.378e+6; // Radius of the Earth in meters
-    const rlat1 = mk1.position.lat() * (Math.PI/180); // Convert degrees to radians
-    const rlat2 = mk2.position.lat() * (Math.PI/180); // Convert degrees to radians
-    const difflat = rlat2-rlat1; // Radian difference (latitudes)
-    const difflon = (mk2.position.lng()-mk1.position.lng()) * (Math.PI/180); // Radian difference (longitudes)
-    
-    const d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
-    return d;
+    if (mk2) {
+      const R = 6.378e+6; // Radius of the Earth in meters
+      const rlat1 = mk1.lat * (Math.PI/180); // Convert degrees to radians
+      const rlat2 = mk2.lat * (Math.PI/180); // Convert degrees to radians
+      const difflat = rlat2-rlat1; // Radian difference (latitudes)
+      const difflon = (mk2.lng-mk1.lng) * (Math.PI/180); // Radian difference (longitudes)
+      
+      const d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+      return d;
+    }
   }
   
   const pointReached = () => {
-    // return haversineDistance(currentPosition, currentPin?.position) < currentPin.radius
+    return haversineDistance(currentPosition, grabPin(currentPinOrder).location[0]) < 500
   }
 
   const releaseClue = () => {
     if (pointReached()) {
+      alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
+      renderEventPin(currentPinOrder);
       setShowClue(true)
       setShowWrong(false)
     } else {
@@ -180,12 +201,9 @@ export const OnlineGameMap = () => {
     }
   }
   
-  const checkResponse = (response, currentPin) => {
-    if (response === currentPin.task.correctAnswer) {
-      // setCurrentPin(currentPin.order + 1)
-      setCurrentPinOrder(currentPinOrder++)
-      setShowClue(false)
-    }
+  const nextPin = () => {
+      setCurrentPinOrder(currentPinOrder + 1);
+      setShowClue(false);
   }
 
   const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
@@ -246,7 +264,8 @@ export const OnlineGameMap = () => {
       renderPath();
     } 
     
-  }, [coords])
+  }, [coords]);
+
   
   if (!mapRef) return null;
 
@@ -254,39 +273,27 @@ export const OnlineGameMap = () => {
     <>
       <div className='game-info'>
         <h1>{event?.name}</h1>
-        <p>{currentPinOrder && grabPin(currentPinOrder)?.directionsToPin}</p>
+        <p>Current Position: {String(currentPosition)}</p>
+        <p> Pin {currentPinOrder && grabPin(currentPinOrder)?.directionsToPin}</p>
         {showWrong && <h2>You're at the wrong location!</h2>}
         <ul>
-          <li>Remaining Time: {remainingTime}</li>
-          <li>Distance Traveled: {distance}</li>
-          <li>Time "Walked": {duration}</li>
-          <li>Time Pondered: {thinkingTime}</li>
+          <li>Remaining Time: {duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</li>
+          <li>Distance Traveled: {distance} km</li>
+          <li>Time "Walked": {duration} minutes</li>
+          <li>Time Pondered: {thinkingTime} minutes</li>
         </ul>
-          {/* <label>Remaining Time
-            <input type='text' value={remainingTime} readOnly/>
-          </label>
-          <label>Distance Traveled
-            <input type='text' value={distance} readOnly/>
-          </label>
-          <label>Time "Walked"
-            <input type='text' value={duration} readOnly/>
-          </label>
-          <label>Time Pondered
-            <input type='text' value={thinkingTime} readOnly/>
-          </label> */}
+
 
       </div>
       <div className="google-map-container" ref={mapRef}>Map</div>
-      {showClue &&
-      <ClueForm grabPin={grabPin} eventPins={eventPins} checkResponse={checkResponse} currentPinOrder={currentPinOrder}/>
-      }
+
+      <ClueForm showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
+
+      {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />}
     </>
   )
 
 };
-
-
-
 
 
 

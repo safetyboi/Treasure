@@ -1,8 +1,10 @@
+import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
+import './GameOver.scss'
 
-
-const GameOver = () => {
+const GameOver = ({remainingTime, distance, timeWalked, thinkingTime}) => {
     return (
-        <>
+        <div className='game-over-page'>
         <div>
             Gameover!
         </div>
@@ -28,7 +30,7 @@ const GameOver = () => {
             <Button className="lobby-button" >Find Another Event!</Button>
         </Link>
         </div>
-        </>
+        </div>
     )
 }
 
