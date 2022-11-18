@@ -43,13 +43,15 @@ export const OnlineGameMap = () => {
   },[eventId])
 
   useEffect(() => {
-    if (grabPin(currentPinOrder)) pointReached();
+    if (grabPin(currentPinOrder)) releaseClue();
 
   }, [currentPosition])
 
   useEffect(() => {
-    if (event) {
-      setCurrentPosition(event.initCoords[0]);
+    if (event && !coords.length) {
+      // setCurrentPosition(event.initCoords[0]);
+      setCoords(allCoords => [...allCoords, event.initCoords[0]])
+      addLocationPin(event.initCoords[0], map);
 
     }
   }, [event])
@@ -101,7 +103,6 @@ export const OnlineGameMap = () => {
   
   // useEffect(() => {
   //   renderEventPin(currentPinOrder);
-  //   if (currentPinOrder === 0) setCurrentPinOrder(1)
   // }, [eventPins, currentPinOrder])
 
   // useEffect(()=> {
@@ -115,20 +116,27 @@ export const OnlineGameMap = () => {
   
   // todo: differentiate playerpin and event pins, tie the markers to the pin info somehow
   
+  const mIcon = {
+    path: window.google.maps.SymbolPath.CIRCLE,
+    fillOpacity: 1,
+    fillColor: 'blue',
+    strokeOpacity: 0,
+    strokeWeight: 0,
+    strokeColor: '#333',
+    scale: 6
+  };
+
   const renderEventPin = (order) => {
     const pin = grabPin(order)
+    console.log(order)
     if (pin) {
       const marker = new window.google.maps.Marker({
         order: pin?.order,
         position: pin?.location[0],
         map: map,
-        icon: {
-          path: window.google.maps.SymbolPath.CIRCLE,
-          scale: 8.5,
-          fillColor: "blue",
-          fillOpacity: 0.8,
-          strokeWeight: 0
-        }
+        icon: mIcon,
+        label: {color: '#000', fontSize: '12px', fontWeight: '600',
+    text: '1'}
       });
       marker.setAnimation(window.google.maps.Animation.BOUNCE);
       // firstPin.position = grabPin(2).location[0]
@@ -184,6 +192,8 @@ export const OnlineGameMap = () => {
 
   const releaseClue = () => {
     if (pointReached()) {
+      alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
+      renderEventPin(currentPinOrder);
       setShowClue(true)
       setShowWrong(false)
     } else {
