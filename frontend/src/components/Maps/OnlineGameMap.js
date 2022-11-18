@@ -276,7 +276,7 @@ export const OnlineGameMap = () => {
         <h1>{event?.name}</h1>
         {/* <p>Current Position: {String(currentPosition)}</p> */}
         {/* <p> Pin {currentPinOrder && grabPin(currentPinOrder)?.directionsToPin}</p> */}
-        {showWrong && <h2>You're at the wrong location!</h2>}
+        {showWrong && <h2>YOU'RE AT THE WRONG LOCATION!</h2>}
         <ul>
           <li className='flex-row'>
             <p className="game_key">Remaining Time</p>
