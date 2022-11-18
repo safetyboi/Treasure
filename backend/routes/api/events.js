@@ -54,7 +54,8 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
             elevation: req.body.elevation,
             date: req.body.date,
             status: req.body.status,
-            location: req.body.location
+            location: req.body.location,
+            image: 'https://treasure-photos.s3.us-west-1.amazonaws.com/scavenge.jpeg'
         })
 
         let event = await newEvent.save()
@@ -66,27 +67,36 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
     }
 })
 
-// router.get('/userId', async (req, res, next) => {
-//     let user;
-//     console.log(req.params.userId)
-//     try {
-//       user = await User.findById(req.params.userId);
-//     } catch(err) {
-//       const error = new Error('User not found');
-//       error.statusCode = 404;
-//       error.errors = { message: "No user found with that id" };
-//       return next(error);
-//     }
-//     try {
-//       const events = await Event.find({ creator: user._id })
-//                                 .sort({ createdAt: -1 })
-//                                 .populate("creator", "_id, username");
-//       return res.json(events);
-//     }
-//     catch(err) {
-//       return res.json([]);
-//     }
-// })
+router.patch('/addImage/:eventId', validateEventInput, async (req, res, next) => {
+    console.log("addimage")  
+    console.log(req.params.eventId) 
+    const eventId = req.params.eventId
+
+    let photoUrl
+    //upload to AWS
+    await imageUpload.single("images")(req, res, async function (err) {
+        photoUrl =  await req.file.location
+        console.log(photoUrl, "photoUrl -1")
+        if (err) {
+        // return res.json({})
+        console.log(err);
+        }
+    })
+
+    setTimeout(function(){
+        console.log(photoUrl, "photourl-2")
+        Event.findByIdAndUpdate((eventId),
+        {image: photoUrl}
+        )
+        .exec()
+        .then((event) => {
+            if(!event) {
+                res.status(400).send(`Id ${req.params.id} was not found`);
+            } else {
+                res.status(200).send(`Id ${req.params.id} was updated`)
+            }
+        }) }, 1000);
+});
 
 router.get('/:eventId', async (req, res, next) => {
     let event;
@@ -123,7 +133,6 @@ router.patch('/:id', requireUser, validateEventInput, async (req, res, next) => 
             gameStatus: req.body.status,
             elevation: req.body.elevation,
             date: req.body.date,
-            status: req.body.status,
             location: req.body.location
         })
         .exec()
