@@ -41,7 +41,7 @@ export const EventIndexMap = () => {
   const markerIcon = {
     url: myIcon,
     scaledSize: new window.google.maps.Size(30, 30),
-    // anchor: new window.google.maps.Point(32,65),
+    labelOrigin: new window.google.maps.Point(15,-10),
   };
 
   useEffect(() => {
@@ -52,11 +52,18 @@ export const EventIndexMap = () => {
           map: map,
           icon: markerIcon
         });
-        marker.addListener('click', async () => {
-          // history.push(`/events/${event._id}`);
-          console.log('heyy')
+        marker.addListener('mouseover', () => {
+          marker.setLabel({
+            text: event.name,
+            fontSize: '20px',
+          })
+        });
+        marker.addListener('mouseout', () => {
+          marker.setLabel(null);
+        });
+        marker.addListener('click', () => {
           setShowInfoBox(event);
-        })
+        });
       })
     }
   }, [map, events])
