@@ -10,7 +10,8 @@ import GameOver from '../GameOver/GameOver';
 import './GameMap.scss'
 import { Button } from "react-bootstrap";
 
-export const OnlineGameMap = () => {
+export const LiveGameMap = () => {
+
   const dispatch = useDispatch();
   const {eventId} = useParams();
   const event = useSelector(loadEvent(eventId));
@@ -47,47 +48,41 @@ export const OnlineGameMap = () => {
 
   }, [currentPosition])
 
-  useEffect(() => {
-    if (event && !coords.length) {
-      // setCurrentPosition(event.initCoords[0]);
-      setCoords(allCoords => [...allCoords, event.initCoords[0]])
-      addLocationPin(event.initCoords[0], map);
+  // useEffect(() => {
+  //   if (event && !coords.length) {
+  //     // setCurrentPosition(event.initCoords[0]);
+  //     setCoords(allCoords => [...allCoords, event.initCoords[0]])
+  //     addLocationPin(event.initCoords[0], map);
 
-    }
-  }, [event])
+  //   }
+  // }, [event])
 
   useEffect(() => {
     if (!map && event) {
       setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: event.initCoords[0]}))
+      if (navigator.geolocation) {
+        setCurrentPosition(navigator.geolocation.getCurrentPosition(renderLocation));
+      } else {
+        alert('You must allow location services in order to participate in a live scavenger hunt.')
+      }
     };
     
   }, [mapRef, event]);
 
-  useEffect(() => {
-    if (map) {
-      window.google.maps.event.addListener(map, "click", (event) => {
-          setCoords(allCoords => [...allCoords, event.latLng])
-          addLocationPin(event.latLng, map);     
-      });
-    };
+  const renderLocation = (position) => {
+    console.log(position)
+    addLocationPin(position, map);
+  }
 
-    setInterval(() => {
-      setThinkingTime(thinkingTime + 1)
-    }, 60000)
+  // useEffect(() => {
+  //   if (remainingTime < 1) {
+  //     setShowEndGame(true)
+  //   }
+  // }, [remainingTime])
 
-
-    
-  }, [map]) ;
-
-  useEffect(() => {
-    if (remainingTime < 1) {
-      setShowEndGame(true)
-    }
-  }, [remainingTime])
-
-  useEffect(() => {
-    if (event && event.duration > 0 && duration > 0) setRemainingTime(event.duration - thinkingTime - duration)
-  }, [thinkingTime, duration])
+  // useEffect(() => {
+  //   if (event && event.duration > 0 && duration > 0) setRemainingTime(event.duration - thinkingTime - duration)
+  // }, [thinkingTime, duration])
   
   const mIcon = {
     path: window.google.maps.SymbolPath.CIRCLE,
@@ -119,9 +114,7 @@ export const OnlineGameMap = () => {
   };
 
   const addLocationPin = (location, map) => {
-    setNumPoints(numPoints++)
     const marker = new window.google.maps.Marker({
-      order: numPoints,
       position: location,
       map: map,
       icon: {
@@ -132,9 +125,10 @@ export const OnlineGameMap = () => {
         strokeWeight: 0
       }
     });
-    setCurrentPosition({lat: marker.position.lat(), lng: marker.position.lng()});
+    // setCurrentPosition({lat: marker.position.lat(), lng: marker.position.lng()});
   };
-  
+
+
 
     
   function haversineDistance(mk1, mk2) {
@@ -155,7 +149,7 @@ export const OnlineGameMap = () => {
   }
 
   const releaseClue = () => {
-    if (pointReached() && currentPinOrder !== 1) {
+    if (pointReached()) {
       alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
       renderEventPin(currentPinOrder);
       setShowClue(true)
@@ -279,14 +273,14 @@ export const OnlineGameMap = () => {
 
 
 
-const OnlineGameMapWrapper = () => {
+const LiveGameMapWrapper = () => {
 
   return (
     <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} >
-      <OnlineGameMap/>
+      <LiveGameMap/>
     </Wrapper>
   )
 };
 
 
-export default OnlineGameMapWrapper;
+export default LiveGameMapWrapper;

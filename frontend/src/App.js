@@ -17,6 +17,7 @@ import { getCurrentUser } from './store/session';
 import OnlineGameMapWrapper from './components/Maps/OnlineGameMap';
 import ImageUploader from '../src/components/AWSTest/ImageUploader';
 import ViewingMapWrapper from './components/Maps/ViewingMap';
+import LiveGameMapWrapper from './components/Maps/LiveGameMap';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <AuthRoute exact path="/login" component={LoginForm} />
         <AuthRoute exact path="/signup" component={SignupForm} />
 
+        <ProtectedRoute exact path="/events/:eventId/live-game" component={LiveGameMapWrapper} />
         <ProtectedRoute exact path="/events/:eventId/online-game" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/events/new" component={PlanningMapWrapper} />
         <ProtectedRoute exact path="/events/:eventId" component={ViewingMapWrapper} />
