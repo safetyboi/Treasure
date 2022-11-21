@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-import ManMap from '../../assets/images/ManMap.svg';
+// import ManMap from '../../assets/images/ManMap.svg';
 import { login, clearSessionErrors } from '../../store/session';
 import { useDispatch } from 'react-redux';
-
-import './MainPage.scss';
 import Footer from '../NavBar/Footer';
+import ManMap from './ManMapImg';
+import './MainPage.scss';
 
 function MainPage() {
   const dispatch = useDispatch();
@@ -25,9 +25,7 @@ function MainPage() {
               <Link to={'/demo-lobby'}><Button className='demo-btn' onClick={demoLogin}>DEMO</Button></Link>
             </div>
           </div>
-          <div className='hero_img flex-row justify-center'>
-            <img src={ManMap} alt="Map illustration" />
-          </div>
+          <ManMap />
         </section>
       </div>
       <Footer />
