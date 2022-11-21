@@ -170,12 +170,15 @@ export const OnlineGameMap = () => {
 
   const releaseClue = () => {
     if (pointReached()) {
-      if ( currentPinOrder !== 1) {
-        jingleSound.play();
-        alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
-      }
-      renderEventPin(currentPinOrder);
-      setShowClue(true)
+      jingleSound.play();
+
+      setTimeout(() => {
+        if ( currentPinOrder !== 1) {
+          alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
+        }
+        renderEventPin(currentPinOrder);
+        setShowClue(true)
+      }, 500)
     }
   }
   

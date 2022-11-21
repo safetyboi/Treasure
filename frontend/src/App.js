@@ -16,8 +16,8 @@ import PlanningMapWrapper from './components/Maps/PlanningMap';
 import { getCurrentUser } from './store/session';
 import OnlineGameMapWrapper from './components/Maps/OnlineGameMap';
 import ImageUploader from '../src/components/AWSTest/ImageUploader';
-import ViewingMapWrapper from './components/Maps/ViewingMap';
 import LiveGameMapWrapper from './components/Maps/LiveGameMap';
+import EventLobby from './components/Events/EventLobby';
 
 
 function App() {
@@ -40,10 +40,9 @@ function App() {
         <ProtectedRoute exact path="/events/:eventId/live-game" component={LiveGameMapWrapper} />
         <ProtectedRoute exact path="/events/:eventId/online-game" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/events/new" component={PlanningMapWrapper} />
-        <ProtectedRoute exact path="/events/:eventId" component={ViewingMapWrapper} />
+        <ProtectedRoute exact path="/events/:eventId" component={EventLobby} />
         <ProtectedRoute exact path="/events" component={EventIndex} />
         <ProtectedRoute exact path="/profile" component={Profile} />
-        {/* <ProtectedRoute exact path="/events/new" component={EventCompose} /> */}
         <ProtectedRoute exact path="/testmap" component={PlanningMapWrapper} />
         <ProtectedRoute exact path="/online-game" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/onlinegame" component={OnlineGameMapWrapper} />

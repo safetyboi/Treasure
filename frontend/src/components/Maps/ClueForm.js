@@ -1,8 +1,12 @@
 import { useState } from "react";
 import './GameMap.scss';
-import wrong from '../../assets/sounds/wrong.mp3'
+import wrong from '../../assets/sounds/wrong.mp3';
+import jingle from '../../assets/sounds/success-bell.wav';
+
 
 const ClueForm = ({winSound, jingleSound, showClue, setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
+  const jingleSound2 = new Audio(jingle);
+
 
   const [response, setResponse] = useState('');
   const currentPin = grabPin(currentPinOrder);
@@ -16,9 +20,11 @@ const ClueForm = ({winSound, jingleSound, showClue, setShowEndGame, nextPin, gra
     }
 
     else if (response === currentPin.task[0].correctAnswer) {
-      jingleSound.play();
-      alert('Correct Response! You can now head for the next event pin.')
-      nextPin();
+      jingleSound2.play();
+      setTimeout(() => {
+        alert('Correct Response! You can now head for the next event pin.')
+        nextPin();
+      }, 500)
     } else {
       wrongSound.play();
       alert('Incorrect! Try again.')
