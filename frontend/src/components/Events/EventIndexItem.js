@@ -24,9 +24,9 @@ function EventIndexItem({event}) {
           <p>${event.price}</p>
         </div>
         <div className="event_list_img">
-          {/* <picture>
+          <picture>
             <img src="" alt={`event_${event.name}`} />
-          </picture> */}
+          </picture>
         </div>
       </div>
       <Link to={`/events/${event._id}`}><Button>Check event</Button></Link>
