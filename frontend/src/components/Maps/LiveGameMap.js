@@ -44,7 +44,7 @@ export const LiveGameMap = () => {
   },[eventId])
 
   useEffect(() => {
-    if (grabPin(currentPinOrder)) releaseClue();
+    if (grabPin(currentPinOrder) && currentPosition) releaseClue();
 
   }, [currentPosition])
 

@@ -25,14 +25,22 @@ export const OnlineGameMap = () => {
   let [numPoints, setNumPoints] = useState(0);
   const [thinkingTime, setThinkingTime] = useState(0);
   const [showClue, setShowClue] = useState(true);
-  const [showWrong, setShowWrong] = useState(false);
   const [currentPinOrder, setCurrentPinOrder] = useState(1);
   const [showEndGame, setShowEndGame] = useState(false);
   const[markers, setMarkers] = useState([]);
   const history = useHistory();
+  const [eventDuration, setEventDuration] = useState(0);
   
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
+  }
+
+  const eventDurationSetter = () => {
+    let duration = 0
+    eventPins.forEach(pin => {
+      duration += pin.duration
+    });
+    return duration;
   }
   
   useEffect(() => {
@@ -43,8 +51,7 @@ export const OnlineGameMap = () => {
   },[eventId])
 
   useEffect(() => {
-    if (grabPin(currentPinOrder)) releaseClue();
-
+    if (grabPin(currentPinOrder) && currentPosition) releaseClue();
   }, [currentPosition])
 
   useEffect(() => {
@@ -52,7 +59,9 @@ export const OnlineGameMap = () => {
       // setCurrentPosition(event.initCoords[0]);
       setCoords(allCoords => [...allCoords, event.initCoords[0]])
       addLocationPin(event.initCoords[0], map);
-
+    }
+    if (eventPins && !eventDuration) {
+      setEventDuration(eventDurationSetter());
     }
   }, [event])
 
@@ -75,8 +84,6 @@ export const OnlineGameMap = () => {
       setThinkingTime(thinkingTime + 1)
     }, 60000)
 
-
-    
   }, [map]) ;
 
   useEffect(() => {
@@ -155,13 +162,13 @@ export const OnlineGameMap = () => {
   }
 
   const releaseClue = () => {
-    if (pointReached() && currentPinOrder !== 1) {
-      alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
+    console.log(currentPosition)
+    if (pointReached()) {
+      if ( currentPinOrder !== 1) {
+        alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
+      }
       renderEventPin(currentPinOrder);
       setShowClue(true)
-      setShowWrong(false)
-    } else {
-      setShowWrong(true)
     }
   }
   
@@ -214,7 +221,7 @@ export const OnlineGameMap = () => {
               })
               
               setDistance(Math.round(totalDistance * 10) / 10);
-              setDuration(Math.round(totalDuration / 60 * 10) / 10);
+              setDuration(Math.round(eventDuration + (totalDuration / 60)));
               
               directionsRenderer.setDirections(response);
             }
@@ -241,7 +248,7 @@ export const OnlineGameMap = () => {
     <section className="game_page">
       <div className='game-info'>
         <h1>{event?.name}</h1>
-        <h2>CURRENT TASK <br />{showClue ? `Respond to the clue below` : `Follow the directions and click the map to travel to the next location` }</h2>
+        <h2 className='task-header'>CURRENT TASK <br /><br />{showClue ? `Respond to the clue below.` : `Follow the directions and click the map to travel to the next location.` }</h2>
         <ul>
           <li className='flex-row'>
             <p className="game_key">Remaining Time</p>
@@ -253,11 +260,11 @@ export const OnlineGameMap = () => {
           </li>
           <li className='flex-row'>
             <p className="game_key">Time "Walked"</p>
-            <p className="game_value">{duration} minutes</p>
+            <p className="game_value">{Math.round(duration)} minutes</p>
           </li>
           <li className='flex-row'>
             <p className="game_key">Time Pondered</p>
-            <p className="game_value">{thinkingTime} minutes</p>
+            <p className="game_value">{thinkingTime} {thinkingTime === 1 ? `minute` : `minutes`}</p>
           </li>
 
           {/* <li>Remaining Time: {duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</li>
@@ -270,7 +277,7 @@ export const OnlineGameMap = () => {
       <div className="google-map-container" ref={mapRef}>Map</div>
       {/* <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime}  /> */}
       <ClueForm showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
-      <Link className="back" to='/events'><Button>BACK</Button></Link>
+      <Link className="back" to='/events'><Button>QUIT</Button></Link>
       {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />}
     </section>
   )

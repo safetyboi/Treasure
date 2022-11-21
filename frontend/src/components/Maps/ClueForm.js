@@ -26,14 +26,15 @@ const ClueForm = ({showClue, setShowEndGame, nextPin, grabPin, checkResponse, cu
     <div className="clue-form-box">
       <h2>{`Current Clue: ${currentPinOrder}`}</h2>
       <form onSubmit={checkAnswer} className="clue-form">
-        <h4>Directions To This Pin</h4>
+        <h4 className='task-header' >Directions To This Pin</h4>
         <p>{currentPin?.directionToPin[0].text}</p>
-        <h4>My Status</h4>
+        <h4 className='task-header' >My Status</h4>
         <p>{showClue ? `You've arrived!` : `You're not there yet!`}</p>
         { showClue &&
         <>
+          <h4 className='task-header' >Clue</h4>
           <p>{currentPin?.task[0].prompt}</p>
-          <label>My Response
+          <label className='task-header' >My Response
             <input type='text' value={response} onChange={e => setResponse(e.target.value)}/>
           </label>
           <button>Submit Response</button>
