@@ -46,7 +46,7 @@ function Profile() {
           </div>
         </div>
         <div className='border'></div>
-        <ProfileEvent />
+        {/* <ProfileEvent /> */}
       </div>
       <Footer />
     </section>
