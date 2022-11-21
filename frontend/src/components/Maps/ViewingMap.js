@@ -100,10 +100,16 @@ const ViewingMapWrapper = () => {
     history.push(`/events/${eventId}/online-game`)
   }
 
+  const openLiveGame = (e) => {
+    e.preventDefault();
+    history.push(`/events/${eventId}/live-game`)
+  }
+
   return (
     <div className="view_map flex-col align-center">
       <img src={PlayGame} alt="play game" />
       <Button onClick={openOnlineGame}>Play Online Game</Button>
+      <Button onClick={openLiveGame}>Play Live Game</Button>
     </div>
   )
 };

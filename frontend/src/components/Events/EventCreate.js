@@ -69,8 +69,6 @@ function EventCreate ({pins, mapData}) {
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
       
       if (eventExists) { 
-        console.log("go to patch")
-        console.log(imageFile)
         await jwtFetch(`/api/events/addImage/${eventExists._id}`, {
           method: "PATCH",
           body: formData,

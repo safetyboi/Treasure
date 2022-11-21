@@ -27,9 +27,9 @@ const GameOver = ({remainingTime, distance, timeWalked, thinkingTime}) => {
             </div>
             
             <div className="buttons-container flex-row">
-                <Link className="button-link" to={'/testmap'}>
+                {/* <Link className="button-link" to={'/testmap'}>
                     <Button className="lobby-button" >Play Again!</Button>
-                </Link>
+                </Link> */}
                 <Link className="button-link" to={'/events/new'}>
                     <Button className="lobby-button" >Try Creating an Event!</Button>
                 </Link>

@@ -113,3 +113,14 @@ a.back {
     cursor: pointer;
   }
 }
+
+.task-header {
+  color: #FF725E;
+}
+
+.start-button {
+  position: absolute;
+  top: calc(50vh - 30px);
+  left: calc(50vw - 75px);
+  cursor: pointer;
+}
