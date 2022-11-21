@@ -9,6 +9,8 @@ import { fetchEventPins, getEventPins } from "../../store/pins";
 import GameOver from '../GameOver/GameOver';
 import './GameMap.scss'
 import { Button } from "react-bootstrap";
+import jingle from '../../assets/sounds/success-bell.wav';
+import win from '../../assets/sounds/win.wav';
 
 export const OnlineGameMap = () => {
   const dispatch = useDispatch();
@@ -30,9 +32,28 @@ export const OnlineGameMap = () => {
   const[markers, setMarkers] = useState([]);
   const history = useHistory();
   const [eventDuration, setEventDuration] = useState(0);
+  const [showStartButton, setShowStartButton] = useState(true);
+  const jingleSound = new Audio(jingle);
+  const winSound = new Audio(win);
   
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
+  }
+
+  const startGame = () => {
+    setShowStartButton(false);
+    releaseClue();
+    
+    if (map) {
+      window.google.maps.event.addListener(map, "click", (event) => {
+          setCoords(allCoords => [...allCoords, event.latLng])
+          addLocationPin(event.latLng, map);     
+      });
+    };
+
+    setInterval(() => {
+      setThinkingTime(thinkingTime + 1)
+    }, 60000)
   }
 
   const eventDurationSetter = () => {
@@ -51,12 +72,11 @@ export const OnlineGameMap = () => {
   },[eventId])
 
   useEffect(() => {
-    if (grabPin(currentPinOrder) && currentPosition) releaseClue();
+      if (currentPinOrder > 1 && currentPosition) releaseClue();
   }, [currentPosition])
 
   useEffect(() => {
     if (event && !coords.length) {
-      // setCurrentPosition(event.initCoords[0]);
       setCoords(allCoords => [...allCoords, event.initCoords[0]])
       addLocationPin(event.initCoords[0], map);
     }
@@ -73,21 +93,8 @@ export const OnlineGameMap = () => {
   }, [mapRef, event]);
 
   useEffect(() => {
-    if (map) {
-      window.google.maps.event.addListener(map, "click", (event) => {
-          setCoords(allCoords => [...allCoords, event.latLng])
-          addLocationPin(event.latLng, map);     
-      });
-    };
-
-    setInterval(() => {
-      setThinkingTime(thinkingTime + 1)
-    }, 60000)
-
-  }, [map]) ;
-
-  useEffect(() => {
     if (remainingTime < 1) {
+      winSound.play();
       setShowEndGame(true)
     }
   }, [remainingTime])
@@ -162,9 +169,9 @@ export const OnlineGameMap = () => {
   }
 
   const releaseClue = () => {
-    console.log(currentPosition)
     if (pointReached()) {
       if ( currentPinOrder !== 1) {
+        jingleSound.play();
         alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
       }
       renderEventPin(currentPinOrder);
@@ -246,38 +253,39 @@ export const OnlineGameMap = () => {
 
   return (
     <section className="game_page">
-      <div className='game-info'>
-        <h1>{event?.name}</h1>
-        <h2 className='task-header'>CURRENT TASK <br /><br />{showClue ? `Respond to the clue below.` : `Follow the directions and click the map to travel to the next location.` }</h2>
-        <ul>
-          <li className='flex-row'>
-            <p className="game_key">Remaining Time</p>
-            <p className="game_value">{duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</p>
-          </li>
-          <li className='flex-row'>
-            <p className="game_key">Distance Traveled</p>
-            <p className="game_value">{distance} km</p>
-          </li>
-          <li className='flex-row'>
-            <p className="game_key">Time "Walked"</p>
-            <p className="game_value">{Math.round(duration)} minutes</p>
-          </li>
-          <li className='flex-row'>
-            <p className="game_key">Time Pondered</p>
-            <p className="game_value">{thinkingTime} {thinkingTime === 1 ? `minute` : `minutes`}</p>
-          </li>
-
-          {/* <li>Remaining Time: {duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</li>
-          <li>Distance Traveled: {distance} km</li>
-          <li>Time "Walked": {duration} minutes</li>
-          <li>Time Pondered: {thinkingTime} minutes</li> */}
-        </ul>
-      </div>
+      {!showStartButton && 
+        <div className='game-info'>
+          <h1>{event?.name}</h1>
+          <h2 className='task-header'>CURRENT TASK <br /><br />{showClue ? `Respond to the clue below.` : `Follow the directions and click the map to travel to the next location pin.` }</h2>
+          <ul>
+            <li className='flex-row'>
+              <p className="game_key">Remaining Time</p>
+              <p className="game_value">{duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</p>
+            </li>
+            <li className='flex-row'>
+              <p className="game_key">Distance Traveled</p>
+              <p className="game_value">{distance} km</p>
+            </li>
+            <li className='flex-row'>
+              <p className="game_key">Time "Walked"</p>
+              <p className="game_value">{Math.round(duration)} minutes</p>
+            </li>
+            <li className='flex-row'>
+              <p className="game_key">Time Pondered</p>
+              <p className="game_value">{thinkingTime} {thinkingTime === 1 ? `minute` : `minutes`}</p>
+            </li>
+          </ul>
+        </div>
+      }
 
       <div className="google-map-container" ref={mapRef}>Map</div>
-      {/* <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime}  /> */}
-      <ClueForm showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
+      {!showStartButton && 
+        <ClueForm winSound={winSound} jingleSound={jingleSound} showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
+      }
       <Link className="back" to='/events'><Button>QUIT</Button></Link>
+      {showStartButton &&
+        <Button onClick={startGame} className="start-button">Start Game</Button>
+      }
       {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />}
     </section>
   )

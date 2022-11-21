@@ -56,6 +56,7 @@ export const EventIndexMap = () => {
           marker.setLabel({
             text: event.name,
             fontSize: '20px',
+            fontWeight: '700'
           })
         });
         marker.addListener('mouseout', () => {
