@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+import {DefaultImage} from '../../assets/images/DefaultImage.svg';
 
 function EventIndexItem({event}) {
   const dateObj = new Date(event.date);
@@ -11,6 +12,14 @@ function EventIndexItem({event}) {
   const hour = localTime.slice(comaIdx, comaIdx + 6);
   const ampm = localTime.slice(-2);
   const duration = Math.ceil(event.duration / 60);
+  
+  // const eventImg = () => {
+  //   if (!event.image) {
+  //     return 
+  //   }
+
+  //   return <img src={event.image} alt={`event_${event.name}`} />
+  // };
 
   return (
     <li className="event_index_list">
@@ -25,7 +34,12 @@ function EventIndexItem({event}) {
         </div>
         <div className="event_list_img">
           <picture>
-            <img src="" alt={`event_${event.name}`} />
+          <img src={event.image} 
+            alt={`event_${event.name}`} 
+            onError={e => {
+              e.target.src={DefaultImage}
+              e.onerror=null
+            }}/>
           </picture>
         </div>
       </div>
