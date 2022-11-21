@@ -73,9 +73,12 @@ router.patch('/addImage/:eventId', validateEventInput, async (req, res, next) =>
 
     let photoUrl
     //upload to AWS
-    await imageUpload.single("images")(req, res, async function (err) {
-        photoUrl =  await req.file.location
-        console.log(photoUrl, "photoUrl -1")
+    imageUpload.single("images")(req, res, async function (err) {
+        setTimeout(function(){
+            console.log("first set timeout")
+            photoUrl = req.file.location
+            console.log(photoUrl, "photourl-1")
+       }, 1000);
         if (err) {
         // return res.json({})
         console.log(err);
@@ -83,10 +86,9 @@ router.patch('/addImage/:eventId', validateEventInput, async (req, res, next) =>
     })
 
     setTimeout(function(){
+        console.log('here')
         console.log(photoUrl, "photourl-2")
-        Event.findByIdAndUpdate((eventId),
-        {image: photoUrl}
-        )
+        Event.findByIdAndUpdate((eventId), {image: photoUrl})
         .exec()
         .then((event) => {
             if(!event) {
@@ -94,7 +96,8 @@ router.patch('/addImage/:eventId', validateEventInput, async (req, res, next) =>
             } else {
                 res.status(200).send(`Id ${req.params.id} was updated`)
             }
-        }) }, 1000);
+        }) 
+    }, 2000);
 });
 
 router.get('/:eventId', async (req, res, next) => {
