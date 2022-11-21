@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import {DefaultImage} from '../../assets/images/DefaultImage.svg';
+import DefaultImage from '../../assets/images/defaultImage.svg';
 
 function EventIndexItem({event}) {
   const dateObj = new Date(event.date);
@@ -34,7 +34,7 @@ function EventIndexItem({event}) {
         </div>
         <div className="event_list_img">
           <picture>
-          <img src={event.image} 
+          <img className='thumb-image' src={event.image} 
             alt={`event_${event.name}`} 
             onError={e => {
               e.target.src={DefaultImage}

@@ -10,7 +10,6 @@ const imageUpload = require('../../services/ImageUpload')
 router.get('/', async (req, res) => {
     if(req.query["userId"]) {
         let user;
-        console.log(req.query["userId"])
         try {
             user = await User.findById(req.query["userId"]);
         } catch(err) {
@@ -67,27 +66,20 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
 })
 
 router.patch('/addImage/:eventId', validateEventInput, async (req, res, next) => {
-    console.log("addimage")  
-    console.log(req.params.eventId) 
     const eventId = req.params.eventId
 
     let photoUrl
     //upload to AWS
     imageUpload.single("images")(req, res, async function (err) {
         setTimeout(function(){
-            console.log("first set timeout")
             photoUrl = req.file.location
-            console.log(photoUrl, "photourl-1")
        }, 1000);
         if (err) {
         // return res.json({})
-        console.log(err);
         }
     })
 
     setTimeout(function(){
-        console.log('here')
-        console.log(photoUrl, "photourl-2")
         Event.findByIdAndUpdate((eventId), {image: photoUrl})
         .exec()
         .then((event) => {
@@ -170,12 +162,10 @@ router.delete('/:id', requireUser, async(req, res, next) => {
 
 router.post("/postImages", function (req, res) {
     let photoUrl
-    console.log('here2')
     imageUpload.single("images")(req, res, function (err) {
         photoUrl = req.file.location
       if (err) {
         // return res.json({})
-        console.log(err);
       }
     });
 
@@ -210,31 +200,5 @@ router.post("/postImages", function (req, res) {
 
 
 });
-
-// router.post("/postImages", requireUser, function (req, res) {
-//     console.log('here')
-//     const uid = req.user._id;
-  
-//     imageUpload(req, res, function (err) {
-  
-//       if (err) {
-//         return res.json({
-//           success: false,
-//           errors: {
-//             title: "Image Upload Error",
-//             detail: err.message,
-//             error: err,
-//           },
-//         });
-//       }
-//       console.log(req)
-//       let update = { profilePicture: req.file.location };
-  
-//       Event.findByIdAndUpdate(uid, update, { new: true })
-//         .then((user) => res.status(200).json({ success: true, user: user }))
-//         .catch((err) => res.status(400).json({ success: false, error: err }));
-//     });
-//   });
-
 
 module.exports = router;

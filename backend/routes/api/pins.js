@@ -20,14 +20,13 @@ router.get('/', async (req, res) => {
 router.get('/:eventId', async (req, res, next) => {
     let pins;
     try {
-        console.log(req.params.eventId)
         pins = await Pin.find({event: req.params.eventId})
         return res.json(pins);
     } catch(err) {
-      const error = new Error('Event not found');
-      error.statusCode = 404;
-      error.errors = { message: "No event found with that id" };
-      return next(error);
+        const error = new Error('Event not found');
+        error.statusCode = 404;
+        error.errors = { message: "No event found with that id" };
+        return next(error);
     }
 
 })

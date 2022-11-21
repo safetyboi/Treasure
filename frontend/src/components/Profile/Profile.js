@@ -6,13 +6,12 @@ import { useDispatch } from 'react-redux';
 import Footer from '../NavBar/Footer';
 import { useEffect } from 'react';
 import { fetchUser } from '../../store/session';
-import {DefaultImage} from '../../assets/images/DefaultImage.svg';
+import defaultImage from '../../assets/images/sarah_norton.jpeg';
 import './Profile.scss';
 
 function Profile() {
   const dispatch = useDispatch()
   const user = useSelector(state => state.session.user);
-
   useEffect(() => {
     dispatch(fetchUser())
   }, [dispatch])
@@ -25,12 +24,13 @@ function Profile() {
           <div className='flex-row align-center'>
             <div className="profile_details flex-row justify-center">
               <picture>
-                <img src={user.image} 
+                <img className='profile-photo' src={user.image ? user.image : defaultImage} 
                   alt='user_images'
-                  onError={e => {
-                    e.target.src={DefaultImage}
-                    e.onerror=null
-                  }}/>
+                  // onError={e => {
+                  //   e.target.src={DefaultImage}
+                  //   e.onerror=null
+                  // }}
+                  />
               </picture>
               <div className="user_details">
                 <h2>{user.username}</h2>

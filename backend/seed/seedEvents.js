@@ -21,5 +21,4 @@ const newEvent1 = new Event({
     location: "golden gate",
     image: "https://treasure-photos.s3.us-west-1.amazonaws.com/hike1.jpeg"
 });
-console.log(newEvent1)
 newEvent1.save()

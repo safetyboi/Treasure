@@ -41,14 +41,23 @@ function EventCreate ({pins, mapData}) {
 
       const formData = new FormData();
       formData.append("images", imageFile);
+      let errorPins = [];
 
       pins.forEach(pin=> {
         if (!pin.directionToPin.text) {
-          console.log(`directions to ${pin.order} are required!`)
-          return 
-          //render error 'directions to `${pin.order} are required!
+          errorPins.push(pin.order)
         }
       });
+
+      if (errorPins.length > 1) {
+        alert(`Directions to pins ${errorPins.map(num => ' ' + String(num))} are required!`);
+        return;
+      }
+
+      if (errorPins.length === 1) {
+        alert(`Directions to pin ${errorPins.map(num => String(num))} is required!`);
+        return;
+      }
 
       const firstPin = pins.filter(pin => {
         return pin.order === 1

@@ -10,12 +10,9 @@ const newUser1 = new User({
     image: 'https://treasure-photos.s3.us-west-1.amazonaws.com/andrew_beamer.webp',
 });
 bcrypt.genSalt(10, (salt) => {
-    console.log('here')
     bcrypt.hash('password', salt, async (hashedPassword) => {
         newUser1.hashedPassword = hashedPassword;
-        console.log('here2')
         newUser1.save();
-        console.log('here3')
     })
   });
 

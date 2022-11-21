@@ -25,19 +25,12 @@ const UploadImages = () => {
   };
 
   const handleFiles = async (e) => {
-    console.log(e.target.files[0])
     const file = e.target.files[0];
 
     const formData = new FormData();
 
     formData.append("images", file);
 
-    // await jwtFetch(`/api/events/postImages/${user._id}`, {
-    //     method: "POST",
-    //     body: formData,
-    //   })
-    //     .then((res) => res.json())
-    //     .then((data) => console.log(data));   
   };
 
   return (

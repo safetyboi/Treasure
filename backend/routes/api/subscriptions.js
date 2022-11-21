@@ -36,7 +36,6 @@ router.get('/', requireUser, async (req, res) => {
 // })
 
 router.post('/:eventId', requireUser, validateSubscriptionInput, async (req, res, next) => {
-    console.log('hello')
     try {
         const newSubscription = new Subscription({
             user: req.user._id,
