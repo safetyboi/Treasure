@@ -43,7 +43,6 @@ function App() {
         <ProtectedRoute exact path="/events/:eventId" component={EventLobby} />
         <ProtectedRoute exact path="/events" component={EventIndex} />
         <ProtectedRoute exact path="/profile" component={Profile} />
-        <ProtectedRoute exact path="/testmap" component={PlanningMapWrapper} />
         <ProtectedRoute exact path="/online-game" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/onlinegame" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/imageupload" component={ImageUploader} />
