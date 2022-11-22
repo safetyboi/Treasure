@@ -24,7 +24,7 @@ function Profile() {
         <h1 className='text-center'>Profile</h1>
         <div className="profile_content flex-row justify-between align-center">
           <div className='flex-row align-center'>
-            <div className="profile_details flex-row justify-center">
+            <div className="profile_details flex-row justify-center align-center">
               <picture>
                 <img className='profile-photo' src={user.image ? user.image : defaultImage} 
                   alt='user_images'

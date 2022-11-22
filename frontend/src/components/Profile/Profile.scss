@@ -124,7 +124,12 @@
 }
 
 .profile-photo {
-  height: 100px;
-  width: 100px;
+  height: 10vw;
+  width: 10vw;
   object-fit: cover;
+}
+
+.user_details {
+  margin-left: 2vw;
+  vertical-align: center;
 }
