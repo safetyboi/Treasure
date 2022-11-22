@@ -22,7 +22,6 @@ function EventCreate ({pins, mapData}) {
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [location, setLocation] = useState('');
-    //add missing columns
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
@@ -139,7 +138,7 @@ function EventCreate ({pins, mapData}) {
         pins.forEach(pin=> {
           total += pin.price;
         })
-        return total;
+        return total || 0;
     }
 
     const totalSupplies = () => {
@@ -223,7 +222,7 @@ function EventCreate ({pins, mapData}) {
 
             <div className="errors">{errors && errors.text}</div>
             <input type="file" onChange={updateImage} multiple />
-            <input type="submit" value="Submit" />
+            <button>Submit</button>
           </form>
           {/* <div>{displayPins()}</div> */}
 

@@ -3,14 +3,12 @@ import './PinEditForm.scss';
 import './Map.scss';
 
 const PinEditForm = ({marker, pin, addPinToArray}) => {
-  const [directions, setDirections] = useState(pin.directionToPin.text);
-  const [challengePrompt, setChallengePrompt] = useState(pin.challengePrompt);
-  const [challengeAnswser, setChallengeAnswser] = useState(pin.challengeAnswser);
-  const [supplies, setSupplies] = useState(pin.supplies);
-  const [activityDuration, setActivityDuration] = useState(pin.activityDuration);
-  const [price, setPrice] = useState(pin.price);
-  const [pinStatus, setPinStatus] = useState(false);
-  
+  const [directions, setDirections] = useState(pin.directionToPin ? pin.directionToPin.text : '');
+  const [challengePrompt, setChallengePrompt] = useState(pin.challengePrompt ? pin.challengePrompt : '');
+  const [challengeAnswser, setChallengeAnswser] = useState(pin.challengeAnswser ? pin.challengeAnswser : '');
+  const [supplies, setSupplies] = useState(pin.supplies ? pin.supplies : '');
+  const [activityDuration, setActivityDuration] = useState(pin.activityDuration ? pin.activityDuration : 0);
+  const [price, setPrice] = useState(pin.price ? pin.price : '');  
   const [currentPin, setcurrentPin] = useState(pin);
   
   useEffect(() => {
@@ -52,29 +50,6 @@ const PinEditForm = ({marker, pin, addPinToArray}) => {
   useEffect(() => {
     addPinToArray(currentPin)
   }, [currentPin])
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   const newPin = {
-  //     order: pin.order,
-  //     location: {
-  //       latitude: pin.position.lat(),
-  //       longitude: pin.position.lng(),
-  //     },
-  //     directionToPin: {text: directions},
-  //     task: {
-  //       prompt: challengePrompt,
-  //       correctAnswer: challengeAnswser,
-  //     },
-  //     supplies: supplies,
-  //     price: parseInt(price),
-  //     duration: parseInt(activityDuration)
-  //   };
-
-  //   addPinToArray(newPin);
-  //   setPinStatus(true);
-  // };
 
   return (
     <div className="pin-edit-area">
