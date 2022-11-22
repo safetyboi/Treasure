@@ -71,25 +71,30 @@ router.patch('/addImage/:eventId', validateEventInput, async (req, res, next) =>
     let photoUrl
     //upload to AWS
     imageUpload.single("images")(req, res, async function (err) {
-        setTimeout(function(){
-            if (req?.file) photoUrl = req.file.location
-       }, 1000);
-        if (err) {
-        // return res.json({})
+    photoUrl = await req.file.location
+    console.log(req.file.location, 'photoUrl1')
+
+    Event.findByIdAndUpdate((eventId), {image: photoUrl})
+    .exec()
+    .then((event) => {
+        if(!event) {
+            res.status(400).send(`Id ${req.params.id} was not found`);
+        } else {
+            res.status(200).send(`Id ${req.params.id} was updated`)
         }
+    }) 
+
+    //     setTimeout(function(){
+    //    }, 1000);
+    //     if (err) {
+    //     // return res.json({})
+    //     }
     })
 
-    setTimeout(function(){
-        Event.findByIdAndUpdate((eventId), {image: photoUrl})
-        .exec()
-        .then((event) => {
-            if(!event) {
-                res.status(400).send(`Id ${req.params.id} was not found`);
-            } else {
-                res.status(200).send(`Id ${req.params.id} was updated`)
-            }
-        }) 
-    }, 2000);
+    // setTimeout(function(){
+    //     console.log(photoUrl, 'photoUrl1')
+
+    // }, 2000);
 });
 
 router.get('/:eventId', async (req, res, next) => {
