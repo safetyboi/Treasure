@@ -48,6 +48,7 @@ router.post('/:eventId', requireUser, validatePinInput, async (req, res, next) =
             task: req.body.task,
             directionToPin: req.body.directionToPin,
             price: req.body.price,
+            duration: req.body.duration,
             supplies: req.body.supplies
         })
 
@@ -72,6 +73,7 @@ router.patch('/:id', requireUser, validatePinInput, async (req, res, next) => {
             task: req.body.task,
             directionToPin: req.body.directionToPin,
             price: req.body.price,
+            duration: req.body.duration,
             supplies: req.body.supplies
         })
         .exec()

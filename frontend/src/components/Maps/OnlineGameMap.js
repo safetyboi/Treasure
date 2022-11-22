@@ -231,7 +231,7 @@ export const OnlineGameMap = () => {
               })
               
               setDistance(Math.round(totalDistance * 10) / 10);
-              setDuration(Math.round(eventDuration + (totalDuration / 60)));
+              setDuration(Math.round((totalDuration / 60)));
               
               directionsRenderer.setDirections(response);
             }

@@ -43,6 +43,14 @@ function EventCreate ({pins, mapData}) {
       formData.append("images", imageFile);
       let errorPins = [];
 
+      const eventDurationSum = () => {
+        let duration = 0;
+        pins.forEach(pin => {
+          duration += pin.duration
+        });
+        return duration;
+      }
+
       pins.forEach(pin=> {
         if (!pin.directionToPin.text) {
           errorPins.push(pin.order)
@@ -66,7 +74,7 @@ function EventCreate ({pins, mapData}) {
       newEvent = {
         name: name,
         description: description,
-        duration: mapData.duration,
+        duration: (mapData.duration + eventDurationSum()),
         distance: mapData.distance,
         price: totalPrice(), 
         supplies: totalSupplies(),

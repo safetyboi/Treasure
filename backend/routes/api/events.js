@@ -72,7 +72,7 @@ router.patch('/addImage/:eventId', validateEventInput, async (req, res, next) =>
     //upload to AWS
     imageUpload.single("images")(req, res, async function (err) {
         setTimeout(function(){
-            photoUrl = req.file.location
+            if (req?.file) photoUrl = req.file.location
        }, 1000);
         if (err) {
         // return res.json({})

@@ -20,6 +20,9 @@ const pinSchema = Schema({
     type: Number,
     required: true
   },
+  duration: {
+    type: Number
+  },
   task: [{
     prompt: {
         type: String,
