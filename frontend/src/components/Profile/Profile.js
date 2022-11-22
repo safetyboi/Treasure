@@ -9,6 +9,8 @@ import { fetchUser } from '../../store/session';
 import defaultImage from '../../assets/images/sarah_norton.jpeg';
 import './Profile.scss';
 
+
+
 function Profile() {
   const dispatch = useDispatch()
   const user = useSelector(state => state.session.user);
@@ -20,16 +22,16 @@ function Profile() {
     <section className='profile_page'>
       <div className="profile_wrapper flex-col">
         <h1 className='text-center'>Profile</h1>
-        <div className="profile_content flex-row justify-between">
+        <div className="profile_content flex-row justify-between align-center">
           <div className='flex-row align-center'>
             <div className="profile_details flex-row justify-center">
               <picture>
                 <img className='profile-photo' src={user.image ? user.image : defaultImage} 
                   alt='user_images'
-                  // onError={e => {
-                  //   e.target.src={DefaultImage}
-                  //   e.onerror=null
-                  // }}
+                  onError={e => {
+                    e.target.src={defaultImage}
+                    e.onerror=null
+                  }}
                   />
               </picture>
               <div className="user_details">
