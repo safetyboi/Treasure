@@ -15,7 +15,7 @@ function EventIndexItem({event}) {
   
   const eventImg = () => {
     if (!event.image) {
-      return <img src={defaultImage} alt={`event_${event.name}`} />
+      return <img src={defaultImage} alt={`event_${event.name}`} className="default_img" />
     }
 
     return <img src={event.image} alt={`event_${event.name}`} />
