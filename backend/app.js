@@ -37,6 +37,32 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 // Serve static React build files statically in production
+
+if (!isProduction) {
+  // Enable CORS only in development because React will be on the React
+  // development server (http://localhost:3000). (In production, the Express 
+  // server will serve the React files statically.)
+  app.use(cors());
+}
+
+// ...
+app.use(
+    csurf({
+      cookie: {
+        secure: isProduction,
+        sameSite: isProduction && "Lax",
+        httpOnly: true
+      }
+    })
+  );
+
+// app.use('/', indexRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/events', eventsRouter);
+app.use('/api/pins', pinsRouter);
+app.use('/api/subscriptions', subscriptionsRouter);
+app.use('/api/csrf', csrfRouter);
+
 if (isProduction) {
   const path = require('path');
   // Serve the frontend's index.html file at the root route
@@ -58,34 +84,8 @@ if (isProduction) {
     );
   });
 }
-
-if (!isProduction) {
-    // Enable CORS only in development because React will be on the React
-    // development server (http://localhost:3000). (In production, the Express 
-    // server will serve the React files statically.)
-    app.use(cors());
-  }
-
-  // ...
-  app.use(
-    csurf({
-      cookie: {
-        secure: isProduction,
-        sameSite: isProduction && "Lax",
-        httpOnly: true
-      }
-    })
-  );
-
-// app.use('/', indexRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/events', eventsRouter);
-app.use('/api/pins', pinsRouter);
-app.use('/api/subscriptions', subscriptionsRouter);
-app.use('/api/csrf', csrfRouter);
-
 app.use((req, res, next) => {
-    const err = new Error('Not Found');
+  const err = new Error('Not Found');
     err.statusCode = 404;
     next(err);
   });
