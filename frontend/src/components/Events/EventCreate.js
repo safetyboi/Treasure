@@ -21,7 +21,7 @@ function EventCreate ({pins, mapData}) {
     const [elevation, setElevation] = useState(0);
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
-    const [location, setLocation] = useState('');
+    // const [location, setLocation] = useState('');
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
@@ -118,14 +118,14 @@ function EventCreate ({pins, mapData}) {
   
     const updateName = e => setName(e.currentTarget.value);
     const updateDescription = e => setDescription(e.currentTarget.value);
-    const updateDuration = e => setDuration(e.currentTarget.value);
-    const updateDistance = e => setDistance(e.currentTarget.value);
-    const updatePrice = e => setPrice(e.currentTarget.value);
-    const updateSupplies = e => setSupplies(e.currentTarget.value);
-    const updateElevation = e => setElevation(e.currentTarget.value);
+    // const updateDuration = e => setDuration(e.currentTarget.value);
+    // const updateDistance = e => setDistance(e.currentTarget.value);
+    // const updatePrice = e => setPrice(e.currentTarget.value);
+    // const updateSupplies = e => setSupplies(e.currentTarget.value);
+    // const updateElevation = e => setElevation(e.currentTarget.value);
     const updateDate = e => setDate(e.currentTarget.value);
     const updateTime = e => setTime(e.currentTarget.value);
-    const updateLocation = e => setLocation(e.currentTarget.value);
+    // const updateLocation = e => setLocation(e.currentTarget.value);
 
     const displayPins = ()=> {
         if (pins?.length) {
@@ -197,13 +197,13 @@ function EventCreate ({pins, mapData}) {
                 />
               </label>
             </div>
-            <label>Location
+            {/* <label>Location
               <input
               type="text"
               value={location}
               onChange={updateLocation}
               />
-            </label>
+            </label> */}
             <div className='textarea'>
               <label> Description</label>
               <textarea 
