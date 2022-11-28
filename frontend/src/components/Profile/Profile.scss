@@ -37,6 +37,11 @@
 
   picture {
     margin-right: 2vw;
+    width: 20%;
+
+    img {
+      border-radius: 50%;
+    }
   }
 
   button {
@@ -116,4 +121,15 @@
       padding: 1.5vh;
     }
   }
+}
+
+.profile-photo {
+  height: 10vw;
+  width: 10vw;
+  object-fit: cover;
+}
+
+.user_details {
+  margin-left: 2vw;
+  vertical-align: center;
 }

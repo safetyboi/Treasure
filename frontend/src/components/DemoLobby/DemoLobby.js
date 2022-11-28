@@ -18,7 +18,7 @@ const DemoLobby = () => {
 
           <div className='rigth_demo flex-col align-center'>
             <img src={Calendar} alt="demo_book" />
-            <Link className="lobby-link" to={'/testmap'}>
+            <Link className="lobby-link" to={'/events/new'}>
                 <Button className="lobby-button"> Create Your Own!</Button>  
             </Link>
           </div>

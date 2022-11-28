@@ -46,11 +46,24 @@
         }
 
         .event_list_details {
-          width: 75%;
+          width: 60%;
         }
 
         .event_list_img {
-          width: 15%;
+          width: 40%;
+          height: 100px;
+          overflow: hidden;
+        
+          img {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--border-radius);
+            object-fit: cover;
+          }
+
+          .default_img {
+            opacity: .2;
+          }
         }
       }
     }
@@ -179,3 +192,4 @@
     }
   }
 }
+

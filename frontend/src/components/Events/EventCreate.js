@@ -22,7 +22,6 @@ function EventCreate ({pins, mapData}) {
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [location, setLocation] = useState('');
-    //add missing columns
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
@@ -41,14 +40,31 @@ function EventCreate ({pins, mapData}) {
 
       const formData = new FormData();
       formData.append("images", imageFile);
+      let errorPins = [];
+
+      const eventDurationSum = () => {
+        let duration = 0;
+        pins.forEach(pin => {
+          duration += pin.duration
+        });
+        return duration;
+      }
 
       pins.forEach(pin=> {
         if (!pin.directionToPin.text) {
-          console.log(`directions to ${pin.order} are required!`)
-          return 
-          //render error 'directions to `${pin.order} are required!
+          errorPins.push(pin.order)
         }
       });
+
+      if (errorPins.length > 1) {
+        alert(`Directions to pins ${errorPins.map(num => ' ' + String(num))} are required!`);
+        return;
+      }
+
+      if (errorPins.length === 1) {
+        alert(`Directions to pin ${errorPins.map(num => String(num))} is required!`);
+        return;
+      }
 
       const firstPin = pins.filter(pin => {
         return pin.order === 1
@@ -57,7 +73,7 @@ function EventCreate ({pins, mapData}) {
       newEvent = {
         name: name,
         description: description,
-        duration: mapData.duration,
+        duration: (mapData.duration + eventDurationSum()),
         distance: mapData.distance,
         price: totalPrice(), 
         supplies: totalSupplies(),
@@ -123,7 +139,7 @@ function EventCreate ({pins, mapData}) {
         pins.forEach(pin=> {
           total += pin.price;
         })
-        return total;
+        return total || 0;
     }
 
     const totalSupplies = () => {
@@ -207,7 +223,7 @@ function EventCreate ({pins, mapData}) {
 
             <div className="errors">{errors && errors.text}</div>
             <input type="file" onChange={updateImage} multiple />
-            <input type="submit" value="Submit" />
+            <button>Submit</button>
           </form>
           {/* <div>{displayPins()}</div> */}
 
