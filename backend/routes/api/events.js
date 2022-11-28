@@ -85,18 +85,7 @@ router.patch('/addImage/:eventId', validateEventInput, async (req, res, next) =>
             res.status(200).send(`Id ${req.params.id} was updated`)
         }
     }) 
-
-    //     setTimeout(function(){
-    //    }, 1000);
-    //     if (err) {
-    //     // return res.json({})
-    //     }
     })
-
-    // setTimeout(function(){
-    //     console.log(photoUrl, 'photoUrl1')
-
-    // }, 2000);
 });
 
 router.get('/:eventId', async (req, res, next) => {

@@ -22,21 +22,16 @@ export const EventIndexMap = () => {
 
   useEffect(() => {
     if (!map) {
-      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773259546305965, lng: -122.44496350133707}}))
+      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773259546305965, lng: -122.44496350133707}}));
     };
     
   }, [mapRef]);
 
-  // const mIcon = {
-  //   path: window.google.maps.SymbolPath.CIRCLE,
-  //   fillOpacity: 1,
-  //   fillColor: 'blue',
-  //   strokeOpacity: 0,
-  //   strokeWeight: 0,
-  //   strokeColor: '#333',
-  //   scale: 6,
-  //   labelOrigin: window.google.maps.Point(20, 40)
-  // };
+  if (map) {
+    window.google.maps.event.addListener(map, "click", () => {
+        setShowInfoBox(false);   
+    });
+  };
 
   const markerIcon = {
     url: myIcon,

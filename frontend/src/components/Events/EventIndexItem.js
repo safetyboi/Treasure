@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import DefaultImage from '../../assets/images/defaultImage.svg';
+import defaultImage from '../../assets/images/defaultImage.svg';
 
 function EventIndexItem({event}) {
   const dateObj = new Date(event.date);
@@ -13,13 +13,13 @@ function EventIndexItem({event}) {
   const ampm = localTime.slice(-2);
   const duration = Math.ceil(event.duration / 60);
   
-  // const eventImg = () => {
-  //   if (!event.image) {
-  //     return 
-  //   }
+  const eventImg = () => {
+    if (!event.image) {
+      return <img src={defaultImage} alt={`event_${event.name}`} className="default_img" />
+    }
 
-  //   return <img src={event.image} alt={`event_${event.name}`} />
-  // };
+    return <img src={event.image} alt={`event_${event.name}`} className='event-image' />
+  };
 
   return (
     <li className="event_index_list">
@@ -34,12 +34,13 @@ function EventIndexItem({event}) {
         </div>
         <div className="event_list_img">
           <picture>
-          <img className='thumb-image' src={event.image} 
-            alt={`event_${event.name}`} 
-            onError={e => {
-              e.target.src={DefaultImage}
-              e.onerror=null
-            }}/>
+            {/* <img className='thumb-image' src={eventImg()} 
+              alt={`event_${event.name}`} 
+              onError={e => {
+                e.target.src={defaultImage}
+                e.onerror=null}}
+            /> */}
+            {eventImg()}
           </picture>
         </div>
       </div>

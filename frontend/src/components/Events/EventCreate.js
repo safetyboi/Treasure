@@ -80,7 +80,8 @@ function EventCreate ({pins, mapData}) {
         elevation: mapData.elevation,
         date: date,
         status: false,
-        initCoords: firstPin.location
+        initCoords: firstPin.location,
+        location: location
       }
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
       
@@ -138,7 +139,7 @@ function EventCreate ({pins, mapData}) {
         pins.forEach(pin=> {
           total += pin.price;
         })
-        return total;
+        return total || 0;
     }
 
     const totalSupplies = () => {
@@ -222,7 +223,7 @@ function EventCreate ({pins, mapData}) {
 
             <div className="errors">{errors && errors.text}</div>
             <input type="file" onChange={updateImage} multiple />
-            <input type="submit" value="Submit" />
+            <button>Submit</button>
           </form>
           {/* <div>{displayPins()}</div> */}
 
