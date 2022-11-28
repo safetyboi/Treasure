@@ -67,12 +67,14 @@ router.post('/', requireUser, validateEventInput, async (req, res, next) => {
 
 router.patch('/addImage/:eventId', validateEventInput, async (req, res, next) => {
     const eventId = req.params.eventId
-
     let photoUrl
-    //upload to AWS
     imageUpload.single("images")(req, res, async function (err) {
-    photoUrl = await req.file.location
-    console.log(req.file.location, 'photoUrl1')
+    if(!req.file){
+        photoUrl = 'https://treasure-photos.s3.us-west-1.amazonaws.com/1668753473821'
+    } else{
+        photoUrl = await req.file.location
+        console.log(req.file.location, 'photoUrl1')
+    }
 
     Event.findByIdAndUpdate((eventId), {image: photoUrl})
     .exec()

@@ -22,7 +22,6 @@ function EventCreate ({pins, mapData}) {
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [location, setLocation] = useState('');
-    //add missing columns
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
@@ -38,8 +37,8 @@ function EventCreate ({pins, mapData}) {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-
       const formData = new FormData();
+      
       formData.append("images", imageFile);
       let errorPins = [];
 
