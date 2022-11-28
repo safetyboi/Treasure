@@ -70,6 +70,15 @@ function EventCreate ({pins, mapData}) {
         return pin.order === 1
       })[0]
 
+      const geocoder = new window.google.maps.Geocoder();
+
+      let address = await geocoder.geocode({location: firstPin.location});
+      if (address.results[0]) {
+        address = address.results[0].formatted_address;
+      } else {
+        address = "Location Unavailable"
+      };
+
       newEvent = {
         name: name,
         description: description,
@@ -81,7 +90,7 @@ function EventCreate ({pins, mapData}) {
         date: date,
         status: false,
         initCoords: firstPin.location,
-        location: location
+        location: address
       }
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
       
