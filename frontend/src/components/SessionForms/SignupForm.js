@@ -52,6 +52,17 @@ function SignupForm () {
   const usernameSubmit = async e => {
     e.preventDefault();
 
+    if (!imageFile) {
+      alert('Event must contain at an image. Please Upload a .jpeg or .png')
+      return;
+    }
+
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    if (!allowedExtensions.exec(imageFile.name)) {
+      alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
+      return;
+    }
+
     const formData = new FormData();
     formData.append("images", imageFile);
 
@@ -122,7 +133,9 @@ function SignupForm () {
             <input type="file" onChange={updateImage} multiple />
             <input
               type="submit"
+              id='file2'
               value="Sign Up"
+              accept=".jpg, .jpeg, .png"
               disabled={!email || !username || !password || password !== password2}
             />
           </form>
