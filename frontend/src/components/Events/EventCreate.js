@@ -80,7 +80,8 @@ function EventCreate ({pins, mapData}) {
         elevation: mapData.elevation,
         date: date,
         status: false,
-        initCoords: firstPin.location
+        initCoords: firstPin.location,
+        location: location
       }
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
       
