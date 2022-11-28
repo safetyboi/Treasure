@@ -37,8 +37,8 @@ function EventCreate ({pins, mapData}) {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-
       const formData = new FormData();
+      
       formData.append("images", imageFile);
       let errorPins = [];
 

@@ -163,6 +163,7 @@
   background-color: var(--orange);
   padding: 2vh 2vw;
   border-radius: var(--border-radius);
+  width: 25vw;
   
   p {
     margin-bottom: 1vh;
@@ -173,6 +174,22 @@
     background-color: var(--white);
     color: var(--orange);
     cursor: pointer;
+  }
+
+  .event_list_details {
+    width: 65%;
+    margin-right: 1vw;
+  }
+
+  .event_list_img {
+    width: 30%;
+
+    img {
+      width: 80px;
+      height: 80px;
+      border-radius: .5vw;
+      object-fit: cover;
+    }
   }
 }
 
