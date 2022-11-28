@@ -37,6 +37,11 @@ function EventCreate ({pins, mapData}) {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
+
+      if (pins.length === 0) {
+        alert('Event must contain at least one pin! (click anywhere on the map to add your first pin)')
+        return;
+      }
       const formData = new FormData();
       
       formData.append("images", imageFile);
