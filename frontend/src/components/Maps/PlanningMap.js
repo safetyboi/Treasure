@@ -21,7 +21,7 @@ export const PlanningMap = () => {
   let [numPoints, setNumPoints] = useState(0);
   const [pins, setPins] = useState([]);
   const [mapData, setMapData] = useState({});
-  const [directionsRenderer, setDirectionsRenderer] = useState(new window.google.maps.DirectionsRenderer({suppressMarkers: true}));
+  const [directionsRenderer, setDirectionsRenderer] = useState(new window.google.maps.DirectionsRenderer({suppressMarkers: true, preserveViewport: true}));
 
   useEffect(() => {
     if (!map) {
@@ -63,11 +63,12 @@ export const PlanningMap = () => {
     }
   };
 
-
   const deletePin = (marker) => {
+    setNumPoints(numPoints-= 1);
+    console.log('numPoints  is', numPoints)
     setShowPinEditForm(false);
 
-    let reducedPins = pins.map(pin => {
+    setPins(pins.map(pin => {
       if (pin.order > marker.order) {
         return {...pin, ['order']: pin.order - 1}
       } else if (pin.order === marker.order) {
@@ -75,22 +76,81 @@ export const PlanningMap = () => {
       } else {
         return pin
       }
-    })
-    reducedPins = reducedPins.filter(pin => {
+    }).filter(pin => {
       return pin.order !== -1
-    });
+    }));
 
-    console.log(reducedPins)
-    setPins(reducedPins)
+    // setMarkers(markers.map(mark => {
+    //   if (mark.order > marker.order) {
+    //     // return {...mark, ['order']: mark.order - 1}
+    //     const newMarker = new window.google.maps.Marker({
+    //       order: mark.order - 1,
+    //       position: mark.location,
+    //       map: map,
+    //       icon: {
+    //         path: window.google.maps.SymbolPath.CIRCLE,
+    //         scale: 4.5,
+    //         fillColor: "red",
+    //         fillOpacity: 0.8,
+    //         strokeWeight: 0,
+    //     }
+    //     });
+    //     newMarker.addListener('click', () => {
+    //       setShowPinEditForm(marker);
+    //     })
+
+
+    //   } else if (mark.order === marker.order) {
+    //     return {...mark, ['order']: -1}
+    //   } else {
+    //     return mark
+    //   }
+    // }).filter(mark => {
+    //   return mark.order !== -1
+    // }));
+    marker.setMap(null);
+    let reducedMarkers = [];
+    markers.forEach(mark => {
+      if (mark.order > marker.order) {
+        mark.setMap(null);
+        const newMarker = new window.google.maps.Marker({
+          order: mark.order - 1,
+          position: mark.position,
+          map: map,
+          icon: {
+            path: window.google.maps.SymbolPath.CIRCLE,
+            scale: 4.5,
+            fillColor: "red",
+            fillOpacity: 0.8,
+            strokeWeight: 0,
+        }
+        });
+        newMarker.addListener('click', () => {
+          setShowPinEditForm(newMarker);
+        })
+        reducedMarkers.push(newMarker);
+      } else if (mark.order < marker.order) {
+        reducedMarkers.push(mark);
+      }
+    })
+    setMarkers(reducedMarkers);
+
+
+    // reducedMarkers.forEach(marker => {
+    //   console.log(marker)
+    //   marker.addListener('click', () => {
+    //     setShowPinEditForm(marker);
+    //   })
+    // })
     // setPins(pins.filter(pin => {
     //   return pin.order !== marker.order
     // }));
-    setMarkers(markers.filter(mark => {
-      return mark.order !== marker.order
-    }));
-    setCoords(coords.filter(coord => {
-      return !coords.slice(marker.order - 1, marker.order).includes(coord)
-    }));
+    // setMarkers(markers.filter(mark => {
+    //   return mark.order !== marker.order
+    // }));
+    let reducedCoords = [...coords];
+    reducedCoords.splice(marker.order - 1, 1);
+    setCoords(reducedCoords)
     // let reducedPins = [...pins];
     // reducedPins.map(pin => {
     //   if (pin.order > marker.order) {
@@ -108,7 +168,8 @@ export const PlanningMap = () => {
     //     marker.order -= 1;
     //   };
     // });
-    marker.setMap(null);
+    
+    console.log(pins, markers.map(marker=> marker.order), coords)
   };
 
   const calcElevation = (elevationArray) => {
@@ -142,6 +203,7 @@ export const PlanningMap = () => {
   
 
   const addPin = (location, map) => {
+    console.log(numPoints)
     setNumPoints(numPoints++)
     const marker = new window.google.maps.Marker({
       order: numPoints,
@@ -155,7 +217,7 @@ export const PlanningMap = () => {
         strokeWeight: 0,
     }
     });
-    marker.addListener('click', async () => {
+    marker.addListener('click', () => {
       setShowPinEditForm(marker);
     })
     setMarkers(marks => [...marks, marker])
@@ -187,8 +249,7 @@ export const PlanningMap = () => {
   const elevator = new window.google.maps.ElevationService();
   
   const renderPath = () => {
-    // console.log(coords)
-
+    console.log('renderingpath')
     directionsRenderer.setMap(map);
 
     let midpoints = []
@@ -238,8 +299,7 @@ export const PlanningMap = () => {
   };
 
   useEffect(() => {
-
-    if (coords.length > 1) {
+    if (coords.length > 0) {
         renderPath();
     } 
 

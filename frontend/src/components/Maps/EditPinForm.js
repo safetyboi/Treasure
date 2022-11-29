@@ -30,25 +30,27 @@ const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
   }, [pin?.order])
 
   useEffect(() => {
-    setcurrentPin({
-      order: pin.order,
-      location: {
-        lat: marker.position.lat(),
-        lng: marker.position.lng(),
-      },
-      directionToPin: {text: directions},
-      task: {
-        prompt: challengePrompt,
-        correctAnswer: challengeAnswser,
-      },
-      supplies: supplies,
-      price: parseInt(price),
-      duration: parseInt(activityDuration)
-    })
-  }, [directions, challengeAnswser, challengePrompt, supplies, activityDuration, price, ])
+    if (pin?.length) {
+      setcurrentPin({
+        order: pin?.order,
+        location: {
+          lat: marker.position.lat(),
+          lng: marker.position.lng(),
+        },
+        directionToPin: {text: directions},
+        task: {
+          prompt: challengePrompt,
+          correctAnswer: challengeAnswser,
+        },
+        supplies: supplies,
+        price: parseInt(price),
+        duration: parseInt(activityDuration)
+      })
+    }
+  }, [directions, challengeAnswser, challengePrompt, supplies, activityDuration, price])
 
   useEffect(() => {
-    addPinToArray(currentPin)
+    if (currentPin) addPinToArray(currentPin)
   }, [currentPin]);
 
   const handleDelete = (e) => {
@@ -64,7 +66,7 @@ const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
 
       <form className="pin-edit-form">
         <label>Pin Order
-          <input disabled placeholder="" value={pin.order}/>
+          <input disabled placeholder="" value={marker?.order}/>
         </label>
         <label>Directions to get to this pin
           <input placeholder="*Required*" onChange={e => {setDirections(e.target.value)}} value={directions}/>
