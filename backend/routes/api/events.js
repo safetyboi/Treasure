@@ -123,6 +123,7 @@ router.patch('/:id', requireUser, validateEventInput, async (req, res, next) => 
             gameStatus: req.body.status,
             elevation: req.body.elevation,
             date: req.body.date,
+            status: req.body.status,
             location: req.body.location
         })
         .exec()
