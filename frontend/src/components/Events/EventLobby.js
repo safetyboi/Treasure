@@ -22,7 +22,7 @@ const EventLobby = () => {
   const localTime = dateObj.toLocaleString('en-eg', {timeZone:"America/Los_Angeles"});
   const comaIdx = localTime.indexOf(' ');
   const colonIdx = localTime.indexOf(':');
-  const hour = colonIdx === 13 ? localTime.slice(comaIdx, comaIdx + 5) : localTime.slice(comaIdx, comaIdx + 6);
+  const hour = colonIdx === 13 ? localTime.slice(comaIdx, comaIdx + 4) : localTime.slice(comaIdx, comaIdx + 5);
   const ampm = localTime.slice(-2);
   const duration = Math.ceil(event.duration / 60);
 
@@ -50,7 +50,7 @@ const EventLobby = () => {
           <div className="event_details">
             <div className="event_preview">
               <h1>{event.name}</h1>
-              <p>By <span>{!event.creator.username ? null : event.creator.username}</span></p>
+              <p>By <span>{event.creator.username}</span></p>
               <p><i className="fa-solid fa-dollar-sign"></i>{event.price} USD</p>
             </div>
             <div className="event_description">

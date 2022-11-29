@@ -214,7 +214,7 @@
       // margin: 10vh 15vw;
       width: 70vw;
       height: 50vh;
-      background-color: rgba(45, 45, 45, .5);
+      background-color: rgba(45, 45, 45, .2);
       border-radius: var(--border-radius);
       margin-bottom: 7vh;
       
@@ -281,6 +281,7 @@
 
       button {
         width: 100%;
+        cursor: pointer;
       }
     }
   }
