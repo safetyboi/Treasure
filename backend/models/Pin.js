@@ -7,11 +7,11 @@ const pinSchema = Schema({
     ref: 'Event'
   },
   location: [{
-    latitude: {
+    lat: {
         type: Number,
         required: true
     },
-    longitude: {
+    lng: {
         type: Number,
         required: true
     },
@@ -20,10 +20,12 @@ const pinSchema = Schema({
     type: Number,
     required: true
   },
+  duration: {
+    type: Number
+  },
   task: [{
     prompt: {
         type: String,
-        required: true
     },
     image: {
         type: String
@@ -43,7 +45,6 @@ const pinSchema = Schema({
   }],
   price: {
     type: Number,
-    require: true
   },
   supplies: {
     type: String

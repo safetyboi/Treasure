@@ -54,9 +54,27 @@ const startSession = (userInfo, route) => async dispatch => {
     body: JSON.stringify(userInfo)
   });
   const { user, token } = await res.json();
-  localStorage.setItem('jwtToken', token);
+  localStorage.setItem('jwtToken', `Bearer ${token}`);
   return dispatch(receiveCurrentUser(user));
 };
+
+//----------------update Image-------------------
+
+export const updateUserImage = (user, formData) => async dispatch => {
+  const res = await jwtFetch(`/api/users/${user.currentUser._id}`, {
+    method: "PATCH",
+    body: formData,
+  })
+}
+
+export const fetchUser = () => async dispatch => {
+  const res = await jwtFetch(`/api/users/current`)
+  const user = await res.json();
+  return dispatch(receiveCurrentUser(user));
+}
+
+//----------------logout---------------------
+
 
 export const logout = () => dispatch => {
     localStorage.removeItem('jwtToken');
@@ -66,7 +84,6 @@ export const logout = () => dispatch => {
   export const getCurrentUser = () => async dispatch => {
     const res = await jwtFetch('/api/users/current');
     const user = await res.json();
-    console.log(user);
     return dispatch(receiveCurrentUser(user));
   };
 

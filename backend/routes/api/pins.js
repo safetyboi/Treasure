@@ -20,14 +20,13 @@ router.get('/', async (req, res) => {
 router.get('/:eventId', async (req, res, next) => {
     let pins;
     try {
-        console.log(req.params.eventId)
         pins = await Pin.find({event: req.params.eventId})
         return res.json(pins);
     } catch(err) {
-      const error = new Error('Event not found');
-      error.statusCode = 404;
-      error.errors = { message: "No event found with that id" };
-      return next(error);
+        const error = new Error('Event not found');
+        error.statusCode = 404;
+        error.errors = { message: "No event found with that id" };
+        return next(error);
     }
 
 })
@@ -49,11 +48,12 @@ router.post('/:eventId', requireUser, validatePinInput, async (req, res, next) =
             task: req.body.task,
             directionToPin: req.body.directionToPin,
             price: req.body.price,
+            duration: req.body.duration,
             supplies: req.body.supplies
         })
 
         let pin = await newPin.save()
-        pin = await Pin.populate("name", "description _id")
+        // pin = await Pin.populate("name", "description _id")
         return res.json(pin)
     }
     catch(err) {
@@ -73,6 +73,7 @@ router.patch('/:id', requireUser, validatePinInput, async (req, res, next) => {
             task: req.body.task,
             directionToPin: req.body.directionToPin,
             price: req.body.price,
+            duration: req.body.duration,
             supplies: req.body.supplies
         })
         .exec()

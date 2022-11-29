@@ -13,48 +13,56 @@ const receiveNewPin = pin => ({
     pin
   });
 
-  const receiveEventPins = eventId => ({
-    type: RECEIVE_EVENT_PINS,
-    eventId
+const receiveEventPins = pins => ({
+  type: RECEIVE_EVENT_PINS,
+  pins
+});
+
+// const removeEventPins = eventId => ({
+//   type: REMOVE_EVENT_PINS,
+//   events
+// });
+
+export const getEventPins = (eventId) => (state) => {
+  if (state.pins) return Object.values(state.pins).filter(pin => {
+    return pin.event === eventId
   });
+  return [];
+}
 
-  // const removeEventPins = eventId => ({
-  //   type: REMOVE_EVENT_PINS,
-  //   events
-  // });
-
-  export const fetchEventPins = eventId => async dispatch => {
-    try {
-        const res = await jwtFetch(`api/pins/${eventId}`);
-        const eventPins = await res.json();
-      dispatch(receiveEventPins(eventPins));
-    } catch (err) {
-      const resBody = await err.json();
-      // if (resBody.statusCode === 400) {
-      //   dispatch(receiveErrors(resBody.errors));
-      // }
-    }
-   
+export const fetchEventPins = eventId => async dispatch => {
+  try {
+      const res = await jwtFetch(`/api/pins/${eventId}`);
+      const eventPins = await res.json();
+    dispatch(receiveEventPins(eventPins));
+  } catch (err) {
+    const resBody = await err.json();
+    // if (resBody.statusCode === 400) {
+    //   dispatch(receiveErrors(resBody.errors));
+    // }
   }
 
-  export const createPin = data => async dispatch => {
-    const res = await jwtFetch(`/api/pins/${data.event}`, {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
-      const pin = await res.json();
-      dispatch(receiveNewPin(pin));
-      //no error-handling yet
-  }
+}
 
-  const pinsReducer = (state = {}, action) => {
-    switch(action.type) {
-        case RECEIVE_NEW_PIN:
-            return {...state, [action.pin._id]: action.pin};
-            //more cases?
-        default:
-            return state;
-    }
-  }
+export const createPin = data => async dispatch => {
+  const res = await jwtFetch(`/api/pins/${data.event}`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    const pin = await res.json();
+    dispatch(receiveNewPin(pin));
+    //no error-handling yet
+}
 
-  export default pinsReducer; //note: has not been added to rootReducer
+const pinsReducer = (state = {}, action) => {
+  switch(action.type) {
+      case RECEIVE_NEW_PIN:
+          return {...state, [action.pin._id]: action.pin};
+      case RECEIVE_EVENT_PINS:
+          return action.pins;
+      default:
+          return state;
+  }
+}
+
+export default pinsReducer; //note: has not been added to rootReducer

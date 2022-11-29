@@ -8,12 +8,26 @@ const eventSchema = Schema({
   },
   name: {
     type: String,
-    required: true
+    // required: true
   },
   description: {
     type: String,
-    required: true
+    // required: true
   },
+  location: {
+    type: String,
+    // required: true
+  },
+  initCoords: [{
+    lat: {
+        type: Number,
+        // required: true
+    },
+    lng: {
+        type: Number,
+        // required: true
+    },
+  }],
   duration: {
     type: Number
   },
@@ -26,8 +40,17 @@ const eventSchema = Schema({
   supplies: {
     type: String
   },
+  gameStatus: {
+    type: Boolean
+  },
+  date: {
+    type: Date
+  },
   elevation: {
     type: Number
+  },
+  image: {
+    type: String
   }
 }, {
   timestamps: true

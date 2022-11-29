@@ -4,7 +4,7 @@
 
   .hero {
     position: absolute;
-    top: 30vh;
+    top: 25vh;
 
     .hero_title{
       width: 50vw;
@@ -35,13 +35,70 @@
         letter-spacing: 1px;
       }
     }
+  }
+}
 
-    .hero_img {
-      width: 40vw;
+// Main Page CSS
+.main_page footer {
+  position: absolute;
+}
 
-      img {
-       width: 70%;
-      }
+// Main Page Animation
+.man_map_wrapper {
+  width: 40vw;
+
+  svg {
+   width: 65%;
+  }
+
+  #marker {
+    transform: translateY(-10px);
+    animation: marker 2s infinite linear;
+  }
+
+  @keyframes marker {
+    0% {
+      transform: translateY(-10px);
+    }
+
+    50% {
+      transform: translateY(5px);
+    }
+
+    100% {
+      transform: translateY(-10px);
     }
   }
+
+  #eyes {
+    transform: translate(5px, 2px);
+    animation: eyes 10s linear infinite alternate;
+  }
+
+  @keyframes eyes {
+    0% {
+      transform: translate(5px, 2px);
+    }
+
+    50% {
+      transform: translateY(1px);
+    }
+
+    100% {
+      transform: translate(5px, 2px);
+    }
+  }
+
+  #line {
+    stroke-dasharray: 10;
+    stroke-dashoffset: 1000;
+    animation: dash 5s linear forwards;
+  }
+
+  @keyframes dash {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
 }

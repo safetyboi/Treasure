@@ -8,8 +8,19 @@
   position: relative;
 }
 
-.layer {
+.spacer.layer_down {
+  height: 20vh;
+}
+
+.layer,
+.layer_down {
   background-image: url('../../assets/images/NavbarBg.svg');
+}
+
+.layer_down {
+  transform: rotate(180deg);
+  position: absolute;
+  bottom: 0;
 }
 
 header {
@@ -60,4 +71,31 @@ header {
       color: var(--white);
     }
   }
+}
+
+footer {
+  position: relative;
+  bottom: 0;
+  color: white;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+  width: 100vw;
+
+  p {
+    font-size: 1vw;
+    opacity: .9;
+  }
+
+  a {
+    color: black;
+    margin-right: 2vw;
+  }
+
+  .footer_content {
+    padding: 2vh 5vw;
+  }
+}
+
+footer::-webkit-scrollbar {
+  display: none;
 }

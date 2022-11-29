@@ -9,6 +9,9 @@ const { loginUser, restoreUser } = require('../../config/passport');
 const { isProduction } = require('../../config/keys');
 const validateRegisterInput = require('../../validations/register');
 const validateLoginInput = require('../../validations/login');
+const imageUpload = require('../../services/ImageUpload')
+const { requireUser } = require('../../config/passport');
+
 
 router.get('/', function(req, res, next) {
   res.json({
@@ -17,7 +20,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register',validateRegisterInput, async (req, res, next) => {
-  // Your code will go here
+
   const user = await User.findOne({
     $or: [{ email: req.body.email }, { username: req.body.username }]
   });
@@ -39,7 +42,8 @@ router.post('/register',validateRegisterInput, async (req, res, next) => {
 
   const newUser = new User({
     username: req.body.username,
-    email: req.body.email
+    email: req.body.email,
+    image: ''
   });
 
   bcrypt.genSalt(10, (err, salt) => {
@@ -85,8 +89,43 @@ router.get('/current', restoreUser, (req, res) => {
   res.json({
     _id: req.user._id,
     username: req.user.username,
-    email: req.user.email
+    email: req.user.email,
+    image: req.user.image
   });
 });
+
+//-----------ROUTER PATCH----------------//
+
+router.patch('/:userId', async (req, res, next) => {
+  const userId = req.params.userId
+
+  let photoUrl
+  await imageUpload.single("images")(req, res, async function (err) {
+    photoUrl =  await req.file.location
+    if(!req.file){
+      photoUrl = 'https://treasure-photos.s3.us-west-1.amazonaws.com/1668753473821'
+    } else{
+      photoUrl = await req.file.location
+      console.log(req.file.location, 'photoUrl1')
+    }
+    if (err) {
+      // return res.json({})
+    }
+  })
+
+    User.findByIdAndUpdate((userId),
+    {image: photoUrl}
+    )
+    .exec()
+    .then((event) => {
+        if(!event) {
+            res.status(400).send(`Id ${req.params.id} was not found`);
+        } else {
+            res.status(200).send(`Id ${req.params.id} was updated`)
+        }
+    })
+  });
+
+
 
 module.exports = router;

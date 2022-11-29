@@ -1,8 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
-import './Map.css';
-import './PinEditForm.css'
 import PinEditForm from "./EditPinForm";
+import EventCreate from '../Events/EventCreate';
+import Footer from "../NavBar/Footer";
+import './Map.scss';
+import './PinEditForm.scss';
 
 export const PlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -27,9 +29,6 @@ export const PlanningMap = () => {
     
   }, [mapRef]);
 
-  console.log(numPoints)
-
-
   const calcElevationArray = async (points) => {
     if (points.length > 1) {
       let elev = await (elevator.getElevationAlongPath({
@@ -43,12 +42,37 @@ export const PlanningMap = () => {
     
   };
 
-  const handlePinSubmit = (newPin) => {
-    setPins(allPins => [...allPins, newPin])
+  const selectedPin = (order) => {
+    return pins.filter(pin => {
+      return pin.order === order
+    })[0];
   };
 
-  const deletePin = () => {
+  const addPinToArray = (newPin) => {
+    if (pins.filter(pin => {
+      return pin.order === newPin.order
+    })) {
+      setPins(allPins => 
+        [...allPins.filter(pin => {
+          return pin.order !== newPin.order
+        }), newPin]
+      )
+    } else {
+      setPins(allPins => [...allPins, newPin])
+    }
+  };
 
+
+  const deletePin = (marker) => {
+    // TODO: figure out how to delete a pin
+
+    // setPins(pins.filter(pin => {
+    //   return pin.order !== marker.order
+    // }));
+    // setMarkers(markers.filter(mark => {
+    //   return mark.order !== marker.order
+    // }));
+    // marker.setMap(null);
   };
 
   const calcElevation = (elevationArray) => {
@@ -60,6 +84,26 @@ export const PlanningMap = () => {
     };
     setElevation(Math.round(totalClimbing * 10) / 10);
   };
+
+  const blankPin = (marker) => {
+
+    return {
+      order: marker.order,
+      location: {
+        latitude: marker.position.lat(),
+        longitude: marker.position.lng(),
+      },
+      directionToPin: {text: ''},
+      task: {
+        prompt: '',
+        correctAnswer: '',
+      },
+      supplies: '',
+      price: 0,
+      duration: 0
+    }
+  }
+  
 
   // todo - pineditform is rendered for each position in the marker positions array (statevar). map and pass in the position to it, only show if the showeditform is set to its order. click handler on markers sets that variable to the position. 
   const addPin = (location, map) => {
@@ -77,10 +121,11 @@ export const PlanningMap = () => {
     }
     });
     marker.addListener('click', async () => {
-      console.log(marker)
       setShowPinEditForm(marker);
     })
     setMarkers(marks => [...marks, marker])
+    addPinToArray(blankPin(marker))
+    setShowPinEditForm(marker)
   };
 
   useEffect(() => {
@@ -123,7 +168,7 @@ export const PlanningMap = () => {
       const request = {
           origin: coords[0],
           destination: coords[coords.length - 1],
-          travelMode: 'BICYCLING',
+          travelMode: 'WALKING',
           unitSystem: window.google.maps.UnitSystem.METRIC,
           waypoints: midpoints
       }
@@ -181,29 +226,45 @@ export const PlanningMap = () => {
   //   passUpMapData(distance, duration, polyline, elevationArray, elevation);
   // }, [distance, duration, polyline, elevationArray, elevation])
 
+	// const height = document.getElementById('accordion').clientHeight();
+  // document.getElementById('google-map-container').style.height = height
 
   return (
-    <>
-      {/* <EventCreate pins={pins} mapData={mapData}/> */}
-      <div className="google-map-container" ref={mapRef}>Map</div>
-      {showPinEditForm && <PinEditForm deletePin={deletePin} handlePinSubmit={handlePinSubmit} marker={showPinEditForm}/>}  
+    <div className="planning_map_area flex-row">
+			<div className="planning_map_form">
+			  <EventCreate pins={pins} mapData={mapData}/>
+			</div>
+      <div id="google-map-container" ref={mapRef}>
+        Map
+        {showPinEditForm && 
+					<PinEditForm 
+						deletePin={deletePin} 
+						addPinToArray={addPinToArray} 
+						marker={showPinEditForm} 
+						pin={selectedPin(showPinEditForm.order)}
+					/>
+				}
+      </div>
       {/* TODO grab the correct marker */}
-    </>
+    </div>
   )
 
 };
 
-
-
-
-
-
 const PlanningMapWrapper = () => {
-
   return (
-    <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} >
-      <PlanningMap/>
-    </Wrapper>
+    <div className="planning_map">
+      <section className="planning_map_wrapper flex-col align-center">
+        <h1>Plan an Event</h1>
+        <p>(Click anywhere on the map to create a pin)</p>
+        <Wrapper 
+          apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
+          className="flex-row justify-center">
+          <PlanningMap/>
+        </Wrapper>
+      </section>
+      <Footer />
+    </div>
   )
 };
 

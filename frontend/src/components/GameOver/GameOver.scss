@@ -1,0 +1,35 @@
+.game-over-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--white);
+
+  h1 {
+    color: var(--orange);
+    font-weight: bolder;
+    font-size: 4vw;
+    margin-bottom: 10vh;
+  }
+
+  h2 {
+    margin-bottom: 5vh;
+    font-size: 1.5vw;
+  }
+
+  .stats_details > * {
+    margin-bottom: 2vh;
+
+    .game_over_key {
+      width: 20vw;
+    }
+  } 
+
+  
+  
+  .buttons-container > * {
+    margin: 3vh 1vw;
+  }
+}

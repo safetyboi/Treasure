@@ -1,0 +1,293 @@
+.events_page {
+  top: -15vh;
+  margin: -10vh auto;
+
+  .event_index_wrapper {
+    margin-bottom: 20vh;
+    
+    h1 {
+      margin-bottom: 10vh;
+    }
+
+    .event_index > * {
+      margin: 0 .5vw;
+    }
+
+    .event_list_wrapper {
+      width: 25vw;
+      height: 90vh;
+      overflow: scroll;
+      padding: 0 .5vw;
+
+      .event_list {
+        li {
+          margin-bottom: 3vh;
+          background-color: white;
+          padding: 3vh 2vw;
+          border-radius: var(--border-radius);
+          box-shadow: var(--box-shadow);
+
+          h2 {
+            margin-bottom: 2vh;
+            font-size: 1.2vw;
+          }
+
+          p {
+            font-size: 1vw;
+            margin-bottom: 1vh;
+          }
+
+          .btn {
+            margin-top: 2vh;
+            padding: 1vh 1vw;
+            font-size: 1vw;
+            cursor: pointer;
+          }
+        }
+
+        .event_list_details {
+          width: 60%;
+        }
+
+        .event_list_img {
+          width: 40%;
+          height: 100px;
+          overflow: hidden;
+        
+          img {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--border-radius);
+            object-fit: cover;
+          }
+
+          .default_img {
+            opacity: .2;
+          }
+        }
+      }
+    }
+
+    #event_map {
+      width: 70vw;
+    }
+  }
+}
+
+
+// Create Form CSS
+.form_area {
+  .create_event {
+    padding: 2vh .5vw;
+    width: 100%;
+    background-color: white;
+    padding: 5vh 2vw;
+    border-radius: var(--border-radius);
+    height: 100vh;
+
+    h2 {
+      font-size: 1.3vw;
+      padding: 0 .5vw;
+    }
+  
+    .border {
+      border-bottom: 1px solid rgba(170, 170, 170, 0.5);
+      margin: 2vh 0;
+    }
+
+    input, textarea {
+      display: block;
+      margin: 1vh 0 2vh 0;
+      width: 100%;
+      padding: 1vh 1vw;
+      border-radius: var(--border-radius);
+      font-size: 1vw;
+      border: 1px solid var(--orange);
+    }
+  
+    input:disabled {
+      background-color: lightgrey;
+    }
+
+    input[type="submit"] {
+      cursor: pointer;
+      background-color: var(--orange);
+      border: none;
+      color: var(--white);
+      margin-top: 1vh;
+      height: 6vh;
+      opacity: .9;
+    }
+
+    input[type="submit"]:hover {
+      opacity: 1;
+    }
+
+    .date_time_form > * {
+      width: 49%;
+    }
+  }
+}
+
+
+// Map State CSS
+.map_stat_wrapper {
+  position: absolute;
+  right: 5vw;
+  z-index: 30;
+  top: 17vh;
+  background-color: rgba(0, 0,0, .75);
+  padding: 2vh 1vw;
+  border-radius: var(--border-radius);
+  
+  .stat_key, .stat_value {
+    font-size: .8vw;
+    margin-bottom: 1vh;
+    color: white;
+    font-weight: lighter;
+  }
+  
+  .stat_key {
+    width: 11vw;
+  }
+}
+
+
+// Popup Box SCSS
+.popup-box {
+  position: absolute;
+  top: 55vh;
+  left: 28vw;
+  z-index: 99;
+  list-style: none;
+  background-color: var(--orange);
+  padding: 2vh 2vw;
+  border-radius: var(--border-radius);
+  width: 25vw;
+
+  h2 {
+    margin-bottom: 1vh;
+  }
+  
+  p {
+    margin-bottom: 1vh;
+    font-size: 1vw;
+    line-height: 1.5;
+  }
+
+  button {
+    background-color: var(--white);
+    color: var(--orange);
+    cursor: pointer;
+  }
+
+  .event_list_details {
+    width: 65%;
+    margin-right: 1vw;
+
+    .location {
+      line-height: 1.5vh;
+    }
+  }
+
+  .event_list_img {
+    width: 30%;
+
+    img {
+      width: 80px;
+      height: 80px;
+      border-radius: .5vw;
+      object-fit: cover;
+    }
+  }
+}
+
+/* Event Lobby SCSS*/
+.event_lobby_page {
+  top: -20vh;
+  margin: -5vh auto;
+
+  .event_lobby_wrapper {
+    padding: 0 15vw;
+
+    .event_img {
+      // margin: 10vh 15vw;
+      width: 70vw;
+      height: 50vh;
+      background-color: rgba(45, 45, 45, .2);
+      border-radius: var(--border-radius);
+      margin-bottom: 7vh;
+      
+      img {
+        margin: 0 auto;
+      }
+    }
+  
+    .event_details_wrapper {
+      margin-bottom: 20vh;
+
+      h1 {
+        margin-bottom: 1.2vh;
+      }
+
+      h2 {
+        font-size: 1.75vw;
+        margin-bottom: 1.2vh;
+      }
+
+      i {
+        color: var(--orange);
+        margin-right: .75vw;
+      }
+
+      .event_details {
+        width: 65%;
+      }
+
+      .event_preview,
+      .event_description {
+        margin-bottom: 4vh;
+      }
+
+      .event_preview > *,
+      .time_location > *,
+      .time_details > * {
+        margin-bottom: 1.5vh;
+      }
+
+      .event_preview span {
+        color: var(--orange);
+      }
+    }
+
+    .time_location {
+      .time_duration, 
+      .location {
+        width: 45%;
+      }
+
+      .divider {
+        height: 5vh;
+        border-left: 1px solid rgba(0, 0, 0, .2);
+      }
+    }
+
+    .event_buttons > * {
+      margin-bottom: 2vh;
+    }
+
+    .event_buttons {
+      width: 25%;
+
+      button {
+        width: 100%;
+        cursor: pointer;
+      }
+    }
+  }
+
+  footer {
+    position: relative;
+    bottom: 0;
+  }
+}

@@ -1,0 +1,60 @@
+.planning_map_wrapper {
+  position: relative;
+  top: -15vh;
+  overflow-x: hidden;
+  margin-bottom: 10vh;
+
+  h1 {
+    margin-bottom: 2vh;
+  }
+
+  p {
+    margin-bottom: 5vh;
+    color: var(--gray);
+    font-size: 1.1vw;
+    font-weight: bold;
+  }
+
+  .planning_map_area > * {
+    margin: 0 1vw;
+  }
+
+  .planning_map_area {
+    width: 100vw;
+
+    #google-map-container {
+      height: 100vh;
+      position: relative;
+      border-radius: var(--border-radius);
+    }
+  }
+}
+
+.pin-edit-area {
+  position: absolute;
+  top: 8vh;
+  left: 10px;
+  z-index: 30;
+  background-color: rgba(255, 114, 94, .95);
+  padding: 3vh 2vw;
+  border-radius: var(--border-radius);
+  color: white;
+
+  h2 {
+    margin-bottom: 3vh;
+    font-size: 1.2vw;
+  }
+    
+  label {
+    width: 100%;
+    
+    input {
+      display: block;
+      margin: 1vh 0 2vh 0;
+      width: 100%;
+      padding: 1vh .5vw;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--orange);
+    }
+  }
+}

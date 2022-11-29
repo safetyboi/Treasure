@@ -1,22 +1,40 @@
 import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
+import { useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { loadEvent } from "../../store/events";
+import { Button } from "react-bootstrap";
+import './GameMap.scss'
+import PlayGame from '../../assets/images/PlayGame.svg';
 
-export const ViewingMap = ({event}) => {
+export const ViewingMap = () => {
+  const history = useHistory();
+  const {eventId} = useParams();
+  const event = useSelector(loadEvent(eventId));
   const [map, setMap] = useState(null);
   const mapRef = useRef(null);
-  const currentUser = useSelector(getCurrentUser);
-  const [currentPosition, setCurrentPosition] = useState(getUserPosition(currentUser.id));
-  const participants = useSelector(getEventParticipants(event.id));
+  // const currentUser = useSelector(getCurrentUser);
+  // const [currentPosition, setCurrentPosition] = useState(getUserPosition(currentUser.id));
+  // const participants = useSelector(getEventParticipants(event.id));
+  const updateParticipantPositions = () => {
+    // setParticipantPositions(fetchParticipantPositions());
+    // renderParticipantPositions();
+  };
   const [participantPositions, setParticipantPositions] = useState(updateParticipantPositions());
   const [showPointViewForm, setShowPointViewForm] = useState(null);
   
-  useEffect(() => {
-    if (!map) {
-      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773972, lng: -122.431297}}))
-    };
-    renderPins();
+  const openOnlineGame = (e) => {
+    e.preventDefault();
+    history.push(`/events/${eventId}/online-game`)
+  }
+
+  // useEffect(() => {
+  //   if (!map) {
+  //     setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773972, lng: -122.431297}}))
+  //   };
+  //   renderPins();
     
-  }, [mapRef]);
+  // }, [mapRef]);
 
   // todo: differentiate playerpin and event pins, tie the markers to the pin info somehow
 
@@ -42,29 +60,28 @@ export const ViewingMap = ({event}) => {
     })
   };
 
-  const updateParticipantPositions = () => {
-    setParticipantPositions(fetchParticipantPositions());
-    renderParticipantPositions();
-  };
 
   setInterval(updateParticipantPositions, 30000);
 
   const renderPins = () => {
-    event.pins.forEach(pin => {
+    event?.pins?.forEach(pin => {
       addMarker(pin.location, map)
     })
   }
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (coords.length > 1) {
-        renderPath();
-    } 
+  //   if (coords.length > 1) {
+  //       renderPath();
+  //   } 
 
-  }, [coords])
+  // }, [coords])
 
   return (
-    <div className="google-map-container" ref={mapRef}>Map</div>
+    <div className="view_map flex-col align-center">
+      <img src={PlayGame} alt="play game" />
+      <Button onClick={openOnlineGame}>Play Online Game</Button>
+    </div>
   )
 
 };
@@ -74,12 +91,26 @@ export const ViewingMap = ({event}) => {
 
 
 
-const ViewingMapWrapper = ({event}) => {
+const ViewingMapWrapper = () => {
+  const history = useHistory();
+  const {eventId} = useParams();
+
+  const openOnlineGame = (e) => {
+    e.preventDefault();
+    history.push(`/events/${eventId}/online-game`)
+  }
+
+  const openLiveGame = (e) => {
+    e.preventDefault();
+    history.push(`/events/${eventId}/live-game`)
+  }
 
   return (
-    <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY} libraries={["geometry"]}>
-      <ViewingMap event={event}/>
-    </Wrapper>
+    <div className="view_map flex-col align-center">
+      <img src={PlayGame} alt="play game" />
+      <Button onClick={openOnlineGame}>Play Online Game</Button>
+      <Button onClick={openLiveGame}>Play Live Game</Button>
+    </div>
   )
 };
 
