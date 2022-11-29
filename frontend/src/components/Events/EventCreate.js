@@ -54,7 +54,7 @@ function EventCreate ({pins, mapData}) {
     }
 
     if (!imageFile) {
-      alert('Event must include an image. Please Upload')
+      alert('Event must contain at an image. Please Upload')
       return;
     }
 
@@ -106,6 +106,8 @@ function EventCreate ({pins, mapData}) {
         address = "Location Unavailable"
       };
 
+      const dateTime = date + 'T' + time + '-08:00'
+
       newEvent = {
         name: name,
         description: description,
@@ -114,7 +116,7 @@ function EventCreate ({pins, mapData}) {
         price: totalPrice(), 
         supplies: totalSupplies(),
         elevation: mapData.elevation,
-        date: date,
+        date: dateTime,
         status: false,
         initCoords: firstPin.location,
         location: address
@@ -154,6 +156,11 @@ function EventCreate ({pins, mapData}) {
     const updateDate = e => setDate(e.currentTarget.value);
     const updateTime = e => setTime(e.currentTarget.value);
     // const updateLocation = e => setLocation(e.currentTarget.value);
+
+    useEffect(() => {
+      console.log('time is changed')
+      console.log(time)
+    }, [time])
 
     const displayPins = ()=> {
         if (pins?.length) {
