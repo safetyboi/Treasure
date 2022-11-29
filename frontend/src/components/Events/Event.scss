@@ -164,10 +164,15 @@
   padding: 2vh 2vw;
   border-radius: var(--border-radius);
   width: 25vw;
+
+  h2 {
+    margin-bottom: 1vh;
+  }
   
   p {
     margin-bottom: 1vh;
     font-size: 1vw;
+    line-height: 1.5;
   }
 
   button {
@@ -179,6 +184,10 @@
   .event_list_details {
     width: 65%;
     margin-right: 1vw;
+
+    .location {
+      line-height: 1.5vh;
+    }
   }
 
   .event_list_img {
