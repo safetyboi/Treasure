@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { fetchEvent, loadEvent } from "../../store/events";
 import { Button } from "react-bootstrap";
 import Footer from '../NavBar/Footer';
-import PlayGame from '../../assets/images/PlayGame.svg';
 import defaultImage from '../../assets/images/defaultImage.svg'
 
 const EventLobby = () => {
