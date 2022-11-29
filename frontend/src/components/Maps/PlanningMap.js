@@ -80,34 +80,7 @@ export const PlanningMap = () => {
       return pin.order !== -1
     }));
 
-    // setMarkers(markers.map(mark => {
-    //   if (mark.order > marker.order) {
-    //     // return {...mark, ['order']: mark.order - 1}
-    //     const newMarker = new window.google.maps.Marker({
-    //       order: mark.order - 1,
-    //       position: mark.location,
-    //       map: map,
-    //       icon: {
-    //         path: window.google.maps.SymbolPath.CIRCLE,
-    //         scale: 4.5,
-    //         fillColor: "red",
-    //         fillOpacity: 0.8,
-    //         strokeWeight: 0,
-    //     }
-    //     });
-    //     newMarker.addListener('click', () => {
-    //       setShowPinEditForm(marker);
-    //     })
 
-
-    //   } else if (mark.order === marker.order) {
-    //     return {...mark, ['order']: -1}
-    //   } else {
-    //     return mark
-    //   }
-    // }).filter(mark => {
-    //   return mark.order !== -1
-    // }));
     marker.setMap(null);
     let reducedMarkers = [];
     markers.forEach(mark => {
@@ -136,47 +109,14 @@ export const PlanningMap = () => {
     setMarkers(reducedMarkers);
 
     window.google.maps.event.removeListener(mapListener);
-    setMapListener('');
     setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
       setCoords(allCoords => [...allCoords, event.latLng])
       addPin(event.latLng, map);
     }));
 
-
-    // reducedMarkers.forEach(marker => {
-    //   console.log(marker)
-    //   marker.addListener('click', () => {
-    //     setShowPinEditForm(marker);
-    //   })
-    // })
-    // setPins(pins.filter(pin => {
-    //   return pin.order !== marker.order
-    // }));
-    // setMarkers(markers.filter(mark => {
-    //   return mark.order !== marker.order
-    // }));
     let reducedCoords = [...coords];
     reducedCoords.splice(marker.order - 1, 1);
     setCoords(reducedCoords)
-    // let reducedPins = [...pins];
-    // reducedPins.map(pin => {
-    //   if (pin.order > marker.order) {
-    //     return {...pin, ['order']: pin.order - 1};
-    //   } else {
-    //     return pin;
-    //   }
-    // });
-    // console.log(reducedPins)
-
-    // setPins(reducedPins);
-
-    // markers.forEach(mark => {
-    //   if (mark.order > marker.order) {
-    //     marker.order -= 1;
-    //   };
-    // });
-    
-    // console.log(pins, markers.map(marker=> marker.order), coords)
   };
 
   const calcElevation = (elevationArray) => {
