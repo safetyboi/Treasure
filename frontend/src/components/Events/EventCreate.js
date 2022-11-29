@@ -37,6 +37,33 @@ function EventCreate ({pins, mapData}) {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
+
+    if (name.length === 0) {
+      alert('Event must contain a name')
+      return;
+    }
+
+    if (description.length === 0) {
+      alert('Event must contain a description')
+      return;
+    }
+
+    if (pins.length === 0) {
+      alert('Event must contain at least one pin! (click anywhere on the map to add your first pin)')
+      return;
+    }
+
+    if (!imageFile) {
+      alert('Event must contain at an image. Please Upload')
+      return;
+    }
+
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    if (!allowedExtensions.exec(imageFile.name)) {
+      alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
+      return;
+    }
+
       const formData = new FormData();
       
       formData.append("images", imageFile);
@@ -92,6 +119,7 @@ function EventCreate ({pins, mapData}) {
         initCoords: firstPin.location,
         location: address
       }
+      
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
       
       if (eventExists) { 

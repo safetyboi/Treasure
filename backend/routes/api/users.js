@@ -100,15 +100,19 @@ router.patch('/:userId', async (req, res, next) => {
   const userId = req.params.userId
 
   let photoUrl
-  //upload to AWS
   await imageUpload.single("images")(req, res, async function (err) {
     photoUrl =  await req.file.location
+    if(!req.file){
+      photoUrl = 'https://treasure-photos.s3.us-west-1.amazonaws.com/1668753473821'
+    } else{
+      photoUrl = await req.file.location
+      console.log(req.file.location, 'photoUrl1')
+    }
     if (err) {
       // return res.json({})
     }
   })
 
-  setTimeout(function(){
     User.findByIdAndUpdate((userId),
     {image: photoUrl}
     )
@@ -119,9 +123,8 @@ router.patch('/:userId', async (req, res, next) => {
         } else {
             res.status(200).send(`Id ${req.params.id} was updated`)
         }
-    }) }, 1000);
-  
-});
+    })
+  });
 
 
 
