@@ -3,6 +3,7 @@ import './PinEditForm.scss';
 import './Map.scss';
 
 const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
+  console.log('pin is', pin)
   const [directions, setDirections] = useState(pin?.directionToPin ? pin.directionToPin.text : '');
   const [challengePrompt, setChallengePrompt] = useState(pin?.challengePrompt ? pin.challengePrompt : '');
   const [challengeAnswser, setChallengeAnswser] = useState(pin?.challengeAnswser ? pin.challengeAnswser : '');

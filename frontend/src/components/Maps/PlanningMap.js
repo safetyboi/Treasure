@@ -22,6 +22,7 @@ export const PlanningMap = () => {
   const [pins, setPins] = useState([]);
   const [mapData, setMapData] = useState({});
   const [directionsRenderer, setDirectionsRenderer] = useState(new window.google.maps.DirectionsRenderer({suppressMarkers: true, preserveViewport: true}));
+  const [mapListener, setMapListener] = useState('');
 
   useEffect(() => {
     if (!map) {
@@ -64,8 +65,7 @@ export const PlanningMap = () => {
   };
 
   const deletePin = (marker) => {
-    setNumPoints(numPoints-= 1);
-    console.log('numPoints  is', numPoints)
+    setNumPoints(numPoints - 1);
     setShowPinEditForm(false);
 
     setPins(pins.map(pin => {
@@ -135,6 +135,13 @@ export const PlanningMap = () => {
     })
     setMarkers(reducedMarkers);
 
+    window.google.maps.event.removeListener(mapListener);
+    setMapListener('');
+    setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
+      setCoords(allCoords => [...allCoords, event.latLng])
+      addPin(event.latLng, map);
+    }));
+
 
     // reducedMarkers.forEach(marker => {
     //   console.log(marker)
@@ -169,7 +176,7 @@ export const PlanningMap = () => {
     //   };
     // });
     
-    console.log(pins, markers.map(marker=> marker.order), coords)
+    // console.log(pins, markers.map(marker=> marker.order), coords)
   };
 
   const calcElevation = (elevationArray) => {
@@ -201,10 +208,8 @@ export const PlanningMap = () => {
     }
   }
   
-
-  const addPin = (location, map) => {
-    console.log(numPoints)
-    setNumPoints(numPoints++)
+  const addPin = async (location, map) => {
+    setNumPoints(numPoints++);
     const marker = new window.google.maps.Marker({
       order: numPoints,
       position: location,
@@ -217,20 +222,28 @@ export const PlanningMap = () => {
         strokeWeight: 0,
     }
     });
+    await setMarkers(marks => [...marks, marker])
+    await addPinToArray(blankPin(marker))
+    await setShowPinEditForm(marker);
     marker.addListener('click', () => {
       setShowPinEditForm(marker);
     })
-    setMarkers(marks => [...marks, marker])
-    addPinToArray(blankPin(marker))
-    setShowPinEditForm(marker)
+    
   };
+
+  // useEffect(() => {
+
+  // }, [numPoints])
+
+
+
 
   useEffect(() => {
     if (map) {
-      window.google.maps.event.addListener(map, "click", (event) => {
+      setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
         setCoords(allCoords => [...allCoords, event.latLng])
         addPin(event.latLng, map);
-      });
+      }));
     };
     
   }, [map]) ;
@@ -249,7 +262,6 @@ export const PlanningMap = () => {
   const elevator = new window.google.maps.ElevationService();
   
   const renderPath = () => {
-    console.log('renderingpath')
     directionsRenderer.setMap(map);
 
     let midpoints = []
