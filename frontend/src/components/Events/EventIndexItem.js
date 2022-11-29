@@ -10,7 +10,8 @@ function EventIndexItem({event}) {
   const date = dateStrg.slice(4, 15);
   const localTime = dateObj.toLocaleString('en-eg', {timeZone:"America/Los_Angeles"});
   const comaIdx = localTime.indexOf(' ');
-  const hour = localTime.slice(comaIdx, comaIdx + 6);
+  const colonIdx = localTime.indexOf(':');
+  const hour = colonIdx === 13 ? localTime.slice(comaIdx, comaIdx + 5) : localTime.slice(comaIdx, comaIdx + 6);
   const ampm = localTime.slice(-2);
   const duration = Math.ceil(event.duration / 60);
   
