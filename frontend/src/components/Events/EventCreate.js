@@ -123,6 +123,7 @@ function EventCreate ({pins, mapData}) {
         initCoords: firstPin.location,
         location: address
       }
+      
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
       
       if (eventExists) { 
@@ -192,7 +193,7 @@ function EventCreate ({pins, mapData}) {
       pins.forEach(pin=> {
         if (pin.supplies.length > 0) return total += `${pin.supplies}, `;
       })
-      return total;
+      return total.slice(0, -2);
     }
 
     const totalDuration = () => {

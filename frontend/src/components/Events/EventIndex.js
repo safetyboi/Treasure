@@ -2,9 +2,9 @@ import { useEffect,useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchEvents, loadEvents } from '../../store/events';
 import EventIndexItem from './EventIndexItem';
-import './Event.scss';
 import Footer from '../NavBar/Footer';
 import EventIndexMapWrapper from './EventIndexMap';
+import './Event.scss';
 
 function EventIndex() {
   const dispatch = useDispatch();
