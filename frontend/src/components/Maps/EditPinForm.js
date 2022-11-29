@@ -3,7 +3,6 @@ import './PinEditForm.scss';
 import './Map.scss';
 
 const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
-  console.log('pin is', pin)
   const [directions, setDirections] = useState(pin?.directionToPin ? pin.directionToPin.text : '');
   const [challengePrompt, setChallengePrompt] = useState(pin?.challengePrompt ? pin.challengePrompt : '');
   const [challengeAnswser, setChallengeAnswser] = useState(pin?.challengeAnswser ? pin.challengeAnswser : '');
@@ -14,12 +13,12 @@ const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
   
   useEffect(() => {
     if (pin) {
-      setDirections(pin.directionToPin?.text);
-      setChallengePrompt(pin.task?.prompt);
-      setChallengeAnswser(pin.task?.correctAnswer);
-      setSupplies(pin?.supplies);
-      setActivityDuration(pin?.duration);
-      setPrice(pin?.price);
+      setDirections(pin.directionToPin.text);
+      setChallengePrompt(pin.task.prompt);
+      setChallengeAnswser(pin.task.correctAnswer);
+      setSupplies(pin.supplies);
+      setActivityDuration(pin.duration);
+      setPrice(pin.price);
     } else {
       setDirections('');
       setChallengePrompt('');
@@ -28,26 +27,24 @@ const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
       setActivityDuration(0);
       setPrice(0);
     }
-  }, [pin?.order])
+  }, [pin.order])
 
   useEffect(() => {
-    if (pin?.length) {
-      setcurrentPin({
-        order: pin?.order,
-        location: {
-          lat: marker.position.lat(),
-          lng: marker.position.lng(),
-        },
-        directionToPin: {text: directions},
-        task: {
-          prompt: challengePrompt,
-          correctAnswer: challengeAnswser,
-        },
-        supplies: supplies,
-        price: parseInt(price),
-        duration: parseInt(activityDuration)
-      })
-    }
+    setcurrentPin({
+      order: pin?.order,
+      location: {
+        lat: marker.position.lat(),
+        lng: marker.position.lng(),
+      },
+      directionToPin: {text: directions},
+      task: {
+        prompt: challengePrompt,
+        correctAnswer: challengeAnswser,
+      },
+      supplies: supplies,
+      price: parseInt(price),
+      duration: parseInt(activityDuration)
+    })
   }, [directions, challengeAnswser, challengePrompt, supplies, activityDuration, price])
 
   useEffect(() => {

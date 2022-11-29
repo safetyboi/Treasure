@@ -208,7 +208,7 @@ export const PlanningMap = () => {
     }
   }
   
-  const addPin = async (location, map) => {
+  const addPin = (location, map) => {
     setNumPoints(numPoints++);
     const marker = new window.google.maps.Marker({
       order: numPoints,
@@ -222,21 +222,13 @@ export const PlanningMap = () => {
         strokeWeight: 0,
     }
     });
-    await setMarkers(marks => [...marks, marker])
-    await addPinToArray(blankPin(marker))
-    await setShowPinEditForm(marker);
-    marker.addListener('click', () => {
+    marker.addListener('click', async() => {
       setShowPinEditForm(marker);
     })
-    
+    setMarkers(marks => [...marks, marker])
+    addPinToArray(blankPin(marker))
+    setShowPinEditForm(marker);
   };
-
-  // useEffect(() => {
-
-  // }, [numPoints])
-
-
-
 
   useEffect(() => {
     if (map) {
