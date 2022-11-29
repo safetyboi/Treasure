@@ -221,6 +221,12 @@
       img {
         margin: 0 auto;
       }
+
+      img.default_img {
+        height: 100%;
+        padding-top: 5%;
+        opacity: .2;
+      }
     }
   
     .event_details_wrapper {

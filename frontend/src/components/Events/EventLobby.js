@@ -1,4 +1,3 @@
-
 import { useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -6,7 +5,6 @@ import { useEffect } from "react";
 import { fetchEvent, loadEvent } from "../../store/events";
 import { Button } from "react-bootstrap";
 import Footer from '../NavBar/Footer';
-import PlayGame from '../../assets/images/PlayGame.svg';
 import defaultImage from '../../assets/images/defaultImage.svg'
 
 const EventLobby = () => {
@@ -46,11 +44,19 @@ const EventLobby = () => {
     history.push(`/events/${eventId}/live-game`)
   }
 
+  const eventImg = () => {
+    if (!event.image) {
+      return <img src={defaultImage} alt={`event_${event.name}`} className="default_img" />
+    }
+
+    return <img src={event.image} alt={`${event.name}_image`}/>
+  }
+
   return (
     <section className="event_lobby_page">
       <div className="event_lobby_wrapper">
         <div className="event_img flex-row justify-center">
-          <img src={event.image} alt={`${event.name}_image`}/>
+          {eventImg()}
         </div>
         <div className="event_details_wrapper flex-row justify-between">
           <div className="event_details">
@@ -89,7 +95,6 @@ const EventLobby = () => {
           </div>
 
           <div className="event_buttons flex-col align-center">
-            {/* <img src={PlayGame} alt="play game" /> */}
             <Button onClick={openOnlineGame}>Play Online Game</Button>
             <Button>Join the event</Button>
             <Button onClick={openUpdateEvent}>Update</Button>
