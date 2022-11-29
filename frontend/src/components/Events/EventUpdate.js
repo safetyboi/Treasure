@@ -7,6 +7,7 @@ import * as pinReducerActions from '../../store/pins';
 import * as eventReducerActions from '../../store/events';
 import jwtFetch from '../../store/jwt';
 import './Event.scss'
+import { useParams } from 'react-router-dom';
 
 export const EventUpdate = ({event, pins, mapData}) => {
 
@@ -19,6 +20,7 @@ export const EventUpdate = ({event, pins, mapData}) => {
     const updateDescription = e => setDescription(e.currentTarget.value);
     const updateDate = e => setDate(e.currentTarget.value);
     const updateTime = e => setTime(e.currentTarget.value);
+    const {eventId} = useParams()
 
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
@@ -29,32 +31,48 @@ export const EventUpdate = ({event, pins, mapData}) => {
         imageFile = e.target.files[0] 
       };
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
 
-        const eventDurationSum = () => {
-            let duration = 0;
-            pins.forEach(pin => {
-              duration += pin.duration
-            });
-            return duration;
-        }
+    const eventDurationSum = () => {
+        let duration = 0;
+        pins.forEach(pin => {
+          duration += pin.duration
+        });
+        return duration;
+    }
 
-        const firstPin = pins.filter(pin => {
-            return pin.order === 1
-        })[0]
-    
-        const geocoder = new window.google.maps.Geocoder();
-    
-        let address = await geocoder.geocode({location: firstPin.location});
-          if (address.results[0]) {
-            address = address.results[0].formatted_address;
-          } else {
-            address = "Location Unavailable"
-          };
+    const firstPin = pins.filter(pin => {
+        return pin.order === 1
+    })[0]
+
+    const geocoder = new window.google.maps.Geocoder();
+
+    let address = await geocoder.geocode({location: firstPin.location});
+      if (address.results[0]) {
+        address = address.results[0].formatted_address;
+      } else {
+        address = "Location Unavailable"
+      };
+
+      if (!imageFile) {
+        alert('Event must contain at an image. Please Upload')
+        return;
+      }
+  
+      const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+      if (!allowedExtensions.exec(imageFile.name)) {
+        alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
+        return;
+      }
+  
+      const formData = new FormData();
+      
+      formData.append("images", imageFile);
+      let errorPins = [];
 
 
-    const eventToUpdate = {
-            id: event._id, //this line is strictly so that the thunk will have a wildcard in the package it receives 
+      const eventToUpdate = {
+            id: eventId, //this line is strictly so that the thunk will have a wildcard in the package it receives 
             name: name,
             description: description,
             duration: (mapData.duration + eventDurationSum()),
@@ -67,7 +85,9 @@ export const EventUpdate = ({event, pins, mapData}) => {
             initCoords: firstPin.location,
             location: address
         }
-        let eventUpdated = await dispatch(eventReducerActions.updateEvent(eventToUpdate));
+      let eventUpdated = await dispatch(eventReducerActions.updateEvent(eventToUpdate));
+
+      history.push(`/events/${eventId}`)
     }
 
 
