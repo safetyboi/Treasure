@@ -9,8 +9,6 @@ import { fetchUser } from '../../store/session';
 import defaultImage from '../../assets/images/sarah_norton.jpeg';
 import './Profile.scss';
 
-
-
 function Profile() {
   const dispatch = useDispatch()
   const user = useSelector(state => state.session.user);

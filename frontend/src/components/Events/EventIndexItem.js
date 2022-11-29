@@ -6,11 +6,13 @@ import './Event.scss'
 function EventIndexItem({event}) {
   const dateObj = new Date(event.date);
   const dateStrg = String(dateObj)
-  const day = dateStrg.slice(0, 3);
-  const date = dateStrg.slice(4, 15);
   const localTime = dateObj.toLocaleString('en-eg', {timeZone:"America/Los_Angeles"});
-  const comaIdx = localTime.indexOf(' ');
-  const hour = localTime.slice(comaIdx, comaIdx + 6);
+  const comaIdx = localTime.indexOf(',');
+  const colonIdx = localTime.indexOf(':');
+  const date = localTime.slice(0, comaIdx);
+  const day = dateStrg.slice(0, 3);
+  const hourLen = colonIdx - comaIdx;
+  const hour = hourLen === 3 ? localTime.slice(comaIdx + 2, comaIdx + 6) : localTime.slice(comaIdx + 2, comaIdx + 7);
   const ampm = localTime.slice(-2);
   const duration = Math.ceil(event.duration / 60);
   
@@ -35,12 +37,6 @@ function EventIndexItem({event}) {
         </div>
         <div className="event_list_img flex-row justify-end">
           <picture>
-            {/* <img className='thumb-image' src={eventImg()} 
-              alt={`event_${event.name}`} 
-              onError={e => {
-                e.target.src={defaultImage}
-                e.onerror=null}}
-            /> */}
             {eventImg()}
           </picture>
         </div>
