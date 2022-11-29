@@ -2,6 +2,7 @@ import jwtFetch from './jwt';
 
 const RECEIVE_EVENTS = "events/RECEIVE_EVENTS";
 const RECEIVE_EVENT = "events/RECEIVE_EVENT";
+const REMOVE_EVENT = "events/REMOVE_EVENT";
 const RECEIVE_USER_EVENTS = "events/RECEIVE_USER_EVENTS";
 const RECEIVE_EVENT_ERRORS = "events/RECEIVE_EVENT_ERRORS";
 const CLEAR_EVENT_ERRORS = "events/CLEAR_EVENT_ERRORS";
@@ -12,9 +13,13 @@ const receiveEvents = events => ({
 });
 
 const receiveEvent = event => ({
-    type: RECEIVE_EVENT,
-    event
+  type: RECEIVE_EVENT,
+  event
+})
 
+const removeEvent = eventId => ({
+  type: REMOVE_EVENT,
+  eventId
 })
 
 const receiveUserEvents = events => ({
@@ -41,79 +46,97 @@ export const loadEvent = eventId => state => {
 }
 
 export const fetchEvents = () => async dispatch => {
-    try {
-      const res = await jwtFetch ('/api/events');
-      const events = await res.json();
-      dispatch(receiveEvents(events));
+  try {
+    const res = await jwtFetch ('/api/events');
+    const events = await res.json();
+    dispatch(receiveEvents(events));
+  } catch (err) {
+    const resBody = await err.json();
+    if (resBody.statusCode === 400) {
+      dispatch(receiveErrors(resBody.errors));
+    }
+  }
+};
+
+export const fetchEvent = (eventId) => async dispatch => {
+  try {
+      const res = await jwtFetch (`/api/events/${eventId}`);
+      const event = await res.json();
+      dispatch(receiveEvent(event));
     } catch (err) {
       const resBody = await err.json();
       if (resBody.statusCode === 400) {
         dispatch(receiveErrors(resBody.errors));
       }
     }
-  };
-
-  export const fetchEvent = (eventId) => async dispatch => {
-    try {
-        const res = await jwtFetch (`/api/events/${eventId}`);
-        const event = await res.json();
-        dispatch(receiveEvent(event));
-      } catch (err) {
-        const resBody = await err.json();
-        if (resBody.statusCode === 400) {
-          dispatch(receiveErrors(resBody.errors));
-        }
-      }
-  }
+}
   
-  export const fetchUserEvents = id => async dispatch => {
-    try {
-      const res = await jwtFetch(`/api/events/user/${id}`);
-      const events = await res.json();
-      dispatch(receiveUserEvents(events));
-    } catch(err) {
-      const resBody = await err.json();
-      if (resBody.statusCode === 400) {
-        return dispatch(receiveErrors(resBody.errors));
-      }
-    }
-  };
-  
-  export const createEvent = data => async dispatch => {
-    try {
-      const res = await jwtFetch('/api/events/', {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
-      const event = await res.json();
-      dispatch(receiveEvent(event));
-      return event;
-    } catch(err) {
-      const resBody = await err.json();
-      if (resBody.statusCode === 400) {
-        // return dispatch(receiveErrors(resBody.errors));
-        return null;
-      }
-    }
-  };
-
-  export const updateEvent = data =>  async dispatch => {
-    try {
-      const res = await jwtFetch(`api/events/${data.id}`,{ //this is fine so long as you shape the data object in the EventUpdate to have an "id" key
-        method: 'PATCH',
-        body: JSON.stringify(data)
-      });
-      const updatedEvent = await res.json();
-      dispatch(receiveEvent(updatedEvent));
-        return updatedEvent;
-    } catch(err) {
-        const resBody = await err.json();
-        if (resBody.statusCode === 400) {
-        // return dispatch(receiveErrors(resBody.errors));
-        return null;
-        }
+export const fetchUserEvents = id => async dispatch => {
+  try {
+    const res = await jwtFetch(`/api/events/user/${id}`);
+    const events = await res.json();
+    dispatch(receiveUserEvents(events));
+  } catch(err) {
+    const resBody = await err.json();
+    if (resBody.statusCode === 400) {
+      return dispatch(receiveErrors(resBody.errors));
     }
   }
+};
+
+export const createEvent = data => async dispatch => {
+  try {
+    const res = await jwtFetch('/api/events/', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    const event = await res.json();
+    dispatch(receiveEvent(event));
+    return event;
+  } catch(err) {
+    const resBody = await err.json();
+    if (resBody.statusCode === 400) {
+      // return dispatch(receiveErrors(resBody.errors));
+      return null;
+    }
+  }
+};
+
+export const updateEvent = data =>  async dispatch => {
+  try {
+    const res = await jwtFetch(`api/events/${data.id}`,{ //this is fine so long as you shape the data object in the EventUpdate to have an "id" key
+      method: 'PATCH',
+      body: JSON.stringify(data)
+    });
+    const updatedEvent = await res.json();
+    dispatch(receiveEvent(updatedEvent));
+      return updatedEvent;
+  } catch(err) {
+      const resBody = await err.json();
+      if (resBody.statusCode === 400) {
+      // return dispatch(receiveErrors(resBody.errors));
+      return null;
+    }
+  }
+}
+
+export const deleteEvent = eventId => async dispatch => {
+  try {
+    const res = await jwtFetch(`api/events/${eventId}`, {
+      method: 'DELETE'
+    });
+
+    if (res.ok) {
+      dispatch(removeEvent(eventId));
+    }
+  } catch(err) {
+    const resBody = await err.json();
+      if (resBody.statusCode === 400) {
+      // return dispatch(receiveErrors(resBody.errors));
+      return null;
+    }
+  }
+}
 
 const nullErrors = null;
 
@@ -134,6 +157,10 @@ const eventsReducer = (state = {}, action) => {
         return action.events;
       case RECEIVE_EVENT:
         return {...state, [action.event._id]: action.event} 
+      case REMOVE_EVENT:
+        let nextState = {...state};
+        delete nextState[action.eventId];
+        return nextState;
       case RECEIVE_USER_EVENTS:
         return action.events;
       default:

@@ -9,7 +9,7 @@ import './MainPage.scss';
 
 function MainPage() {
   const dispatch = useDispatch();
-  const loggedIn = useSelector(state => !!state.session.user)
+  const loggedIn = useSelector(state => !!state.session.user);
   const demoLogin = ()=> {
     dispatch(login({email: 'demo@user.io', password: 'password'}))
   }

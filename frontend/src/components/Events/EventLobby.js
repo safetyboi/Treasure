@@ -2,7 +2,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { fetchEvent, loadEvent } from "../../store/events";
+import { deleteEvent, fetchEvent, loadEvent } from "../../store/events";
 import { Button } from "react-bootstrap";
 import Footer from '../NavBar/Footer';
 import defaultImage from '../../assets/images/defaultImage.svg'
@@ -12,6 +12,7 @@ const EventLobby = () => {
   const history = useHistory();
   const {eventId} = useParams();
   const event = useSelector(loadEvent(eventId));
+  const user = useSelector(state => state.session.user);
 
   const dateObj = new Date(event.date);
   const dateStrg = String(dateObj)
@@ -52,6 +53,17 @@ const EventLobby = () => {
     return <img src={event.image} alt={`${event.name}_image`}/>
   }
 
+  const updateDeleteEvent = () => {
+    if (user._id === event.creator._id) {
+      return (
+        <>
+          <Button onClick={openUpdateEvent}>Update Event</Button>
+          <Button onClick={() => dispatch(deleteEvent(eventId))}>Delete Event</Button>
+        </>
+      )
+    }
+  }
+
   return (
     <section className="event_lobby_page">
       <div className="event_lobby_wrapper">
@@ -62,7 +74,6 @@ const EventLobby = () => {
           <div className="event_details">
             <div className="event_preview">
               <h1>{event.name}</h1>
-              <p>{localTime}</p>
               <p>By <span>{event.creator.username}</span></p>
               <p><i className="fa-solid fa-dollar-sign"></i>{event.price} USD</p>
             </div>
@@ -97,7 +108,7 @@ const EventLobby = () => {
           <div className="event_buttons flex-col align-center">
             <Button onClick={openOnlineGame}>Play Online Game</Button>
             <Button>Join the event</Button>
-            <Button onClick={openUpdateEvent}>Update</Button>
+            {updateDeleteEvent()}
             {/* <Button onClick={openLiveGame}>Play Live Game</Button> */}
           </div>
         </div>

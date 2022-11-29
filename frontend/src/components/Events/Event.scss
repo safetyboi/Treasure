@@ -276,6 +276,12 @@
         height: 5vh;
         border-left: 1px solid rgba(0, 0, 0, .2);
       }
+
+      .location {
+        p {
+          line-height: 1.5;
+        }
+      }
     }
 
     .event_buttons > * {
