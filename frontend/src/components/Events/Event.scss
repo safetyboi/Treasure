@@ -303,3 +303,66 @@
     bottom: 0;
   }
 }
+
+.modal-backdrop.show {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0 , 0, 0.6)
+}
+
+.event_modal {
+  position: absolute;
+  bottom: -25vh;
+  width: 35vw;
+  height: 50vh;
+  left: calc(50vw - 17.5vw);
+  background-color: white;
+  padding: 5vh 2vw;
+  border-radius: var(--border-radius);
+
+  .modal-title {
+    font-size: 1.5vw;
+    font-weight: bold;
+    margin-top: 5vh;
+  }
+
+  .modal-body {
+    margin: 3vh 5vh 5vh 0;
+    line-height: 1.4;
+    font-size: 1.1vw;
+  }
+
+  .modal-footer {
+    button.btn {
+      cursor: pointer;
+    }
+    .modal_email {
+      font-weight: bold;
+      font-size: 1.1vw;
+      padding: 2vh 2vw;
+      border-radius: 0.5vw;
+      border: 3px solid var(--orange);
+      margin-left: 1vw;
+    }
+  }
+
+  .btn-close {
+    position: absolute;
+    top: 7%;
+    right: 5%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .btn-close::before {
+    font-family: "Font Awesome 5 Free";
+    content: "X";
+    font-weight: bold;
+    font-size: 1.5vw;
+    color: var(--gray);
+  }
+}

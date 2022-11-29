@@ -1,9 +1,8 @@
-import { useHistory, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { deleteEvent, fetchEvent, loadEvent } from "../../store/events";
-import { Button } from "react-bootstrap";
+import { Modal, Button, CloseButton } from "react-bootstrap";
 import Footer from '../NavBar/Footer';
 import defaultImage from '../../assets/images/defaultImage.svg'
 
@@ -13,7 +12,9 @@ const EventLobby = () => {
   const {eventId} = useParams();
   const event = useSelector(loadEvent(eventId));
   const user = useSelector(state => state.session.user);
+  const [show, setShow] = useState(false);
 
+  // Date time object
   const dateObj = new Date(event.date);
   const dateStrg = String(dateObj)
   const localTime = dateObj.toLocaleString('en-eg', {timeZone:"America/Los_Angeles"});
@@ -25,6 +26,9 @@ const EventLobby = () => {
   const hour = hourLen === 3 ? localTime.slice(comaIdx + 2, comaIdx + 6) : localTime.slice(comaIdx + 2, comaIdx + 7);
   const ampm = localTime.slice(-2);
   const duration = Math.ceil(event.duration / 60);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     dispatch(fetchEvent(eventId))
@@ -107,7 +111,7 @@ const EventLobby = () => {
 
           <div className="event_buttons flex-col align-center">
             <Button onClick={openOnlineGame}>Play Online Game</Button>
-            <Button>Join the event</Button>
+            <Button onClick={handleShow}>Join the event</Button>
             {updateDeleteEvent()}
             {/* <Button onClick={openLiveGame}>Play Live Game</Button> */}
           </div>
@@ -115,6 +119,30 @@ const EventLobby = () => {
       </div>
 
       <Footer />
+
+      <Modal show={show} 
+        onHide={handleClose}
+        className="event_modal">
+        <Modal.Header closeButton>
+          <Modal.Title>Thank you for checking our app!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Want to know more about our projects?
+          You can browse around this app, check our portfolios, or shoot us a message.
+          We'd love to hear from you and collaborate to create something awesome.
+        </Modal.Body>
+        <Modal.Footer className="flex-row">
+          <Link><Button>About Us</Button></Link>
+          <Link to="#"
+            className="modal_email flex-row align-center"
+            onClick={e => {
+              e.preventDefault();
+              window.location = 'mailto:treasure.mern.team@gmail.com';
+            }}>
+            Send Us Email
+          </Link>
+        </Modal.Footer>
+      </Modal>
     </section>
   )
 };
