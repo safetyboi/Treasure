@@ -20,7 +20,9 @@ export const PlanningMap = () => {
   const [showPinEditForm, setShowPinEditForm] = useState(false);
   let [numPoints, setNumPoints] = useState(0);
   const [pins, setPins] = useState([]);
-  const [mapData, setMapData] = useState({})
+  const [mapData, setMapData] = useState({});
+  const [directionsRenderer, setDirectionsRenderer] = useState(new window.google.maps.DirectionsRenderer({suppressMarkers: true, preserveViewport: true}));
+  const [mapListener, setMapListener] = useState('');
 
   useEffect(() => {
     if (!map) {
@@ -62,17 +64,59 @@ export const PlanningMap = () => {
     }
   };
 
-
   const deletePin = (marker) => {
-    // TODO: figure out how to delete a pin
+    setNumPoints(numPoints - 1);
+    setShowPinEditForm(false);
 
-    // setPins(pins.filter(pin => {
-    //   return pin.order !== marker.order
-    // }));
-    // setMarkers(markers.filter(mark => {
-    //   return mark.order !== marker.order
-    // }));
-    // marker.setMap(null);
+    setPins(pins.map(pin => {
+      if (pin.order > marker.order) {
+        return {...pin, ['order']: pin.order - 1}
+      } else if (pin.order === marker.order) {
+        return {...pin, ['order']: -1}
+      } else {
+        return pin
+      }
+    }).filter(pin => {
+      return pin.order !== -1
+    }));
+
+
+    marker.setMap(null);
+    let reducedMarkers = [];
+    markers.forEach(mark => {
+      if (mark.order > marker.order) {
+        mark.setMap(null);
+        const newMarker = new window.google.maps.Marker({
+          order: mark.order - 1,
+          position: mark.position,
+          map: map,
+          icon: {
+            path: window.google.maps.SymbolPath.CIRCLE,
+            scale: 4.5,
+            fillColor: "red",
+            fillOpacity: 0.8,
+            strokeWeight: 0,
+        }
+        });
+        newMarker.addListener('click', () => {
+          setShowPinEditForm(newMarker);
+        })
+        reducedMarkers.push(newMarker);
+      } else if (mark.order < marker.order) {
+        reducedMarkers.push(mark);
+      }
+    })
+    setMarkers(reducedMarkers);
+
+    window.google.maps.event.removeListener(mapListener);
+    setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
+      setCoords(allCoords => [...allCoords, event.latLng])
+      addPin(event.latLng, map);
+    }));
+
+    let reducedCoords = [...coords];
+    reducedCoords.splice(marker.order - 1, 1);
+    setCoords(reducedCoords)
   };
 
   const calcElevation = (elevationArray) => {
@@ -104,10 +148,8 @@ export const PlanningMap = () => {
     }
   }
   
-
-  // todo - pineditform is rendered for each position in the marker positions array (statevar). map and pass in the position to it, only show if the showeditform is set to its order. click handler on markers sets that variable to the position. 
   const addPin = (location, map) => {
-    setNumPoints(numPoints++)
+    setNumPoints(numPoints++);
     const marker = new window.google.maps.Marker({
       order: numPoints,
       position: location,
@@ -117,23 +159,23 @@ export const PlanningMap = () => {
         scale: 4.5,
         fillColor: "red",
         fillOpacity: 0.8,
-        strokeWeight: 0
+        strokeWeight: 0,
     }
     });
-    marker.addListener('click', async () => {
+    marker.addListener('click', async() => {
       setShowPinEditForm(marker);
     })
     setMarkers(marks => [...marks, marker])
     addPinToArray(blankPin(marker))
-    setShowPinEditForm(marker)
+    setShowPinEditForm(marker);
   };
 
   useEffect(() => {
     if (map) {
-      window.google.maps.event.addListener(map, "click", (event) => {
+      setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
         setCoords(allCoords => [...allCoords, event.latLng])
         addPin(event.latLng, map);
-      });
+      }));
     };
     
   }, [map]) ;
@@ -146,69 +188,62 @@ export const PlanningMap = () => {
     })
   }, [distance, elevation, duration])
 
-
-  // todo: create conditional render of point edit form, pass in the showPointEditForm value to get the specific point
-
-  const elevator = new window.google.maps.ElevationService();
-  const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
-  directionsRenderer.setMap(map);
+  // const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
+  // directionsRenderer.setMap(map);
   const directionsService = new window.google.maps.DirectionsService();
+  const elevator = new window.google.maps.ElevationService();
   
   const renderPath = () => {
+    directionsRenderer.setMap(map);
 
-      let midpoints = []
-      for(let i = 1; i < coords.length - 1; i++) {
-        let point = coords[i];
-        let wayPoint = {};
-          wayPoint['location'] = new window.google.maps.LatLng(point);
-          midpoints.push(wayPoint);
-          wayPoint = {}
-      }
+    let midpoints = []
+    for(let i = 1; i < coords.length - 1; i++) {
+      let point = coords[i];
+      let wayPoint = {};
+        wayPoint['location'] = new window.google.maps.LatLng(point);
+        midpoints.push(wayPoint);
+        wayPoint = {}
+    }
 
-      const request = {
-          origin: coords[0],
-          destination: coords[coords.length - 1],
-          travelMode: 'WALKING',
-          unitSystem: window.google.maps.UnitSystem.METRIC,
-          waypoints: midpoints
-      }
-      
-      directionsService.route(request, (response, status) => {
-          if (status === 'OK') {
-              const poly = response.routes[0].overview_polyline
-              
-              const distanceArray = response.routes[0].legs;
-              let totalDistance = 0;
-              distanceArray.forEach(dis => {
-                  let value = dis.distance.value / 1000;
-                  totalDistance += value;
-              })
+    const request = {
+        origin: coords[0],
+        destination: coords[coords.length - 1],
+        travelMode: 'WALKING',
+        unitSystem: window.google.maps.UnitSystem.METRIC,
+        waypoints: midpoints
+    }
+    
+    directionsService.route(request, (response, status) => {
+        if (status === 'OK') {
+            const poly = response.routes[0].overview_polyline
+            const distanceArray = response.routes[0].legs;
+            let totalDistance = 0;
+            distanceArray.forEach(dis => {
+                let value = dis.distance.value / 1000;
+                totalDistance += value;
+            })
 
-              const durationArray = response.routes[0].legs;
-              let totalDuration = 0;
-              durationArray.forEach(dur => {
-                  let value = dur.duration.value;
-                  totalDuration += value;
+            const durationArray = response.routes[0].legs;
+            let totalDuration = 0;
+            durationArray.forEach(dur => {
+                let value = dur.duration.value;
+                totalDuration += value;     
+              });
 
-                  
-                })
+            const pathPointSet = response.routes[0].overview_path;
+            
+            setDistance(Math.round(totalDistance * 10) / 10);
+            setPolyline(poly);
+            setDuration(Math.round(totalDuration / 60 * 10) / 10);
+            setPathPoints(pathPointSet);
 
-              const pathPointSet = response.routes[0].overview_path;
-              
-              setDistance(Math.round(totalDistance * 10) / 10);
-              setPolyline(poly);
-              setDuration(Math.round(totalDuration / 60 * 10) / 10);
-              setPathPoints(pathPointSet);
-
-              directionsRenderer.setDirections(response);
-          }
-      }); 
-      
+            directionsRenderer.setDirections(response);
+        }
+    }); 
   };
 
   useEffect(() => {
-
-    if (coords.length > 1) {
+    if (coords.length > 0) {
         renderPath();
     } 
 
@@ -222,17 +257,13 @@ export const PlanningMap = () => {
     calcElevation(elevationArray);
   }, [elevationArray])
 
-  // useEffect(() => {
-  //   passUpMapData(distance, duration, polyline, elevationArray, elevation);
-  // }, [distance, duration, polyline, elevationArray, elevation])
-
 	// const height = document.getElementById('accordion').clientHeight();
   // document.getElementById('google-map-container').style.height = height
 
   return (
     <div className="planning_map_area flex-row">
 			<div className="planning_map_form">
-			  <EventCreate pins={pins} mapData={mapData}/>
+		    <EventCreate pins={pins} mapData={mapData}/>
 			</div>
       <div id="google-map-container" ref={mapRef}>
         Map
