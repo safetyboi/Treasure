@@ -67,7 +67,7 @@ export const EventUpdate = ({event, pins, mapData}) => {
             initCoords: firstPin.location,
             location: address
         }
-        let eventUpdated = await dispatch(eventReducerActions.createEvent(eventToUpdate));
+        let eventUpdated = await dispatch(eventReducerActions.updateEvent(eventToUpdate));
     }
 
 
