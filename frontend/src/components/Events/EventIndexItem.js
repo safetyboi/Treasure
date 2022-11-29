@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import defaultImage from '../../assets/images/defaultImage.svg';
+import './Event.scss'
 
 function EventIndexItem({event}) {
   const dateObj = new Date(event.date);
@@ -26,13 +27,13 @@ function EventIndexItem({event}) {
       <div className="flex-row">
         <div className="event_list_details">
           <h2>{event.name}</h2>
-          <p>{event.location}</p>
+          <p className="location">{event.location}</p>
           <p>{day}, {date}</p>
           <p>{hour} {ampm}</p>
           <p>{duration} {duration === 1 ? 'hour' : 'hours'}</p>
           <p>${event.price}</p>
         </div>
-        <div className="event_list_img">
+        <div className="event_list_img flex-row justify-end">
           <picture>
             {/* <img className='thumb-image' src={eventImg()} 
               alt={`event_${event.name}`} 

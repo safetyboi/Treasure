@@ -14,6 +14,7 @@ import './Profile.scss';
 function Profile() {
   const dispatch = useDispatch()
   const user = useSelector(state => state.session.user);
+  
   useEffect(() => {
     dispatch(fetchUser())
   }, [dispatch])
