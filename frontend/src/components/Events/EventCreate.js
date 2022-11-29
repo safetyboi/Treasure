@@ -119,6 +119,7 @@ function EventCreate ({pins, mapData}) {
         initCoords: firstPin.location,
         location: address
       }
+      
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
       
       if (eventExists) { 
