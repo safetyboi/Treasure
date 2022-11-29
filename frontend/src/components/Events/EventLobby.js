@@ -35,6 +35,11 @@ const EventLobby = () => {
     history.push(`/events/${eventId}/online-game`)
   }
 
+  const openUpdateEvent = (e) => {
+    e.preventDefault();
+    history.push(`events/${eventId}/update-event`)
+  }
+
   const openLiveGame = (e) => {
     e.preventDefault();
     history.push(`/events/${eventId}/live-game`)
@@ -85,6 +90,7 @@ const EventLobby = () => {
             {/* <img src={PlayGame} alt="play game" /> */}
             <Button onClick={openOnlineGame}>Play Online Game</Button>
             <Button>Join the event</Button>
+            <Button onClick={openUpdateEvent}>Update</Button>
             {/* <Button onClick={openLiveGame}>Play Live Game</Button> */}
           </div>
         </div>
