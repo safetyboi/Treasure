@@ -121,8 +121,12 @@ export const OnlineGameMap = () => {
         position: pin?.location[0],
         map: map,
         icon: mIcon,
-        label: {color: '#000', fontSize: '12px', fontWeight: '600',
-    text: String(pin?.order)}
+        label: {
+          color: '#000', 
+          fontSize: '12px', 
+          fontWeight: '600',
+          text: String(pin?.order)
+        }
       });
       marker.setAnimation(window.google.maps.Animation.BOUNCE);
       if (markers.length) {

@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import './PinEditForm.scss';
 import './Map.scss';
 
-const PinEditForm = ({marker, pin, addPinToArray}) => {
-  const [directions, setDirections] = useState(pin.directionToPin ? pin.directionToPin.text : '');
-  const [challengePrompt, setChallengePrompt] = useState(pin.challengePrompt ? pin.challengePrompt : '');
-  const [challengeAnswser, setChallengeAnswser] = useState(pin.challengeAnswser ? pin.challengeAnswser : '');
-  const [supplies, setSupplies] = useState(pin.supplies ? pin.supplies : '');
-  const [activityDuration, setActivityDuration] = useState(pin.activityDuration ? pin.activityDuration : 0);
-  const [price, setPrice] = useState(pin.price ? pin.price : '');  
+const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
+  const [directions, setDirections] = useState(pin?.directionToPin ? pin.directionToPin.text : '');
+  const [challengePrompt, setChallengePrompt] = useState(pin?.challengePrompt ? pin.challengePrompt : '');
+  const [challengeAnswser, setChallengeAnswser] = useState(pin?.challengeAnswser ? pin.challengeAnswser : '');
+  const [supplies, setSupplies] = useState(pin?.supplies ? pin.supplies : '');
+  const [activityDuration, setActivityDuration] = useState(pin?.activityDuration ? pin.activityDuration : 0);
+  const [price, setPrice] = useState(pin?.price ? pin.price : '');  
   const [currentPin, setcurrentPin] = useState(pin);
   
   useEffect(() => {
@@ -27,7 +27,7 @@ const PinEditForm = ({marker, pin, addPinToArray}) => {
       setActivityDuration(0);
       setPrice(0);
     }
-  }, [pin.order])
+  }, [pin?.order])
 
   useEffect(() => {
     setcurrentPin({
@@ -49,7 +49,12 @@ const PinEditForm = ({marker, pin, addPinToArray}) => {
 
   useEffect(() => {
     addPinToArray(currentPin)
-  }, [currentPin])
+  }, [currentPin]);
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    deletePin(marker);
+  }
 
   return (
     <div className="pin-edit-area">
@@ -79,6 +84,7 @@ const PinEditForm = ({marker, pin, addPinToArray}) => {
         <label>Activity Duration
           <input placeholder="" onChange={e => {setActivityDuration(e.target.value)}} value={activityDuration}/>
         </label>
+        <button onClick={handleDelete} >Delete Pin</button>
       </form>
     </div>
   )
