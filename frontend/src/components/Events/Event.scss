@@ -310,18 +310,31 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0 , 0, 0.6)
+  background-color: rgba(0, 0 , 0, 0.7)
 }
 
 .event_modal {
   position: absolute;
-  bottom: -25vh;
+  bottom: 0;
   width: 35vw;
   height: 50vh;
   left: calc(50vw - 17.5vw);
   background-color: white;
   padding: 5vh 2vw;
   border-radius: var(--border-radius);
+  transform: translateY(-25vh);
+  animation: fadeIn .2s linear;
+
+  @keyframes fadeIn {
+    from {
+      transform: translateY(-100vh);
+    }
+
+    to {
+      transform: translateY(-25vh);
+
+    }
+  }
 
   .modal-title {
     font-size: 1.5vw;

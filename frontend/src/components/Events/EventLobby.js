@@ -124,7 +124,7 @@ const EventLobby = () => {
         onHide={handleClose}
         className="event_modal">
         <Modal.Header closeButton>
-          <Modal.Title>Thank you for checking our app!</Modal.Title>
+          <Modal.Title>Thanks for checking our app!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Want to know more about our projects?
