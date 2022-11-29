@@ -202,3 +202,91 @@
   }
 }
 
+/* Event Lobby SCSS*/
+.event_lobby_page {
+  top: -20vh;
+  margin: -5vh auto;
+
+  .event_lobby_wrapper {
+    padding: 0 15vw;
+
+    .event_img {
+      // margin: 10vh 15vw;
+      width: 70vw;
+      height: 50vh;
+      background-color: rgba(45, 45, 45, .5);
+      border-radius: var(--border-radius);
+      margin-bottom: 7vh;
+      
+      img {
+        margin: 0 auto;
+      }
+    }
+  
+    .event_details_wrapper {
+      margin-bottom: 20vh;
+
+      h1 {
+        margin-bottom: 1.2vh;
+      }
+
+      h2 {
+        font-size: 1.75vw;
+        margin-bottom: 1.2vh;
+      }
+
+      i {
+        color: var(--orange);
+        margin-right: .75vw;
+      }
+
+      .event_details {
+        width: 65%;
+      }
+
+      .event_preview,
+      .event_description {
+        margin-bottom: 4vh;
+      }
+
+      .event_preview > *,
+      .time_location > *,
+      .time_details > * {
+        margin-bottom: 1.5vh;
+      }
+
+      .event_preview span {
+        color: var(--orange);
+      }
+    }
+
+    .time_location {
+      .time_duration, 
+      .location {
+        width: 45%;
+      }
+
+      .divider {
+        height: 5vh;
+        border-left: 1px solid rgba(0, 0, 0, .2);
+      }
+    }
+
+    .event_buttons > * {
+      margin-bottom: 2vh;
+    }
+
+    .event_buttons {
+      width: 25%;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+
+  footer {
+    position: relative;
+    bottom: 0;
+  }
+}
