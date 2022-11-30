@@ -126,6 +126,19 @@
     .date_time_form > * {
       width: 49%;
     }
+
+    button {
+      border: none;
+      padding: 2vh 2vw;
+      margin-top: 3vh;
+      width: 100%;
+      border-radius: var(--border-radius);
+      background-color: var(--orange);
+      color: white;
+      font-weight: bold;
+      font-size: 1.2vw;
+      cursor: pointer;
+    }
   }
 }
 
@@ -134,7 +147,7 @@
 .map_stat_wrapper {
   position: absolute;
   right: 5vw;
-  z-index: 30;
+  z-index: 1;
   top: 17vh;
   background-color: rgba(0, 0,0, .75);
   padding: 2vh 1vw;
@@ -310,7 +323,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0 , 0, 0.7)
+  background-color: rgba(0, 0 , 0, 0.7);
+  z-index: 10;
 }
 
 .event_modal {
@@ -324,6 +338,8 @@
   border-radius: var(--border-radius);
   transform: translateY(-25vh);
   animation: fadeIn .2s linear;
+  z-index: 10;
+
 
   @keyframes fadeIn {
     from {
@@ -377,5 +393,11 @@
     font-weight: bold;
     font-size: 1.5vw;
     color: var(--gray);
+  }
+}
+
+.create_event_page {
+  .event_modal {
+    height: 30vh !important;
   }
 }

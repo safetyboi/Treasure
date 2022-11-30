@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { clearEventErrors, createEvent } from '../../store/events';
 import EventBox from './EventBox';
 import { PinBox } from './PinBox'
+import { Modal } from 'react-bootstrap';
 import * as pinReducerActions from '../../store/pins'
 import * as eventReducerActions from '../../store/events';
 import jwtFetch from '../../store/jwt';
@@ -26,6 +27,15 @@ function EventCreate ({pins, mapData}) {
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
+    const handleClose = () => {
+      setShow(false);
+      //Redirect to "/" or eventually the eventShow for newlycreated Event:
+      // <Redirect to="/"/>
+      history.push(`/events`);
+    };
   
     useEffect(() => {
       return () => dispatch(clearEventErrors());
@@ -53,12 +63,15 @@ function EventCreate ({pins, mapData}) {
       return;
     }
 
-    if (imageFile) {
-      const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-      if (!allowedExtensions.exec(imageFile.name)) {
-        alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
-        return;
-      }
+    if (!imageFile) {
+      alert('Event must include an image. Please Upload')
+      return;
+    }
+
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    if (!allowedExtensions.exec(imageFile.name)) {
+      alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
+      return;
     }
 
 
@@ -104,8 +117,6 @@ function EventCreate ({pins, mapData}) {
         address = "Location Unavailable"
       };
 
-      const dateTime = date + 'T' + time + '-08:00'
-
       newEvent = {
         name: name,
         description: description,
@@ -114,7 +125,7 @@ function EventCreate ({pins, mapData}) {
         price: totalPrice(), 
         supplies: totalSupplies(),
         elevation: mapData.elevation,
-        date: dateTime,
+        date: date,
         status: false,
         initCoords: firstPin.location,
         location: address
@@ -139,9 +150,8 @@ function EventCreate ({pins, mapData}) {
           dispatch(pinReducerActions.createPin(pin))
           })
       }
-        //Redirect to "/" or eventually the eventShow for newlycreated Event:
-        // <Redirect to="/"/>
-        history.push(`/events`)
+
+      handleShow();
     };
   
     const updateName = e => setName(e.currentTarget.value);
@@ -154,11 +164,6 @@ function EventCreate ({pins, mapData}) {
     const updateDate = e => setDate(e.currentTarget.value);
     const updateTime = e => setTime(e.currentTarget.value);
     // const updateLocation = e => setLocation(e.currentTarget.value);
-
-    useEffect(() => {
-      console.log('time is changed')
-      console.log(time)
-    }, [time])
 
     const displayPins = ()=> {
         if (pins?.length) {
@@ -201,7 +206,7 @@ function EventCreate ({pins, mapData}) {
     }
 
     return (
-      <>
+      <section className="create_event_page">
         <div className='form_area'>
           <form className="create_event" onSubmit={handleSubmit}>
             <h2>Event Details</h2> 
@@ -320,7 +325,18 @@ function EventCreate ({pins, mapData}) {
             <p className='stat_value'>{mapData.elevation}</p>
           </div>
         </div>
-      </>
+
+        <Modal show={show}
+          onHide={handleClose}
+          className="event_modal">
+          <Modal.Header closeButton>
+            <Modal.Title>Awesome!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            You've successfully created an event.
+          </Modal.Body>
+        </Modal>
+      </section>
     )
   }
   
