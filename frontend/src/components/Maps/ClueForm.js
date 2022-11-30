@@ -2,15 +2,16 @@ import { useState } from "react";
 import './GameMap.scss';
 import wrong from '../../assets/sounds/wrong.mp3';
 import jingle from '../../assets/sounds/success-bell.wav';
+import mallet from '../../assets/sounds/mallet.mp3';
 
 
-const ClueForm = ({winSound, jingleSound, showClue, setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
-  const jingleSound2 = new Audio(jingle);
-
-
+const ClueForm = ({setCoords, addLocationPin, winSound, showClue, setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
+  
+  const jingleSound = new Audio(jingle);
   const [response, setResponse] = useState('');
   const currentPin = grabPin(currentPinOrder);
   const wrongSound = new Audio(wrong);
+  const malletSound = new Audio(mallet);
 
   const checkAnswer = (e) => {
     e.preventDefault();
@@ -20,7 +21,8 @@ const ClueForm = ({winSound, jingleSound, showClue, setShowEndGame, nextPin, gra
     }
 
     else if (response === currentPin.task[0].correctAnswer) {
-      jingleSound2.play();
+      jingleSound.play();
+      setResponse('')
       setTimeout(() => {
         alert('Correct Response! You can now head for the next event pin.')
         nextPin();
@@ -28,6 +30,19 @@ const ClueForm = ({winSound, jingleSound, showClue, setShowEndGame, nextPin, gra
     } else {
       wrongSound.play();
       alert('Incorrect! Try again.')
+    }
+  }
+
+  const handleCheat = (e) => {
+    e.preventDefault();
+    malletSound.play();
+    if (showClue) {
+      setResponse(currentPin.task[0].correctAnswer);
+    } else {
+      setCoords(allCoords => [...allCoords, {lat: currentPin.location[0].lat, lng: currentPin.location[0].lng}])
+      setTimeout(() => {
+        addLocationPin({lat: currentPin.location[0].lat, lng: currentPin.location[0].lng});
+      },  500)
     }
   }
 
@@ -51,6 +66,7 @@ const ClueForm = ({winSound, jingleSound, showClue, setShowEndGame, nextPin, gra
           <button>Submit Response</button>
         </>
         }
+        <button onClick={handleCheat}>Cheat Button</button>
       </form>
     </div>
   )
