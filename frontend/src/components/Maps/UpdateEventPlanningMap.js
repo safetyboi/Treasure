@@ -83,8 +83,8 @@ export const UpdateEventPlanningMap = () => {
           }
           
           const request = {
-            origin: {lat: eventPins[0].location[0].lat,lng: eventPins[0].location[0].lat},
-            destination: {lat: eventPins[eventPins.length - 1].location[0].lat,lng: eventPins[eventPins.length - 1].location[0].lat},
+            origin: {lat: eventPins[0].location[0].lat, lng: eventPins[0].location[0].lng},
+            destination: {lat: eventPins[eventPins.length - 1].location[0].lat, lng: eventPins[eventPins.length - 1].location[0].lng},
             travelMode: 'WALKING',
               unitSystem: window.google.maps.UnitSystem.METRIC,
               waypoints: midpoints

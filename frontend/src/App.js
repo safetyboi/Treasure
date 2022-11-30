@@ -19,7 +19,7 @@ import OnlineGameMapWrapper from './components/Maps/OnlineGameMap';
 import ImageUploader from '../src/components/AWSTest/ImageUploader';
 import LiveGameMapWrapper from './components/Maps/LiveGameMap';
 import EventLobby from './components/Events/EventLobby';
-
+import TwoUpdatePlanningWrapper from './components/Maps/2UpdateEventPlanningMap';
 
 function App() {
 
@@ -40,7 +40,7 @@ function App() {
 
         <ProtectedRoute exact path="/events/:eventId/live-game" component={LiveGameMapWrapper} />
         <ProtectedRoute exact path="/events/:eventId/online-game" component={OnlineGameMapWrapper} />
-        <ProtectedRoute exact path="/events/:eventId/update-event" component={UpdateEventPlanningMapWrapper} />
+        <ProtectedRoute exact path="/events/:eventId/update-event" component={TwoUpdatePlanningWrapper} />
         <ProtectedRoute exact path="/events/new" component={PlanningMapWrapper} />
         <ProtectedRoute exact path="/events/:eventId" component={EventLobby} />
         <ProtectedRoute exact path="/events" component={EventIndex} />
