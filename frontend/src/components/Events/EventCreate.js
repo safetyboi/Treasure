@@ -13,26 +13,26 @@ import './Event.scss'
 function EventCreate ({pins, mapData}) {
     let newEvent;
     const [name, setName] = useState('');
+    const [imageFile, setImageFile] = useState('');
     const [description, setDescription] = useState('');
-    const [duration, setDuration] = useState(0);
-    const [distance, setDistance] = useState(0);
-    const [price, setPrice] = useState(0);
-    const [supplies, setSupplies] = useState('');
-    const [elevation, setElevation] = useState(0);
+    // const [duration, setDuration] = useState(0);
+    // const [distance, setDistance] = useState(0);
+    // const [price, setPrice] = useState(0);
+    // const [supplies, setSupplies] = useState('');
+    // const [elevation, setElevation] = useState(0);
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     // const [location, setLocation] = useState('');
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
-    let imageFile;
   
     useEffect(() => {
       return () => dispatch(clearEventErrors());
     }, [dispatch]);
 
     const updateImage = async (e) => {
-      imageFile = e.target.files[0] 
+      setImageFile(e.target.files[0])
     };
   
     const handleSubmit = async (e) => {
@@ -106,6 +106,8 @@ function EventCreate ({pins, mapData}) {
         address = "Location Unavailable"
       };
 
+      const dateTime = date + 'T' + time + '-08:00'
+
       newEvent = {
         name: name,
         description: description,
@@ -114,7 +116,7 @@ function EventCreate ({pins, mapData}) {
         price: totalPrice(), 
         supplies: totalSupplies(),
         elevation: mapData.elevation,
-        date: date,
+        date: dateTime,
         status: false,
         initCoords: firstPin.location,
         location: address
@@ -154,6 +156,11 @@ function EventCreate ({pins, mapData}) {
     const updateDate = e => setDate(e.currentTarget.value);
     const updateTime = e => setTime(e.currentTarget.value);
     // const updateLocation = e => setLocation(e.currentTarget.value);
+
+    useEffect(() => {
+      console.log('time is changed')
+      console.log(time)
+    }, [time])
 
     const displayPins = ()=> {
         if (pins?.length) {
@@ -259,7 +266,7 @@ function EventCreate ({pins, mapData}) {
             </label>
 
             <div className="errors">{errors && errors.text}</div>
-            <input type="file" onChange={updateImage} multiple />
+            <input type="file" onChange={updateImage} />
             <button>Submit</button>
           </form>
           {/* <div>{displayPins()}</div> */}
