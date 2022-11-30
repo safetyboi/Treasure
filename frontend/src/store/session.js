@@ -44,11 +44,11 @@ const startSession = (userInfo, route) => async dispatch => {
     localStorage.setItem('jwtToken', `Bearer ${token}`);
     return dispatch(receiveCurrentUser(user));
   })
-  .catch((res) => {
-    console.log(res.json(), 'this is the catch')
-    return dispatch(receiveErrors(res));
+  .catch(async (err) => {
+    const message = await err.json();
+    console.log(message.errors, 'this is the catch')
+    return dispatch(receiveErrors(message.errors));
   })
-  console.log(res.json(), 'after catch')
 };
 
 //----------------update Image-------------------
@@ -87,7 +87,6 @@ const initialState = {
   const nullErrors = null;
 
 export const sessionErrorsReducer = (state = nullErrors, action) => {
-  console.log(action, 'error reducer')
   switch(action.type) {
     case RECEIVE_SESSION_ERRORS:
       return action.errors;
@@ -100,6 +99,7 @@ export const sessionErrorsReducer = (state = nullErrors, action) => {
 };
   
   const sessionReducer = (state = initialState, action) => {
+    console.log(action.errors)
     switch (action.type) {
       case RECEIVE_CURRENT_USER:
         return {...state, user: action.currentUser };
