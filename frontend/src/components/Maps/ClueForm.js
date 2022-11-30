@@ -5,7 +5,7 @@ import jingle from '../../assets/sounds/success-bell.wav';
 import mallet from '../../assets/sounds/mallet.mp3';
 
 
-const ClueForm = ({setCoords, addLocationPin, winSound, showClue, setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
+const ClueForm = ({intervalId, setCoords, addLocationPin, winSound, showClue, setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
   
   const jingleSound = new Audio(jingle);
   const [response, setResponse] = useState('');
@@ -17,6 +17,7 @@ const ClueForm = ({setCoords, addLocationPin, winSound, showClue, setShowEndGame
     e.preventDefault();
     if (currentPinOrder === eventPins.length && response === currentPin.task[0].correctAnswer) {
       winSound.play();
+      clearInterval(intervalId);
       setShowEndGame(true);
     }
 
