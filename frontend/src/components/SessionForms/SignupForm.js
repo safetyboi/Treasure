@@ -81,12 +81,12 @@ function SignupForm () {
      }, 1000);
     })
     .catch(async (res) => {
-      let data;
-      try {
-        data = await res.clone().json();
-      } catch {
-        data = await res.text(); 
-      }
+      // let data;
+      // try {
+      //   data = await res.clone().json();
+      // } catch {
+      //   data = await res.text(); 
+      // }
       // if (data?.errors) setErrors(data.errors);
       // else if (data) setErrors([data]);
       // else setErrors([res.statusText]);
