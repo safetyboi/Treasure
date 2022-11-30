@@ -1,11 +1,9 @@
 import jwtFetch from "./jwt";
 
-
 const RECEIVE_NEW_PIN = "RECEIVE_NEW_PIN"
 const RECEIVE_EVENT_PINS = "RECEIVE_EVENT_PINS"
 const REMOVE_EVENT_PINS = "REMOVE_EVENT_PINS"
 //errors?
-
 
 
 const receiveNewPin = pin => ({

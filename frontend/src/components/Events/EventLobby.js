@@ -68,7 +68,9 @@ const EventLobby = () => {
           <Button onClick={openUpdateEvent}>Update Event</Button>
           <Button onClick={
             () => {
-              dispatch(deleteEvent(eventId));
+              if (window.confirm("Are you sure to delete this event?")) {
+                dispatch(deleteEvent(eventId));
+              };
               redirectEvent();
             }}>
             Delete Event
