@@ -1,21 +1,33 @@
-import Button from 'react-bootstrap/Button';
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import ProfileEvent from './ProfileEvent';
-import { useDispatch } from 'react-redux';
-import Footer from '../NavBar/Footer';
 import { useEffect } from 'react';
-import { fetchUser } from '../../store/session';
-import defaultImage from '../../assets/images/sarah_norton.jpeg';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from "react-router-dom";
+import { fetchUser, deleteUser } from '../../store/session';
+import ProfileEvent from './ProfileEvent';
+import Button from 'react-bootstrap/Button';
+import Footer from '../NavBar/Footer';
 import './Profile.scss';
+import defaultImage from '../../assets/images/sarah_norton.jpeg';
 
 function Profile() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const history = useHistory();
   const user = useSelector(state => state.session.user);
   
   useEffect(() => {
     dispatch(fetchUser())
   }, [dispatch])
+
+  const redirect = () => {
+    history.push(`/`)
+  }
+
+  const deleteProfile = () => {
+    if (window.confirm("Are you sure to delete your profile?")) {
+      dispatch(deleteUser(user.id));
+    };
+
+    redirect();
+  }
 
   return (
     <section className='profile_page'>
@@ -37,7 +49,10 @@ function Profile() {
                 <h2>{user.username}</h2>
                 <h3>{user.email}</h3>
                 <p className="join">Joined in {user.createdAt}</p>
-                <p className='delete'>Delete profile</p>
+                <p className='delete'
+                  onClick={deleteProfile}>
+                  Delete profile
+                </p>
               </div>
             </div>
             <div className="profile_link flex-col align-end">

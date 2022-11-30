@@ -238,6 +238,7 @@ export const OnlineGameMap = () => {
           <li>Time "Walked": {duration} minutes</li>
           <li>Time Pondered: {thinkingTime} minutes</li>
         </ul>
+        <Link className="back" to='/events'><Button>QUIT</Button></Link>
 
 
       </div>

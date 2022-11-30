@@ -3,6 +3,7 @@
 import jwtFetch from './jwt';
 
 const RECEIVE_CURRENT_USER = "session/RECEIVE_CURRENT_USER";
+const REMOVE_CURRENT_USER = "session/REMOVE_CURRENT_USER";
 const RECEIVE_SESSION_ERRORS = "session/RECEIVE_SESSION_ERRORS";
 const CLEAR_SESSION_ERRORS = "session/CLEAR_SESSION_ERRORS";
 export const RECEIVE_USER_LOGOUT = "session/RECEIVE_USER_LOGOUT";
@@ -11,6 +12,11 @@ export const RECEIVE_USER_LOGOUT = "session/RECEIVE_USER_LOGOUT";
 const receiveCurrentUser = currentUser => ({
   type: RECEIVE_CURRENT_USER,
   currentUser
+});
+
+const removeCurrentUser = userId => ({
+  type: REMOVE_CURRENT_USER,
+  userId
 });
   
 // Dispatch receiveErrors to show authentication errors on the frontend.
@@ -80,11 +86,21 @@ export const getCurrentUser = () => async dispatch => {
   return dispatch(receiveCurrentUser(user));
 };
 
+export const deleteUser = userId => async dispatch => {
+  const res = await jwtFetch('/api/users/current', {
+    method: 'DELETE'
+  });
+
+  if (res.ok) {
+    dispatch(removeCurrentUser(userId));
+  }
+}
+
 const initialState = {
   user: undefined
 };
 
-  const nullErrors = null;
+const nullErrors = null;
 
 export const sessionErrorsReducer = (state = nullErrors, action) => {
   switch(action.type) {
@@ -102,6 +118,10 @@ export const sessionErrorsReducer = (state = nullErrors, action) => {
     switch (action.type) {
       case RECEIVE_CURRENT_USER:
         return {...state, user: action.currentUser };
+      case REMOVE_CURRENT_USER:
+        let nextState = {...state};
+        delete nextState[action.userId];
+        return nextState;
       case RECEIVE_USER_LOGOUT:
         return initialState;
       default:

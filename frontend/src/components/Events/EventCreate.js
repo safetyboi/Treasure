@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom'; 
 import { clearEventErrors, createEvent } from '../../store/events';
-import EventBox from './EventBox';
-import { PinBox } from './PinBox'
 import { Modal } from 'react-bootstrap';
+import { PinBox } from './PinBox'
+import EventBox from './EventBox';
 import * as pinReducerActions from '../../store/pins'
 import * as eventReducerActions from '../../store/events';
 import jwtFetch from '../../store/jwt';
@@ -114,6 +114,8 @@ function EventCreate ({pins, mapData}) {
         address = "Location Unavailable"
       };
 
+      const dateTime = date + 'T' + time + '-08:00';
+
       newEvent = {
         name: name,
         description: description,
@@ -122,7 +124,7 @@ function EventCreate ({pins, mapData}) {
         price: totalPrice(), 
         supplies: totalSupplies(),
         elevation: mapData.elevation,
-        date: date,
+        date: dateTime,
         status: false,
         initCoords: firstPin.location,
         location: address
@@ -331,6 +333,23 @@ function EventCreate ({pins, mapData}) {
           </Modal.Header>
           <Modal.Body>
             You've successfully created an event.
+            Here is the details of your new created event:
+            <div className='event_modal_details flex-row'>
+              <p className='detail_key'>Name:</p>
+              <p className='detail_value'>{name}</p>
+            </div>
+            <div className='event_modal_details flex-row'>
+              <p className='detail_key'>Date:</p>
+              <p className='detail_value'>{date}</p>
+            </div>
+            <div className='event_modal_details flex-row'>
+              <p className='detail_key'>Time:</p>
+              <p className='detail_value'>{time}</p>
+            </div>
+            <div className='event_modal_details flex-row'>
+              <p className='detail_key'>Description:</p>
+              <p className='detail_value'>{description}</p>
+            </div>
           </Modal.Body>
         </Modal>
       </section>

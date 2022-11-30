@@ -21,6 +21,7 @@ function NavBar () {
           <Link to={'/events'}>All Events</Link>
           <Link to={'/profile'}>Profile</Link>
           <Link to={'/events/new'}>Create Event</Link>
+          <Link to={'/about'}>About Us</Link>
           <button onClick={logoutUser}>Logout</button>
         </div>
       );
@@ -39,7 +40,9 @@ function NavBar () {
     <>
       <div className='spacer layer'></div>
       <header className='flex-row justify-between align-center'>
-        <Link to={'/'}><h1>Treasure</h1></Link>
+        <div className='left_nav flex-row align-center'>
+          <Link to={'/'}><h1>Treasure</h1></Link>
+        </div>
         { getLinks() }
       </header>
     </>
