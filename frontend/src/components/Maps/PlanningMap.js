@@ -118,7 +118,7 @@ export const PlanningMap = () => {
         fillColor: "red",
         fillOpacity: 0.8,
         strokeWeight: 0
-    }
+      }
     });
     marker.addListener('click', async () => {
       setShowPinEditForm(marker);

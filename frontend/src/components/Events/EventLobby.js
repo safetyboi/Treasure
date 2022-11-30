@@ -36,7 +36,7 @@ const EventLobby = () => {
 
   const openUpdateEvent = (e) => {
     e.preventDefault();
-    history.push(`events/${eventId}/update-event`)
+    history.push(`/events/${eventId}/update-event`)
   }
 
   const openLiveGame = (e) => {
