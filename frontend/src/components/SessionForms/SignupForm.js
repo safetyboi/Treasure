@@ -5,6 +5,7 @@ import UploadImages from '../AWSTest/ImageUploader';
 import Footer from '../NavBar/Footer';
 import './SessionForm.scss';
 import { useHistory } from 'react-router-dom';
+import { getCurrentUser } from '../../store/session';
 
 function SignupForm () {
   const [email, setEmail] = useState('');
@@ -70,18 +71,14 @@ function SignupForm () {
     };
 
     dispatch(signup(user))
-    .then((newUser) => {
-      console.log(newUser, 'before patch thunk')
+     .then((newUser) => {
       if (newUser.currentUser) {
-        console.log('here')
         dispatch(updateUserImage(newUser.currentUser._id, formData) )
+        setTimeout(function(){
+          history.push('./profile')
+        }, 1000);
       }
     })
-
-    setTimeout(function(){
-      history.push('./profile')
-    }, 1000);
-    
   }
 
   return (

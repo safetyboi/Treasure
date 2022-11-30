@@ -73,7 +73,6 @@ router.patch('/addImage/:eventId', validateEventInput, async (req, res, next) =>
         photoUrl = 'https://treasure-photos.s3.us-west-1.amazonaws.com/1669765988351'
     } else{
         photoUrl = await req.file.location
-        console.log(req.file.location, 'photoUrl1')
     }
 
     Event.findByIdAndUpdate((eventId), {image: photoUrl})
