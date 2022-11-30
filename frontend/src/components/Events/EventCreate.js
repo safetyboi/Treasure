@@ -334,6 +334,23 @@ function EventCreate ({pins, mapData}) {
           </Modal.Header>
           <Modal.Body>
             You've successfully created an event.
+            Here is the details of your new created event:
+            <div className='event_modal_details flex-row'>
+              <p className='detail_key'>Name:</p>
+              <p className='detail_value'>{name}</p>
+            </div>
+            <div className='event_modal_details flex-row'>
+              <p className='detail_key'>Date:</p>
+              <p className='detail_value'>{date}</p>
+            </div>
+            <div className='event_modal_details flex-row'>
+              <p className='detail_key'>Time:</p>
+              <p className='detail_value'>{time}</p>
+            </div>
+            <div className='event_modal_details flex-row'>
+              <p className='detail_key'>Description:</p>
+              <p className='detail_value'>{description}</p>
+            </div>
           </Modal.Body>
         </Modal>
       </section>
