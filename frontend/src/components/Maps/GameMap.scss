@@ -91,10 +91,14 @@
 
 .clue-form-box > * {
   margin-bottom: 1vh;
-}
 
-.task-header {
-  color: #FF725E;
+  .task-header {
+    color: #FF725E;
+  }
+
+  .submit_response {
+    margin-right: 1vw;
+  }
 }
 
 .start-button {
@@ -102,8 +106,4 @@
   top: calc(50vh - 30px);
   left: calc(50vw - 75px);
   cursor: pointer;
-}
-
-.cheat_button {
-  margin-left: 1vw;
 }
