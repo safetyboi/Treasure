@@ -40,28 +40,21 @@ export const signup = user => startSession(user, 'api/users/register');
 export const login = user => startSession(user, 'api/users/login');
 
 const startSession = (userInfo, route) => async dispatch => {
-  // try {  
-  //   const res = await jwtFetch(route, {
-  //     method: "POST",
-  //     body: JSON.stringify(userInfo)
-  //   });
-  //   const { user, token } = await res.json();
-  //   localStorage.setItem('jwtToken', token);
-  //   return dispatch(receiveCurrentUser(user));
-  // } catch(err) {
-  //   console.log(err)
-  //   const res = await err.json();
-  //   if (res.statusCode === 400) {
-  //     return dispatch(receiveErrors(res.errors));
-  //   }
-  // }
   const res = await jwtFetch(route, {
     method: "POST",
     body: JSON.stringify(userInfo)
-  });
-  const { user, token } = await res.json();
-  localStorage.setItem('jwtToken', `Bearer ${token}`);
-  return dispatch(receiveCurrentUser(user));
+  })
+  .then((res) => {
+    console.log(res, 'this is the then')
+    const { user, token } = res.json();
+    localStorage.setItem('jwtToken', `Bearer ${token}`);
+    return dispatch(receiveCurrentUser(user));
+  })
+  .catch(async (err) => {
+    const message = await err.json();
+    console.log(message.errors, 'this is the catch')
+    return dispatch(receiveErrors(message.errors));
+  })
 };
 
 //----------------update Image-------------------
@@ -122,6 +115,7 @@ export const sessionErrorsReducer = (state = nullErrors, action) => {
 };
   
   const sessionReducer = (state = initialState, action) => {
+    console.log(action.errors)
     switch (action.type) {
       case RECEIVE_CURRENT_USER:
         return {...state, user: action.currentUser };
