@@ -10,8 +10,9 @@
     padding: 2vh 1vw;
     width: 20vw;
     position: absolute;
-    top: 10vh;
-    left: .5vw;
+    top: 1vh;
+    right: .5vw;
+    border-radius: var(--border-radius);
 
     h1, h2 {
       margin-bottom: 2vh;
@@ -23,6 +24,10 @@
 
     ul > * {
       margin-bottom: 1vh;
+    }
+
+    ul {
+      margin-bottom: 5vh;
     }
 
     
@@ -50,11 +55,12 @@
   position: absolute;
   width: 20vw;
   z-index: 10;
-  background-color: rgba(0,0,0, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
   color: var(--white);
   padding: 2vh 1vw;
-  top: 45vh;
-  left: .5vw;
+  top: 8vh;
+  left: 0.7vw;
+  border-radius: var(--border-radius);
 
   h2 {
     font-size: 1.3vw;
@@ -85,17 +91,6 @@
 
 .clue-form-box > * {
   margin-bottom: 1vh;
-}
-
-a.back {
-  position: absolute;
-  right: .5vw;
-  top: 1vh;
-  
-  button {
-    background-color: rgba(0,0,0, 0.9);
-    cursor: pointer;
-  }
 }
 
 .task-header {
