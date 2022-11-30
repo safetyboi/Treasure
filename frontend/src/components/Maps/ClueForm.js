@@ -5,9 +5,9 @@ import jingle from '../../assets/sounds/success-bell.wav';
 import mallet from '../../assets/sounds/mallet.mp3';
 
 
-const ClueForm = ({winSound, jingleSound, showClue, setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
+const ClueForm = ({setCoords, addLocationPin, winSound, showClue, setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
   
-  const jingleSound2 = new Audio(jingle);
+  const jingleSound = new Audio(jingle);
   const [response, setResponse] = useState('');
   const currentPin = grabPin(currentPinOrder);
   const wrongSound = new Audio(wrong);
@@ -21,7 +21,7 @@ const ClueForm = ({winSound, jingleSound, showClue, setShowEndGame, nextPin, gra
     }
 
     else if (response === currentPin.task[0].correctAnswer) {
-      jingleSound2.play();
+      jingleSound.play();
       setResponse('')
       setTimeout(() => {
         alert('Correct Response! You can now head for the next event pin.')
@@ -35,8 +35,15 @@ const ClueForm = ({winSound, jingleSound, showClue, setShowEndGame, nextPin, gra
 
   const handleCheat = (e) => {
     e.preventDefault();
-    setResponse(currentPin.task[0].correctAnswer);
     malletSound.play();
+    if (showClue) {
+      setResponse(currentPin.task[0].correctAnswer);
+    } else {
+      setCoords(allCoords => [...allCoords, {lat: currentPin.location[0].lat, lng: currentPin.location[0].lng}])
+      setTimeout(() => {
+        addLocationPin({lat: currentPin.location[0].lat, lng: currentPin.location[0].lng});
+      },  500)
+    }
   }
 
   if (eventPins.length < 1) return null;
@@ -57,9 +64,9 @@ const ClueForm = ({winSound, jingleSound, showClue, setShowEndGame, nextPin, gra
             <input type='text' value={response} onChange={e => setResponse(e.target.value)}/>
           </label>
           <button>Submit Response</button>
-          <button onClick={handleCheat}>Cheat Button</button>
         </>
         }
+        <button onClick={handleCheat}>Cheat Button</button>
       </form>
     </div>
   )
