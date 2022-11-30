@@ -11,7 +11,7 @@ function SignupForm () {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
-  let imageFile
+  const [imageFile, setImageFile] = useState('');
   const history = useHistory()
   const errors = useSelector(state => state.errors.session);
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ function SignupForm () {
   }, [dispatch]);
 
   const updateImage = async (e) => {
-    imageFile = e.target.files[0] 
+    setImageFile(e.target.files[0])
   };
 
 
@@ -52,15 +52,12 @@ function SignupForm () {
   const usernameSubmit = async e => {
     e.preventDefault();
 
-    if (!imageFile) {
-      alert('Event must contain at an image. Please Upload a .jpeg or .png')
-      return;
-    }
-
-    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-    if (!allowedExtensions.exec(imageFile.name)) {
-      alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
-      return;
+    if (imageFile) {
+      const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+      if (!allowedExtensions.exec(imageFile.name)) {
+        alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
+        return;
+      }
     }
 
     const formData = new FormData();
@@ -72,17 +69,29 @@ function SignupForm () {
       password
     };
 
-    dispatch(signup(user)) 
+    dispatch(signup(user))
     .then((newUser) => {
       if (newUser.currentUser) {
-        dispatch(updateUserImage(newUser, formData) )
+        dispatch(updateUserImage(newUser.currentUser._id, formData) )
       }
     })
     .then(() => {
       setTimeout(function(){
         history.push('./profile')
-     }, 2000);
+     }, 1000);
     })
+    .catch(async (res) => {
+      let data;
+      try {
+        data = await res.clone().json();
+      } catch {
+        data = await res.text(); 
+      }
+      // if (data?.errors) setErrors(data.errors);
+      // else if (data) setErrors([data]);
+      // else setErrors([res.statusText]);
+    });
+    
   }
 
   return (

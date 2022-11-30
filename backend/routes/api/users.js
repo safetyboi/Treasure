@@ -100,30 +100,35 @@ router.patch('/:userId', async (req, res, next) => {
   const userId = req.params.userId
 
   let photoUrl
-  await imageUpload.single("images")(req, res, async function (err) {
-    photoUrl =  await req.file.location
+  imageUpload.single("images")(req, res, async function (err) {
     if(!req.file){
-      photoUrl = 'https://treasure-photos.s3.us-west-1.amazonaws.com/1668753473821'
+      photoUrl = 'https://treasure-photos.s3.us-west-1.amazonaws.com/1669765988351'
+      console.log(photoUrl, 'no photo uploded')
+      User.findByIdAndUpdate((userId), {image: photoUrl})
+      .exec()
+      .then((event) => {
+          if(!event) {
+              res.status(400).send(`Id ${req.params.id} was not found`);
+          } else {
+              res.status(200).send(`Id ${req.params.id} was updated`)
+          }
+      })
     } else{
       photoUrl = await req.file.location
-      console.log(req.file.location, 'photoUrl1')
+      User.findByIdAndUpdate((userId), {image: photoUrl})
+      .exec()
+      .then((event) => {
+          if(!event) {
+              res.status(400).send(`Id ${req.params.id} was not found`);
+          } else {
+              res.status(200).send(`Id ${req.params.id} was updated`)
+          }
+      })
     }
     if (err) {
       // return res.json({})
     }
   })
-
-    User.findByIdAndUpdate((userId),
-    {image: photoUrl}
-    )
-    .exec()
-    .then((event) => {
-        if(!event) {
-            res.status(400).send(`Id ${req.params.id} was not found`);
-        } else {
-            res.status(200).send(`Id ${req.params.id} was updated`)
-        }
-    })
   });
 
 
