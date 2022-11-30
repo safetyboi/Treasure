@@ -122,7 +122,7 @@ export const updateEvent = data =>  async dispatch => {
 
 export const deleteEvent = eventId => async dispatch => {
   try {
-    const res = await jwtFetch(`api/events/${eventId}`, {
+    const res = await jwtFetch(`/api/events/${eventId}`, {
       method: 'DELETE'
     });
 

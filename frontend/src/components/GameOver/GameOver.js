@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import './GameOver.scss'
 
 const GameOver = ({remainingTime, distance, timeWalked, thinkingTime}) => {
-    return (
+
+    const roundedTime = Math.round(remainingTime);
+
+return (
         <div className='game-over-page flex-col align-center justify-center'>
-            <h1>GAMEOVER!</h1>
+            <h1>{remainingTime > 0 ? 'You Win!' : 'You Lose!'}</h1>
             <h2>YOUR STATS</h2>
             {/* <div className='flex-row'>
                 <p className='game_over_key'>Remaining Time</p>
@@ -14,16 +17,22 @@ const GameOver = ({remainingTime, distance, timeWalked, thinkingTime}) => {
             <div className='stats_details'>
                 <div className='flex-row'>
                     <p className='game_over_key'>Distance Traveled</p>
-                    <p className='game_over_value'>{distance}</p>
+                    <p className='game_over_value'>{distance === 1 ? `${distance} kilometer` : `${distance} kilometers` }</p>
                 </div>
                 <div className='flex-row'>
                     <p className='game_over_key'>Time Spent Walking</p>
-                    <p className='game_over_value'>{timeWalked}</p>
+                    <p className='game_over_value'>{timeWalked === 1 ? `${timeWalked} minute` : `${timeWalked} minutes` }</p>
                 </div>
                 <div className='flex-row'>
                     <p className='game_over_key'>Time Spent Pondering</p>
-                    <p className='game_over_value'>{thinkingTime}</p>
+                    <p className='game_over_value'>{thinkingTime === 1 ? `${thinkingTime} minute` : `${thinkingTime} minutes` }</p>
                 </div>
+                {remainingTime > 0 && 
+                <div className='flex-row'>
+                <p className='game_over_key'>Remaining Time</p>
+                <p className='game_over_value'>{roundedTime === 1 ? `${roundedTime} minute` : `${roundedTime} minutes` }</p>
+                </div>
+                }
             </div>
             
             <div className="buttons-container flex-row">

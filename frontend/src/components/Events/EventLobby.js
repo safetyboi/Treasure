@@ -44,6 +44,10 @@ const EventLobby = () => {
     history.push(`/events/${eventId}/update-event`)
   }
 
+  const redirectEvent = () => {
+    history.push(`/events/`)
+  }
+
   const openLiveGame = (e) => {
     e.preventDefault();
     history.push(`/events/${eventId}/live-game`)
@@ -62,7 +66,13 @@ const EventLobby = () => {
       return (
         <>
           <Button onClick={openUpdateEvent}>Update Event</Button>
-          <Button onClick={() => dispatch(deleteEvent(eventId))}>Delete Event</Button>
+          <Button onClick={
+            () => {
+              dispatch(deleteEvent(eventId));
+              redirectEvent();
+            }}>
+            Delete Event
+          </Button>
         </>
       )
     }
