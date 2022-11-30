@@ -35,6 +35,7 @@ export const fetchEventPins = eventId => async dispatch => {
       const res = await jwtFetch(`/api/pins/${eventId}`);
       const eventPins = await res.json();
     dispatch(receiveEventPins(eventPins));
+    return eventPins;
   } catch (err) {
     const resBody = await err.json();
     // if (resBody.statusCode === 400) {
