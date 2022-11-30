@@ -345,10 +345,8 @@
     from {
       transform: translateY(-100vh);
     }
-
     to {
       transform: translateY(-25vh);
-
     }
   }
 
@@ -362,6 +360,18 @@
     margin: 3vh 5vh 5vh 0;
     line-height: 1.4;
     font-size: 1.1vw;
+
+    .modal_body_preview {
+      margin-bottom: 2vh;
+    }
+
+    .detail_key {
+      width: 30%;
+    }
+
+    .colon {
+      width: 1vw;
+    }
   }
 
   .modal-footer {
