@@ -71,23 +71,13 @@ function SignupForm () {
 
     dispatch(signup(user))
     .then((newUser) => {
+      console.log(newUser, 'before patch thunk')
       if (newUser.currentUser) {
+        console.log('here')
         dispatch(updateUserImage(newUser.currentUser._id, formData) )
       }
     })
-    .then(() => {
-    })
-    .catch(async (res) => {
-      // let data;
-      // try {
-        //   data = await res.clone().json();
-        // } catch {
-          //   data = await res.text(); 
-          // }
-          // if (data?.errors) setErrors(data.errors);
-          // else if (data) setErrors([data]);
-          // else setErrors([res.statusText]);
-        });
+
     setTimeout(function(){
       history.push('./profile')
     }, 1000);
