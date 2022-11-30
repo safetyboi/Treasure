@@ -63,15 +63,12 @@ function EventCreate ({pins, mapData}) {
       return;
     }
 
-    if (!imageFile) {
-      alert('Event must include an image. Please Upload')
-      return;
-    }
-
-    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-    if (!allowedExtensions.exec(imageFile.name)) {
-      alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
-      return;
+    if (imageFile) {
+      const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+      if (!allowedExtensions.exec(imageFile.name)) {
+        alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
+        return;
+      }
     }
 
 

@@ -44,9 +44,9 @@ const startSession = (userInfo, route) => async dispatch => {
     method: "POST",
     body: JSON.stringify(userInfo)
   })
-  .then((res) => {
+  .then(async (res) => {
     console.log(res, 'this is the then')
-    const { user, token } = res.json();
+    const { user, token } = await res.json();
     localStorage.setItem('jwtToken', `Bearer ${token}`);
     return dispatch(receiveCurrentUser(user));
   })
@@ -115,7 +115,6 @@ export const sessionErrorsReducer = (state = nullErrors, action) => {
 };
   
   const sessionReducer = (state = initialState, action) => {
-    console.log(action.errors)
     switch (action.type) {
       case RECEIVE_CURRENT_USER:
         return {...state, user: action.currentUser };

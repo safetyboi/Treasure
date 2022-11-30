@@ -76,21 +76,21 @@ function SignupForm () {
       }
     })
     .then(() => {
-      setTimeout(function(){
-        history.push('./profile')
-     }, 1000);
     })
     .catch(async (res) => {
       // let data;
       // try {
-      //   data = await res.clone().json();
-      // } catch {
-      //   data = await res.text(); 
-      // }
-      // if (data?.errors) setErrors(data.errors);
-      // else if (data) setErrors([data]);
-      // else setErrors([res.statusText]);
-    });
+        //   data = await res.clone().json();
+        // } catch {
+          //   data = await res.text(); 
+          // }
+          // if (data?.errors) setErrors(data.errors);
+          // else if (data) setErrors([data]);
+          // else setErrors([res.statusText]);
+        });
+    setTimeout(function(){
+      history.push('./profile')
+    }, 1000);
     
   }
 
