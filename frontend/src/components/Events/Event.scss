@@ -126,6 +126,19 @@
     .date_time_form > * {
       width: 49%;
     }
+
+    button {
+      border: none;
+      padding: 2vh 2vw;
+      margin-top: 3vh;
+      width: 100%;
+      border-radius: var(--border-radius);
+      background-color: var(--orange);
+      color: white;
+      font-weight: bold;
+      font-size: 1.2vw;
+      cursor: pointer;
+    }
   }
 }
 
@@ -134,7 +147,7 @@
 .map_stat_wrapper {
   position: absolute;
   right: 5vw;
-  z-index: 30;
+  z-index: 1;
   top: 17vh;
   background-color: rgba(0, 0,0, .75);
   padding: 2vh 1vw;
@@ -221,6 +234,12 @@
       img {
         margin: 0 auto;
       }
+
+      img.default_img {
+        height: 100%;
+        padding-top: 5%;
+        opacity: .2;
+      }
     }
   
     .event_details_wrapper {
@@ -270,6 +289,12 @@
         height: 5vh;
         border-left: 1px solid rgba(0, 0, 0, .2);
       }
+
+      .location {
+        p {
+          line-height: 1.5;
+        }
+      }
     }
 
     .event_buttons > * {
@@ -289,5 +314,90 @@
   footer {
     position: relative;
     bottom: 0;
+  }
+}
+
+.modal-backdrop.show {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0 , 0, 0.7);
+  z-index: 10;
+}
+
+.event_modal {
+  position: absolute;
+  bottom: 0;
+  width: 35vw;
+  height: 50vh;
+  left: calc(50vw - 17.5vw);
+  background-color: white;
+  padding: 5vh 2vw;
+  border-radius: var(--border-radius);
+  transform: translateY(-25vh);
+  animation: fadeIn .2s linear;
+  z-index: 10;
+
+
+  @keyframes fadeIn {
+    from {
+      transform: translateY(-100vh);
+    }
+
+    to {
+      transform: translateY(-25vh);
+
+    }
+  }
+
+  .modal-title {
+    font-size: 1.5vw;
+    font-weight: bold;
+    margin-top: 5vh;
+  }
+
+  .modal-body {
+    margin: 3vh 5vh 5vh 0;
+    line-height: 1.4;
+    font-size: 1.1vw;
+  }
+
+  .modal-footer {
+    button.btn {
+      cursor: pointer;
+    }
+    .modal_email {
+      font-weight: bold;
+      font-size: 1.1vw;
+      padding: 2vh 2vw;
+      border-radius: 0.5vw;
+      border: 3px solid var(--orange);
+      margin-left: 1vw;
+    }
+  }
+
+  .btn-close {
+    position: absolute;
+    top: 7%;
+    right: 5%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .btn-close::before {
+    font-family: "Font Awesome 5 Free";
+    content: "X";
+    font-weight: bold;
+    font-size: 1.5vw;
+    color: var(--gray);
+  }
+}
+
+.create_event_page {
+  .event_modal {
+    height: 30vh !important;
   }
 }

@@ -1,10 +1,8 @@
-
-import { useHistory, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { fetchEvent, loadEvent } from "../../store/events";
-import { Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteEvent, fetchEvent, loadEvent } from "../../store/events";
+import { Modal, Button, CloseButton } from "react-bootstrap";
 import Footer from '../NavBar/Footer';
 import defaultImage from '../../assets/images/defaultImage.svg'
 
@@ -13,17 +11,24 @@ const EventLobby = () => {
   const history = useHistory();
   const {eventId} = useParams();
   const event = useSelector(loadEvent(eventId));
+  const user = useSelector(state => state.session.user);
+  const [show, setShow] = useState(false);
 
+  // Date time object
   const dateObj = new Date(event.date);
   const dateStrg = String(dateObj)
-  const day = dateStrg.slice(0, 3);
-  const date = dateStrg.slice(4, 15);
   const localTime = dateObj.toLocaleString('en-eg', {timeZone:"America/Los_Angeles"});
-  const comaIdx = localTime.indexOf(' ');
+  const comaIdx = localTime.indexOf(',');
   const colonIdx = localTime.indexOf(':');
-  const hour = colonIdx === 13 ? localTime.slice(comaIdx, comaIdx + 4) : localTime.slice(comaIdx, comaIdx + 5);
+  const date = localTime.slice(0, comaIdx);
+  const day = dateStrg.slice(0, 3);
+  const hourLen = colonIdx - comaIdx;
+  const hour = hourLen === 3 ? localTime.slice(comaIdx + 2, comaIdx + 6) : localTime.slice(comaIdx + 2, comaIdx + 7);
   const ampm = localTime.slice(-2);
   const duration = Math.ceil(event.duration / 60);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     dispatch(fetchEvent(eventId))
@@ -39,16 +44,45 @@ const EventLobby = () => {
     history.push(`/events/${eventId}/update-event`)
   }
 
+  const redirectEvent = () => {
+    history.push(`/events/`)
+  }
+
   const openLiveGame = (e) => {
     e.preventDefault();
     history.push(`/events/${eventId}/live-game`)
+  }
+
+  const eventImg = () => {
+    if (!event.image) {
+      return <img src={defaultImage} alt={`event_${event.name}`} className="default_img" />
+    }
+
+    return <img src={event.image} alt={`${event.name}_image`}/>
+  }
+
+  const updateDeleteEvent = () => {
+    if (user._id === event.creator._id) {
+      return (
+        <>
+          <Button onClick={openUpdateEvent}>Update Event</Button>
+          <Button onClick={
+            () => {
+              dispatch(deleteEvent(eventId));
+              redirectEvent();
+            }}>
+            Delete Event
+          </Button>
+        </>
+      )
+    }
   }
 
   return (
     <section className="event_lobby_page">
       <div className="event_lobby_wrapper">
         <div className="event_img flex-row justify-center">
-          <img src={event.image} alt={`${event.name}_image`}/>
+          {eventImg()}
         </div>
         <div className="event_details_wrapper flex-row justify-between">
           <div className="event_details">
@@ -86,16 +120,39 @@ const EventLobby = () => {
           </div>
 
           <div className="event_buttons flex-col align-center">
-            {/* <img src={PlayGame} alt="play game" /> */}
             <Button onClick={openOnlineGame}>Play Online Game</Button>
-            <Button>Join the event</Button>
-            <Button onClick={openUpdateEvent}>Update</Button>
+            <Button onClick={handleShow}>Join the event</Button>
+            {updateDeleteEvent()}
             {/* <Button onClick={openLiveGame}>Play Live Game</Button> */}
           </div>
         </div>
       </div>
 
       <Footer />
+
+      <Modal show={show} 
+        onHide={handleClose}
+        className="event_modal">
+        <Modal.Header closeButton>
+          <Modal.Title>Thanks for checking our app!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Want to know more about our projects?
+          You can browse around this app, check our portfolios, or shoot us a message.
+          We'd love to hear from you and collaborate to create something awesome.
+        </Modal.Body>
+        <Modal.Footer className="flex-row">
+          <Link><Button>About Us</Button></Link>
+          <Link to="#"
+            className="modal_email flex-row align-center"
+            onClick={e => {
+              e.preventDefault();
+              window.location = 'mailto:treasure.mern.team@gmail.com';
+            }}>
+            Send Us Email
+          </Link>
+        </Modal.Footer>
+      </Modal>
     </section>
   )
 };

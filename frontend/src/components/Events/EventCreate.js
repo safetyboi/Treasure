@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { clearEventErrors, createEvent } from '../../store/events';
 import EventBox from './EventBox';
 import { PinBox } from './PinBox'
+import { Modal } from 'react-bootstrap';
 import * as pinReducerActions from '../../store/pins'
 import * as eventReducerActions from '../../store/events';
 import jwtFetch from '../../store/jwt';
@@ -13,26 +14,35 @@ import './Event.scss'
 function EventCreate ({pins, mapData}) {
     let newEvent;
     const [name, setName] = useState('');
+    const [imageFile, setImageFile] = useState('');
     const [description, setDescription] = useState('');
-    const [duration, setDuration] = useState(0);
-    const [distance, setDistance] = useState(0);
-    const [price, setPrice] = useState(0);
-    const [supplies, setSupplies] = useState('');
-    const [elevation, setElevation] = useState(0);
+    // const [duration, setDuration] = useState(0);
+    // const [distance, setDistance] = useState(0);
+    // const [price, setPrice] = useState(0);
+    // const [supplies, setSupplies] = useState('');
+    // const [elevation, setElevation] = useState(0);
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     // const [location, setLocation] = useState('');
     const dispatch = useDispatch();
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
-    let imageFile;
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
+    const handleClose = () => {
+      setShow(false);
+      //Redirect to "/" or eventually the eventShow for newlycreated Event:
+      // <Redirect to="/"/>
+      history.push(`/events`);
+    };
   
     useEffect(() => {
       return () => dispatch(clearEventErrors());
     }, [dispatch]);
 
     const updateImage = async (e) => {
-      imageFile = e.target.files[0] 
+      setImageFile(e.target.files[0])
     };
   
     const handleSubmit = async (e) => {
@@ -54,7 +64,7 @@ function EventCreate ({pins, mapData}) {
     }
 
     if (!imageFile) {
-      alert('Event must contain at an image. Please Upload')
+      alert('Event must include an image. Please Upload')
       return;
     }
 
@@ -63,6 +73,7 @@ function EventCreate ({pins, mapData}) {
       alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
       return;
     }
+
 
       const formData = new FormData();
       
@@ -119,6 +130,7 @@ function EventCreate ({pins, mapData}) {
         initCoords: firstPin.location,
         location: address
       }
+      
       let eventExists = await dispatch(eventReducerActions.createEvent(newEvent));
       
       if (eventExists) { 
@@ -138,9 +150,8 @@ function EventCreate ({pins, mapData}) {
           dispatch(pinReducerActions.createPin(pin))
           })
       }
-        //Redirect to "/" or eventually the eventShow for newlycreated Event:
-        // <Redirect to="/"/>
-        history.push(`/events`)
+
+      handleShow();
     };
   
     const updateName = e => setName(e.currentTarget.value);
@@ -183,7 +194,7 @@ function EventCreate ({pins, mapData}) {
       pins.forEach(pin=> {
         if (pin.supplies.length > 0) return total += `${pin.supplies}, `;
       })
-      return total;
+      return total.slice(0, -2);
     }
 
     const totalDuration = () => {
@@ -195,7 +206,7 @@ function EventCreate ({pins, mapData}) {
     }
 
     return (
-      <>
+      <section className="create_event_page">
         <div className='form_area'>
           <form className="create_event" onSubmit={handleSubmit}>
             <h2>Event Details</h2> 
@@ -258,7 +269,7 @@ function EventCreate ({pins, mapData}) {
             </label>
 
             <div className="errors">{errors && errors.text}</div>
-            <input type="file" onChange={updateImage} multiple />
+            <input type="file" onChange={updateImage} />
             <button>Submit</button>
           </form>
           {/* <div>{displayPins()}</div> */}
@@ -314,7 +325,18 @@ function EventCreate ({pins, mapData}) {
             <p className='stat_value'>{mapData.elevation}</p>
           </div>
         </div>
-      </>
+
+        <Modal show={show}
+          onHide={handleClose}
+          className="event_modal">
+          <Modal.Header closeButton>
+            <Modal.Title>Awesome!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            You've successfully created an event.
+          </Modal.Body>
+        </Modal>
+      </section>
     )
   }
   
