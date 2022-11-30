@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
-import { loadEvent } from "../../store/events";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchEvent, loadEvent } from "../../store/events";
 import { useParams } from 'react-router-dom';
 import { Wrapper } from "@googlemaps/react-wrapper";
 import PinEditForm from "./EditPinForm";
 import {EventUpdate} from '../Events/EventUpdate';
+import { fetchEventPins, getEventPins } from "../../store/pins";
 import Footer from "../NavBar/Footer";
 import './Map.scss';
 import './PinEditForm.scss';
@@ -22,11 +23,25 @@ export const UpdateEventPlanningMap = () => {
   const [elevationArray, setElevationArray] = useState([]);
   const [showPinEditForm, setShowPinEditForm] = useState(false);
   let [numPoints, setNumPoints] = useState(0);
-  const [mapData, setMapData] = useState({})
+  const [mapData, setMapData] = useState({});
+  const dispatch = useDispatch();
 
   const {eventId} = useParams()
   const event = useSelector(loadEvent(eventId)); //but where is it getting eventId from?
-  const [pins, setPins] = useState(event.pins); //is this the right way to key into event
+  const eventPins = useSelector(getEventPins(eventId));
+  const [pins, setPins] = useState(eventPins);
+  console.log(event);
+  console.log(eventPins);
+
+  useEffect(() => {
+    if (eventId) {
+      dispatch(fetchEvent(eventId));
+      dispatch(fetchEventPins(eventId));
+    }
+  },[dispatch, eventId])
+  
+  
+  console.log(pins); //why is this empty if eventPins isn't?
 
   useEffect(() => {
     if (!map) {
@@ -34,6 +49,93 @@ export const UpdateEventPlanningMap = () => {
     }
     
   }, [mapRef]);
+
+  const renderEventPins = (eventPins) => {
+    eventPins.forEach(pin => {
+        const marker = new window.google.maps.Marker({
+            order: pin?.order,
+            position: pin?.location[0],
+            map: map,
+            icon: {
+                path: window.google.maps.SymbolPath.CIRCLE,
+                scale: 4.5,
+                fillColor: "red",
+                fillOpacity: 0.8,
+                strokeWeight: 0
+            }
+        });
+        marker.addListener('click', async () => {
+            setShowPinEditForm(marker);
+        })
+    })
+    }
+
+    const renderPath = (eventPins) => {
+        
+        let midpoints = []
+        for(let i = 1; i < eventPins.length - 1; i++) {
+          let point = eventPins[i].location;
+            let wayPoint = {};
+            wayPoint['location'] = new window.google.maps.LatLng(point);
+            midpoints.push(wayPoint);
+            wayPoint = {}
+          }
+          
+          const request = {
+            origin: eventPins[0].location,
+            destination: coords[coords.length - 1],
+            travelMode: 'WALKING',
+              unitSystem: window.google.maps.UnitSystem.METRIC,
+              waypoints: midpoints
+            }
+        
+
+        directionsService.route(request, (response, status) => {
+            if (status === 'OK') {
+                  const poly = response.routes[0].overview_polyline
+                  
+                  const distanceArray = response.routes[0].legs;
+                  let totalDistance = 0;
+                  distanceArray.forEach(dis => {
+                      let value = dis.distance.value / 1000;
+                      totalDistance += value;
+                    })
+    
+                    const durationArray = response.routes[0].legs;
+                  let totalDuration = 0;
+                  durationArray.forEach(dur => {
+                    let value = dur.duration.value;
+                    totalDuration += value;
+                    
+                      
+                  })
+                  //OnlineGameMap Version:
+                  setDistance(Math.round(totalDistance * 10) / 10);
+                  setDuration(Math.round((totalDuration / 60)));
+                  
+                  directionsRenderer.setDirections(response);
+
+                  //EventPlanningMap Version:
+                //   const pathPointSet = response.routes[0].overview_path;
+              
+                //   setDistance(Math.round(totalDistance * 10) / 10);
+                //   setPolyline(poly);
+                //   setDuration(Math.round(totalDuration / 60 * 10) / 10);
+                //   setPathPoints(pathPointSet);
+                    // directionsRenderer.setDirections(response);
+                }
+              }); 
+          
+        };
+    
+
+    useEffect(() => {
+
+        if (eventPins) {
+          renderPath();
+        } 
+        
+      }, [eventPins]);
 
   const calcElevationArray = async (points) => {
     if (points.length > 1) {
@@ -160,57 +262,6 @@ export const UpdateEventPlanningMap = () => {
   directionsRenderer.setMap(map);
   const directionsService = new window.google.maps.DirectionsService();
   
-  const renderPath = () => {
-
-      let midpoints = []
-      for(let i = 1; i < coords.length - 1; i++) {
-        let point = coords[i];
-        let wayPoint = {};
-          wayPoint['location'] = new window.google.maps.LatLng(point);
-          midpoints.push(wayPoint);
-          wayPoint = {}
-      }
-
-      const request = {
-          origin: coords[0],
-          destination: coords[coords.length - 1],
-          travelMode: 'WALKING',
-          unitSystem: window.google.maps.UnitSystem.METRIC,
-          waypoints: midpoints
-      }
-      
-      directionsService.route(request, (response, status) => {
-          if (status === 'OK') {
-              const poly = response.routes[0].overview_polyline
-              
-              const distanceArray = response.routes[0].legs;
-              let totalDistance = 0;
-              distanceArray.forEach(dis => {
-                  let value = dis.distance.value / 1000;
-                  totalDistance += value;
-              })
-
-              const durationArray = response.routes[0].legs;
-              let totalDuration = 0;
-              durationArray.forEach(dur => {
-                  let value = dur.duration.value;
-                  totalDuration += value;
-
-                  
-                })
-
-              const pathPointSet = response.routes[0].overview_path;
-              
-              setDistance(Math.round(totalDistance * 10) / 10);
-              setPolyline(poly);
-              setDuration(Math.round(totalDuration / 60 * 10) / 10);
-              setPathPoints(pathPointSet);
-
-              directionsRenderer.setDirections(response);
-          }
-      }); 
-      
-  };
 
   useEffect(() => {
 
@@ -235,10 +286,12 @@ export const UpdateEventPlanningMap = () => {
 	// const height = document.getElementById('accordion').clientHeight();
   // document.getElementById('google-map-container').style.height = height
 
+  if (eventPins) renderEventPins(eventPins);
+
   return (
     <div className="planning_map_area flex-row">
 			<div className="planning_map_form">
-			  <EventUpdate event={event} pins={pins} mapData={mapData}/>
+			  {/* <EventUpdate event={event} pins={pins} mapData={mapData}/> */}
 			</div>
       <div id="google-map-container" ref={mapRef}>
         Map
