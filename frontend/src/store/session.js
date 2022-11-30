@@ -60,8 +60,8 @@ const startSession = (userInfo, route) => async dispatch => {
 
 //----------------update Image-------------------
 
-export const updateUserImage = (user, formData) => async dispatch => {
-  const res = await jwtFetch(`/api/users/${user.currentUser._id}`, {
+export const updateUserImage = (userId, formData) => async dispatch => {
+  const res = await jwtFetch(`/api/users/${userId}`, {
     method: "PATCH",
     body: formData,
   })

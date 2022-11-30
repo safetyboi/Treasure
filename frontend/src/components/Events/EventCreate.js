@@ -74,6 +74,7 @@ function EventCreate ({pins, mapData}) {
       return;
     }
 
+
       const formData = new FormData();
       
       formData.append("images", imageFile);
