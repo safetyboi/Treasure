@@ -36,7 +36,8 @@ export const OnlineGameMap = () => {
   const [showStartButton, setShowStartButton] = useState(true);
   const jingleSound = new Audio(jingle);
   const winSound = new Audio(win);
-  
+  const [intervalId, setIntervalId] = useState('');
+
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
   }
@@ -60,9 +61,9 @@ export const OnlineGameMap = () => {
       });
     };
 
-    setInterval(() => {
+    setIntervalId(setInterval(() => {
       setThinkingTime(thinkingTime + 1)
-    }, 60000)
+    }, 60000));
   }
 
   const eventDurationSetter = () => {
@@ -101,6 +102,7 @@ export const OnlineGameMap = () => {
   useEffect(() => {
     if (remainingTime < 1) {
       winSound.play();
+      clearInterval(intervalId);
       setShowEndGame(true)
     }
   }, [remainingTime])
@@ -294,7 +296,7 @@ export const OnlineGameMap = () => {
 
       <div className="google-map-container" ref={mapRef}>Map</div>
       {!showStartButton && 
-        <ClueForm setCoords={setCoords} addLocationPin={addLocationPin} winSound={winSound} showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
+        <ClueForm intervalId={intervalId} setCoords={setCoords} addLocationPin={addLocationPin} winSound={winSound} showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
       }
       <Link className="back" to='/events'><Button>QUIT</Button></Link>
       {showStartButton &&
