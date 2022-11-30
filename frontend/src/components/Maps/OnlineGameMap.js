@@ -27,6 +27,7 @@ export const OnlineGameMap = () => {
   let [numPoints, setNumPoints] = useState(0);
   const [thinkingTime, setThinkingTime] = useState(0);
   const [showClue, setShowClue] = useState(true);
+  const showClueRef = useRef(showClue);
   const [currentPinOrder, setCurrentPinOrder] = useState(1);
   const [showEndGame, setShowEndGame] = useState(false);
   const[markers, setMarkers] = useState([]);
@@ -40,14 +41,22 @@ export const OnlineGameMap = () => {
     return eventPins.filter(pin => pin.order === order)[0]
   }
 
+  const showClueUpdater = (value) => {
+    showClueRef.current = value;
+    setShowClue(value);
+  }
+
   const startGame = () => {
     setShowStartButton(false);
-    releaseClue();
+    setCoords(allCoords => [...allCoords, event.initCoords[0]])
+    addLocationPin(event.initCoords[0], map);
     
     if (map) {
       window.google.maps.event.addListener(map, "click", (event) => {
+        if (!showClueRef.current) {
           setCoords(allCoords => [...allCoords, event.latLng])
           addLocationPin(event.latLng, map);     
+        }
       });
     };
 
@@ -72,14 +81,11 @@ export const OnlineGameMap = () => {
   },[eventId])
 
   useEffect(() => {
-      if (currentPinOrder > 1 && currentPosition) releaseClue();
+      if (currentPinOrder && currentPosition) releaseClue();
   }, [currentPosition])
 
   useEffect(() => {
-    if (event && !coords.length) {
-      setCoords(allCoords => [...allCoords, event.initCoords[0]])
-      addLocationPin(event.initCoords[0], map);
-    }
+
     if (eventPins && !eventDuration) {
       setEventDuration(eventDurationSetter());
     }
@@ -137,20 +143,21 @@ export const OnlineGameMap = () => {
   };
 
   const addLocationPin = (location, map) => {
-    setNumPoints(numPoints++)
-    const marker = new window.google.maps.Marker({
-      order: numPoints,
-      position: location,
-      map: map,
-      icon: {
-        path: window.google.maps.SymbolPath.CIRCLE,
-        scale: 4.5,
-        fillColor: "green",
-        fillOpacity: 0.8,
-        strokeWeight: 0
-      }
-    });
-    setCurrentPosition({lat: marker.position.lat(), lng: marker.position.lng()});
+      setNumPoints(numPoints++)
+      const marker = new window.google.maps.Marker({
+        order: numPoints,
+        position: location,
+        map: map,
+        icon: {
+          path: window.google.maps.SymbolPath.CIRCLE,
+          scale: 4.5,
+          fillColor: "green",
+          fillOpacity: 0.8,
+          strokeWeight: 0
+        }
+      });
+      setCurrentPosition({lat: marker.position.lat(), lng: marker.position.lng()});
+
   };
   
 
@@ -181,14 +188,14 @@ export const OnlineGameMap = () => {
           alert(`You've reached point ${currentPinOrder}! Answer the question below to unlock directions to the next point!`)
         }
         renderEventPin(currentPinOrder);
-        setShowClue(true)
+        showClueUpdater(true)
       }, 500)
     }
   }
   
   const nextPin = () => {
       setCurrentPinOrder(currentPinOrder + 1);
-      setShowClue(false);
+      showClueUpdater(false);
   }
 
   const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
@@ -287,7 +294,7 @@ export const OnlineGameMap = () => {
 
       <div className="google-map-container" ref={mapRef}>Map</div>
       {!showStartButton && 
-        <ClueForm winSound={winSound} jingleSound={jingleSound} showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
+        <ClueForm setCoords={setCoords} addLocationPin={addLocationPin} winSound={winSound} showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
       }
       <Link className="back" to='/events'><Button>QUIT</Button></Link>
       {showStartButton &&
