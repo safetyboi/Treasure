@@ -71,19 +71,20 @@ export const UpdateEventPlanningMap = () => {
     }
 
     const renderPath = (eventPins) => {
-        
+        console.log (eventPins);
         let midpoints = []
         for(let i = 1; i < eventPins.length - 1; i++) {
-          let point = eventPins[i].location;
-            let wayPoint = {};
+          let point = {lat: eventPins[i].location[0].lat, lng: eventPins[i].location[0].lng}
+            console.log(point);
+          let wayPoint = {};
             wayPoint['location'] = new window.google.maps.LatLng(point);
             midpoints.push(wayPoint);
             wayPoint = {}
           }
           
           const request = {
-            origin: eventPins[0].location,
-            destination: coords[coords.length - 1],
+            origin: {lat: eventPins[0].location[0].lat,lng: eventPins[0].location[0].lat},
+            destination: {lat: eventPins[eventPins.length - 1].location[0].lat,lng: eventPins[eventPins.length - 1].location[0].lat},
             travelMode: 'WALKING',
               unitSystem: window.google.maps.UnitSystem.METRIC,
               waypoints: midpoints
@@ -131,8 +132,8 @@ export const UpdateEventPlanningMap = () => {
 
     useEffect(() => {
 
-        if (eventPins) {
-          renderPath();
+        if (eventPins?.length) {
+          renderPath(eventPins);
         } 
         
       }, [eventPins]);
@@ -263,13 +264,13 @@ export const UpdateEventPlanningMap = () => {
   const directionsService = new window.google.maps.DirectionsService();
   
 
-  useEffect(() => {
+//   useEffect(() => {
 
-    if (coords.length > 1) {
-        renderPath();
-    } 
+//     if (coords.length > 1) {
+//         renderPath();
+//     } 
 
-  }, [coords])
+//   }, [coords])
 
   useEffect(() => {
     calcElevationArray(pathPoints);
