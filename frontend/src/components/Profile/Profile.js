@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from "react-router-dom";
-import { fetchUser, deleteUser } from '../../store/session';
+import { fetchUser, deleteUser, logout } from '../../store/session';
 import ProfileEvent from './ProfileEvent';
 import Button from 'react-bootstrap/Button';
 import Footer from '../NavBar/Footer';
@@ -15,18 +15,20 @@ function Profile() {
   
   useEffect(() => {
     dispatch(fetchUser())
-  }, [dispatch])
+  }, [dispatch]);
 
-  const redirect = () => {
+  const logoutUser = e => {
+    e.preventDefault();
+    dispatch(logout());
     history.push(`/`)
-  }
+  };
 
-  const deleteProfile = () => {
+  const deleteProfile = e => {
     if (window.confirm("Are you sure to delete your profile?")) {
       dispatch(deleteUser(user.id));
     };
 
-    redirect();
+    logoutUser(e);
   }
 
   return (
@@ -61,7 +63,7 @@ function Profile() {
             </div>
           </div>
         </div>
-        <div className='border'></div>
+        {/* <div className='border'></div> */}
         {/* <ProfileEvent /> */}
       </div>
       <Footer />

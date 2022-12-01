@@ -29,6 +29,16 @@ function EventCreate ({pins, mapData}) {
     const history = useHistory();
     const [show, setShow] = useState(false);
 
+    const dateTime = date + 'T' + time + '-08:00';
+    const localTime = time >= 13 ? time - 12 : time;
+    
+    const modalTime = () => {
+      if (time >= 13) {
+        return `${localTime} PM`
+      }
+      return `${localTime} AM`
+    }
+
     const handleShow = () => setShow(true);
     const handleClose = () => {
       setShow(false);
@@ -70,7 +80,6 @@ function EventCreate ({pins, mapData}) {
         return;
       }
     }
-
 
       const formData = new FormData();
       
@@ -114,8 +123,7 @@ function EventCreate ({pins, mapData}) {
         address = "Location Unavailable"
       };
 
-      const dateTime = date + 'T' + time + '-08:00';
-
+      
       newEvent = {
         name: name,
         description: description,
@@ -332,22 +340,28 @@ function EventCreate ({pins, mapData}) {
             <Modal.Title>Awesome!</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            You've successfully created an event.
-            Here is the details of your new created event:
+            <div className='modal_body_preview'>
+              <p>You've successfully created an event.</p>
+              <p>Here is the details of your new created event:</p>
+            </div>
             <div className='event_modal_details flex-row'>
-              <p className='detail_key'>Name:</p>
+              <p className='detail_key'>Name</p>
+              <p className='colon'>:</p>
               <p className='detail_value'>{name}</p>
             </div>
             <div className='event_modal_details flex-row'>
-              <p className='detail_key'>Date:</p>
-              <p className='detail_value'>{date}</p>
+              <p className='detail_key'>Date</p>
+              <p className='colon'>:</p>
+              <p className='detail_value'>{date.split('-').join('/')}</p>
             </div>
             <div className='event_modal_details flex-row'>
-              <p className='detail_key'>Time:</p>
-              <p className='detail_value'>{time}</p>
+              <p className='detail_key'>Time</p>
+              <p className='colon'>:</p>
+              <p className='detail_value'>{modalTime()}</p>
             </div>
             <div className='event_modal_details flex-row'>
-              <p className='detail_key'>Description:</p>
+              <p className='detail_key'>Description</p>
+              <p className='colon'>:</p>
               <p className='detail_value'>{description}</p>
             </div>
           </Modal.Body>
