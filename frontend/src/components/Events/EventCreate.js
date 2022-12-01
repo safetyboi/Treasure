@@ -28,6 +28,17 @@ function EventCreate ({pins, mapData}) {
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
     const [show, setShow] = useState(false);
+    const [photoUrl, setPhotoUrl] = useState('')
+
+    const dateTime = date + 'T' + time + '-08:00';
+    const localTime = time >= 13 ? time - 12 : time;
+    
+    const modalTime = () => {
+      if (time >= 13) {
+        return `${localTime} PM`
+      }
+      return `${localTime} AM`
+    }
 
     const handleShow = () => setShow(true);
     const handleClose = () => {
@@ -43,6 +54,13 @@ function EventCreate ({pins, mapData}) {
 
     const updateImage = async (e) => {
       setImageFile(e.target.files[0])
+      if (e.target.files[0]) {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(e.target.files[0]);
+        fileReader.onload = () => {
+          setPhotoUrl(fileReader.result);
+        };
+      }
     };
   
     const handleSubmit = async (e) => {
@@ -70,7 +88,6 @@ function EventCreate ({pins, mapData}) {
         return;
       }
     }
-
 
       const formData = new FormData();
       
@@ -114,8 +131,7 @@ function EventCreate ({pins, mapData}) {
         address = "Location Unavailable"
       };
 
-      const dateTime = date + 'T' + time + '-08:00';
-
+      
       newEvent = {
         name: name,
         description: description,
@@ -204,6 +220,8 @@ function EventCreate ({pins, mapData}) {
       return total;
     }
 
+    const previewTitle = photoUrl ? <h3 className='preview-title'> Image preview</h3> : null;
+    const preview = photoUrl ? <img className='preview-image' src={photoUrl} alt="" /> : null;
     return (
       <section className="create_event_page">
         <div className='form_area'>
@@ -269,6 +287,8 @@ function EventCreate ({pins, mapData}) {
 
             <div className="errors">{errors && errors.text}</div>
             <input type="file" onChange={updateImage} />
+            {previewTitle}
+            {preview}
             <button>Submit</button>
           </form>
           {/* <div>{displayPins()}</div> */}
@@ -332,22 +352,28 @@ function EventCreate ({pins, mapData}) {
             <Modal.Title>Awesome!</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            You've successfully created an event.
-            Here is the details of your new created event:
+            <div className='modal_body_preview'>
+              <p>You've successfully created an event.</p>
+              <p>Here is the details of your new created event:</p>
+            </div>
             <div className='event_modal_details flex-row'>
-              <p className='detail_key'>Name:</p>
+              <p className='detail_key'>Name</p>
+              <p className='colon'>:</p>
               <p className='detail_value'>{name}</p>
             </div>
             <div className='event_modal_details flex-row'>
-              <p className='detail_key'>Date:</p>
-              <p className='detail_value'>{date}</p>
+              <p className='detail_key'>Date</p>
+              <p className='colon'>:</p>
+              <p className='detail_value'>{date.split('-').join('/')}</p>
             </div>
             <div className='event_modal_details flex-row'>
-              <p className='detail_key'>Time:</p>
-              <p className='detail_value'>{time}</p>
+              <p className='detail_key'>Time</p>
+              <p className='colon'>:</p>
+              <p className='detail_value'>{modalTime()}</p>
             </div>
             <div className='event_modal_details flex-row'>
-              <p className='detail_key'>Description:</p>
+              <p className='detail_key'>Description</p>
+              <p className='colon'>:</p>
               <p className='detail_value'>{description}</p>
             </div>
           </Modal.Body>

@@ -64,7 +64,7 @@ const ClueForm = ({intervalId, setCoords, addLocationPin, winSound, showClue, se
           <label className='task-header' >My Response
             <input type='text' value={response} onChange={e => setResponse(e.target.value)}/>
           </label>
-          <button>Submit Response</button>
+          <button className="submit_response">Submit Response</button>
         </>
         }
         <button className="cheat_button"

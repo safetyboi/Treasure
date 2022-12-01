@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import UpdatePinForm from "./UpdatePinForm";
-import {EventUpdate} from '../Events/EventUpdate';
+import EventUpdate from '../Events/EventUpdate';
 import Footer from "../NavBar/Footer";
 import './Map.scss';
 import './PinEditForm.scss';
@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchEvent, loadEvent } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
 import { useParams } from 'react-router-dom';
+import { Button } from "react-bootstrap";
 
 export const UpdatePlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -73,7 +74,8 @@ export const UpdatePlanningMap = () => {
       return {lat: pin.location[0].lat, lng: pin.location[0].lng}
     }).reverse());
     renderEventPins(eventPins);
-    _setNumPoints(pinsRef.current.length)
+    _setNumPoints(pinsRef.current.length);
+
   }
 
   const calcElevationArray = async (points) => {
@@ -329,7 +331,7 @@ export const UpdatePlanningMap = () => {
 
 	// const height = document.getElementById('accordion').clientHeight();
   // document.getElementById('google-map-container').style.height = height
-
+  console.log(pinsRef.current)
   return (
     <div className="planning_map_area flex-row">
       {showStartButton && 
@@ -343,11 +345,13 @@ export const UpdatePlanningMap = () => {
           <li>General info about the event goes in the form on the left of the map.</li>
           <li>When your event looks good, click the submit button at the bottom.</li>
         </ul>
-        <button onClick={startPlanning}>Start Planning</button>
+        <Button onClick={startPlanning}>Start Planning</Button>
       </div>
       }
 			<div className="planning_map_form">
-		    {/* <EventUpdate pins={pins} mapData={mapData}/> */}
+        {event && !showStartButton &&
+		    <EventUpdate event={event} pins={pins} mapData={mapData}/>
+        }
 			</div>
       <div id="google-map-container" ref={mapRef}>
         Map

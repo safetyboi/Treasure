@@ -3,6 +3,7 @@ import jwtFetch from "./jwt";
 const RECEIVE_NEW_PIN = "RECEIVE_NEW_PIN"
 const RECEIVE_EVENT_PINS = "RECEIVE_EVENT_PINS"
 const REMOVE_EVENT_PINS = "REMOVE_EVENT_PINS"
+const REMOVE_PIN = "REMOVE_PIN"
 //errors?
 
 
@@ -21,6 +22,11 @@ const receiveEventPins = pins => ({
 //   events
 // });
 
+const removePin = id => ({
+  type: REMOVE_PIN,
+  id
+});
+
 export const getEventPins = (eventId) => (state) => {
   if (state.pins) return Object.values(state.pins).filter(pin => {
     return pin.event === eventId
@@ -29,10 +35,13 @@ export const getEventPins = (eventId) => (state) => {
 }
 
 export const fetchEventPins = eventId => async dispatch => {
+  // debugger
   try {
+    // debugger
       const res = await jwtFetch(`/api/pins/${eventId}`);
       const eventPins = await res.json();
     dispatch(receiveEventPins(eventPins));
+    // debugger
     return eventPins;
   } catch (err) {
     const resBody = await err.json();
@@ -44,13 +53,36 @@ export const fetchEventPins = eventId => async dispatch => {
 }
 
 export const createPin = data => async dispatch => {
+  // debugger
   const res = await jwtFetch(`/api/pins/${data.event}`, {
       method: 'POST',
       body: JSON.stringify(data)
     });
+    // debugger
     const pin = await res.json();
     dispatch(receiveNewPin(pin));
     //no error-handling yet
+}
+
+export const deletePin = id => async dispatch => {
+  // debugger
+  try {
+    // debugger
+  const res = await jwtFetch(`/api/pins/${id}`, {
+    method: 'DELETE'
+  });
+  // debugger
+  if (res.ok) {
+    dispatch(removePin(id))
+    return id;
+  }
+  } catch(err) {
+    const resBody = await err.json();
+      if (resBody.statusCode === 400) {
+      // return dispatch(receiveErrors(resBody.errors));
+      return null;
+    }
+  }
 }
 
 const pinsReducer = (state = {}, action) => {
@@ -59,6 +91,10 @@ const pinsReducer = (state = {}, action) => {
           return {...state, [action.pin._id]: action.pin};
       case RECEIVE_EVENT_PINS:
           return action.pins;
+      case REMOVE_PIN:
+          let nextState = {...state};
+          delete nextState[action.id];
+          return nextState;
       default:
           return state;
   }

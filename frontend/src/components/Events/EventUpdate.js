@@ -8,13 +8,19 @@ import * as eventReducerActions from '../../store/events';
 import jwtFetch from '../../store/jwt';
 import './Event.scss'
 import { useParams } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
 
-export const EventUpdate = ({event, pins, mapData}) => {
+const EventUpdate = ({event, pins, mapData}) => {
 
-    const [name, setName] = useState(event.name);
-    const [description, setDescription] = useState(event.description);
-    const [date, setDate] = useState(event.date);
-    const [time, setTime] = useState(event.time);
+    const [name, setName] = useState(event?.name);
+    const [description, setDescription] = useState(event?.description);
+    const [date, setDate] = useState(event?.date?.slice(0,10));
+    const [time, setTime] = useState(event?.time?.slice(11,20));
+    const [imageFile, setImageFile] = useState(event?.image)
+    const [photoUrl, setPhotoUrl] = useState('')
+
+    // console.log(date);
+    // console.log(time);
 
     const updateName = e => setName(e.currentTarget.value);
     const updateDescription = e => setDescription(e.currentTarget.value);
@@ -26,13 +32,30 @@ export const EventUpdate = ({event, pins, mapData}) => {
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
 
-    let imageFile;
-    const updateImage = async (e) => {
-        imageFile = e.target.files[0] 
+    const [show, setShow] = useState(false);
+    const handleShow = () => setShow(true);
+    const handleClose = () => {
+        setShow(false);
+        //Redirect to "/" or eventually the eventShow for newlycreated Event:
+        // <Redirect to="/"/>
+        history.push(`/events`);
       };
 
-  const handleSubmit = async (e) => {
+    // let imageFile;
+    const updateImage = async (e) => {
+      setImageFile(e.target.files[0])
+      if (e.target.files[0]) {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(e.target.files[0]);
+        fileReader.onload = () => {
+          setPhotoUrl(fileReader.result);
+        };
+      }
+    };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('hello');
     const eventDurationSum = () => {
         let duration = 0;
         pins.forEach(pin => {
@@ -40,29 +63,27 @@ export const EventUpdate = ({event, pins, mapData}) => {
         });
         return duration;
     }
-
+    console.log(pins);
     const firstPin = pins.filter(pin => {
         return pin.order === 1
     })[0]
-
+    console.log(firstPin);
     const geocoder = new window.google.maps.Geocoder();
+    
 
-    let address = await geocoder.geocode({location: firstPin.location});
+    let address = await geocoder.geocode({location: firstPin.location[0]});
       if (address.results[0]) {
         address = address.results[0].formatted_address;
       } else {
         address = "Location Unavailable"
       };
 
-      if (!imageFile) {
-        alert('Event must contain at an image. Please Upload')
-        return;
-      }
-  
-      const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-      if (!allowedExtensions.exec(imageFile.name)) {
-        alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
-        return;
+      if (imageFile) {
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+        if (!allowedExtensions.exec(imageFile.name)) {
+          alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
+          return;
+        }
       }
   
       const formData = new FormData();
@@ -85,9 +106,41 @@ export const EventUpdate = ({event, pins, mapData}) => {
             initCoords: firstPin.location,
             location: address
         }
+        // debugger
       let eventUpdated = await dispatch(eventReducerActions.updateEvent(eventToUpdate));
+        
+      if (eventUpdated && photoUrl) { 
+        await jwtFetch(`/api/events/addImage/${eventUpdated._id}`, {
+          method: "PATCH",
+          body: formData,
+        })
+      }
 
-      history.push(`/events/${eventId}`)
+      if (eventUpdated) {
+        //fetch the pins from the backend NOT the modified array on the frontend
+        let oldPins = await dispatch(pinReducerActions.fetchEventPins(eventId)); //it's gonna get mad that I'm doing an async at 'not the top level'
+        //iterate over 
+        let deletedPins = [];
+        
+        oldPins.forEach( async pin => {
+          let deletedPin = await dispatch(pinReducerActions.deletePin(pin._id))
+            deletedPins.push(deletedPin)  //is it '_id'? I think so
+        })
+        
+        if (deletedPins.length === oldPins.length) {
+            const mappedPins = pins.map(pin=> {
+                return {...pin, event: eventUpdated._id}
+            })
+            mappedPins.forEach(pin => {
+                dispatch(pinReducerActions.createPin(pin))
+            })
+        } else {
+          alert('pins werent all deleted')
+        }
+    }
+
+
+      handleShow();
     }
 
 
@@ -106,7 +159,7 @@ export const EventUpdate = ({event, pins, mapData}) => {
         pins.forEach(pin=> {
         if (pin.supplies.length > 0) return total += `${pin.supplies}, `;
         })
-        return total;
+        return total.slice(0, -2);
     }
 
     const totalDuration = () => {
@@ -117,9 +170,11 @@ export const EventUpdate = ({event, pins, mapData}) => {
     return total;
     }
 
-
-    return (
+    const previewTitle = photoUrl ?  <h3 className='preview-title'> Image preview</h3>: <h3 className='preview-title'> Original Image</h3>;
+    const preview = photoUrl ? <img className='preview-image' src={photoUrl} alt="" /> : <img className='preview-image' src={imageFile} alt="" /> ;
+    return event ? (
         <>
+        <section className='create_event_page'>
           <div className='form_area'>
             <form className="create_event" onSubmit={handleSubmit}>
               <h2>Event Details</h2> 
@@ -182,7 +237,9 @@ export const EventUpdate = ({event, pins, mapData}) => {
               </label>
   
               <div className="errors">{errors && errors.text}</div>
-              <input type="file" value={event.image} onChange={updateImage} multiple />
+              <input type="file" onChange={updateImage} multiple />
+              {previewTitle}
+              {preview}
               <button>Submit</button>
             </form>
             {/* <div>{displayPins()}</div> */}
@@ -208,7 +265,22 @@ export const EventUpdate = ({event, pins, mapData}) => {
               <p className='stat_value'>{mapData.elevation}</p>
             </div>
           </div>
+
+          <Modal show={show}
+          onHide={handleClose}
+          className="event_modal">
+          <Modal.Header closeButton>
+            <Modal.Title>Awesome!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            You've successfully updated your event.
+          </Modal.Body>
+        </Modal>
+          </section>
         </>
-      )
+      ) : null;
+}
 
 }
+
+export default EventUpdate;

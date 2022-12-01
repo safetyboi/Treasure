@@ -7,10 +7,10 @@ import ClueForm from "./ClueForm";
 import { fetchEvent, loadEvent  } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
 import GameOver from '../GameOver/GameOver';
-import './GameMap.scss'
 import { Button } from "react-bootstrap";
 import jingle from '../../assets/sounds/success-bell.wav';
 import win from '../../assets/sounds/win.wav';
+import './GameMap.scss'
 
 export const OnlineGameMap = () => {
   const dispatch = useDispatch();
@@ -301,7 +301,19 @@ export const OnlineGameMap = () => {
       }
       {/* <Link className="back" to='/events'><Button>QUIT</Button></Link> */}
       {showStartButton &&
+        <div>
+        <h3>How to Play an Online Scavenger Hunt</h3>
+        <ul>
+          <li>When you click "Start," your remaining time will start ticking down.</li>
+          <li>Your "Current Task" will always be displayed in the top-right corner of the screen.</li>
+          <li>Notice the panel in the top-left corner of the screen: You must alternate between typing your answers to the "Clue" prompts and then following the "Directions to Pin" by clicking on the appropriate locations on the map.</li>
+          <li>Hint...if you don't see a "My Response" box, you haven't reached the next pin by clicking the right map location yet!</li>
+          <li>Be careful! Both your "thinking time" and "walking time" reduce your remaining game time. When it reaches 0, you lose!</li>
+          <li>Answer the final pin's clue correctly to win the game!</li>
+          <li>The "Cheat Button" reveals the correct answer or brings you to the next pin location, as appropriate.</li>
+        </ul>
         <Button onClick={startGame} className="start-button">Start Game</Button>
+      </div>
       }
       {showEndGame && <GameOver remainingTime={remainingTime} distance={distance} timeWalked={duration} thinkingTime={thinkingTime} />}
     </section>
