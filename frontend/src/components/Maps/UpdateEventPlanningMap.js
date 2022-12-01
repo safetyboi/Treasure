@@ -3,13 +3,15 @@ import { Wrapper } from "@googlemaps/react-wrapper";
 import UpdatePinForm from "./UpdatePinForm";
 import EventUpdate from '../Events/EventUpdate';
 import Footer from "../NavBar/Footer";
-import './Map.scss';
-import './PinEditForm.scss';
 import { useSelector, useDispatch } from "react-redux";
 import { fetchEvent, loadEvent } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
 import { useParams } from 'react-router-dom';
-import { Button } from "react-bootstrap";
+import Instructions from './Instructions.js'
+import './Map.scss';
+import './PinEditForm.scss';
+import "./Instructions.scss";
+
 
 export const UpdatePlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -333,8 +335,8 @@ export const UpdatePlanningMap = () => {
   // document.getElementById('google-map-container').style.height = height
   console.log(pinsRef.current)
   return (
-    <div className="planning_map_area flex-row">
-      {showStartButton && 
+    <div className="planning_map_area flex-row justify-center">
+      {/* {showStartButton && 
       <div>
         <h3>How to Plan An Event</h3>
         <ul>
@@ -347,7 +349,10 @@ export const UpdatePlanningMap = () => {
         </ul>
         <Button onClick={startPlanning}>Start Planning</Button>
       </div>
-      }
+      } */}
+
+      <Instructions />
+
 			<div className="planning_map_form">
         {event && !showStartButton &&
 		    <EventUpdate event={event} pins={pins} mapData={mapData}/>
@@ -375,10 +380,9 @@ const UpdatePlanningMapWrapper = () => {
     <div className="planning_map">
       <section className="planning_map_wrapper flex-col align-center">
         <h1>Plan an Event</h1>
-        <p>(Click anywhere on the map to create a pin)</p>
         <Wrapper 
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
-          className="flex-row justify-center">
+          className="flex-row justify-center align-center">
           <UpdatePlanningMap/>
         </Wrapper>
       </section>
