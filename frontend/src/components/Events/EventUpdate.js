@@ -8,8 +8,9 @@ import * as eventReducerActions from '../../store/events';
 import jwtFetch from '../../store/jwt';
 import './Event.scss'
 import { useParams } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
 
-export const EventUpdate = ({event, pins, mapData}) => {
+function EventUpdate ({event, pins, mapData}) {
 
     const [name, setName] = useState(event?.name);
     const [description, setDescription] = useState(event?.description);
@@ -31,6 +32,16 @@ export const EventUpdate = ({event, pins, mapData}) => {
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
 
+    const [show, setShow] = useState(false);
+    const handleShow = () => setShow(true);
+    const handleClose = () => {
+        setShow(false);
+        //Redirect to "/" or eventually the eventShow for newlycreated Event:
+        // <Redirect to="/"/>
+        history.push(`/events`);
+      };
+
+    // let imageFile;
     const updateImage = async (e) => {
       setImageFile(e.target.files[0])
       if (e.target.files[0]) {
@@ -102,7 +113,26 @@ export const EventUpdate = ({event, pins, mapData}) => {
         })
       }
 
-      history.push(`/events/${eventId}`)
+      if (eventUpdated) {
+        //fetch the pins from the backend NOT the modified array on the frontend
+        let oldPins = await dispatch(pinReducerActions.fetchEventPins(eventId)); //it's gonna get mad that I'm doing an async at 'not the top level'
+        //iterate over 
+        let deletedPins = await oldPins.forEach(pin => {
+            return dispatch(pinReducerActions.deletePin(pin._id)) //is it '_id'? I think so
+        })
+        
+        if (deletedPins) {
+            const mappedPins = pins.map(pin=> {
+                return {...pin, event: eventUpdated._id}
+            })
+            mappedPins.forEach(pin => {
+                dispatch(pinReducerActions.createPin(pin))
+            })
+        }
+    }
+
+
+      handleShow();
     }
 
 
@@ -136,6 +166,7 @@ export const EventUpdate = ({event, pins, mapData}) => {
     const preview = photoUrl ? <img className='preview-image' src={photoUrl} alt="" /> : <img className='preview-image' src={imageFile} alt="" /> ;
     return event ? (
         <>
+        <section className='create_event_page'>
           <div className='form_area'>
             <form className="create_event" onSubmit={handleSubmit}>
               <h2>Event Details</h2> 
@@ -226,7 +257,19 @@ export const EventUpdate = ({event, pins, mapData}) => {
               <p className='stat_value'>{mapData.elevation}</p>
             </div>
           </div>
+
+          <Modal show={show}
+          onHide={handleClose}
+          className="event_modal">
+          <Modal.Header closeButton>
+            <Modal.Title>Awesome!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            You've successfully updated your event.
+          </Modal.Body>
+        </Modal>
+          </section>
         </>
       ) : null;
 
-}
+export default EventUpdate;

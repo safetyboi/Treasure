@@ -3,6 +3,7 @@ import jwtFetch from "./jwt";
 const RECEIVE_NEW_PIN = "RECEIVE_NEW_PIN"
 const RECEIVE_EVENT_PINS = "RECEIVE_EVENT_PINS"
 const REMOVE_EVENT_PINS = "REMOVE_EVENT_PINS"
+const REMOVE_PIN = "REMOVE_PIN"
 //errors?
 
 
@@ -20,6 +21,11 @@ const receiveEventPins = pins => ({
 //   type: REMOVE_EVENT_PINS,
 //   events
 // });
+
+const removePin = id => ({
+  type: REMOVE_PIN,
+  id
+});
 
 export const getEventPins = (eventId) => (state) => {
   if (state.pins) return Object.values(state.pins).filter(pin => {
@@ -53,12 +59,34 @@ export const createPin = data => async dispatch => {
     //no error-handling yet
 }
 
+export const deletePin = id => async dispatch => {
+  try {
+  const res = await jwtFetch(`/api/pins/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (res.ok) {
+    dispatch(removePin(id))
+  }
+  } catch(err) {
+    const resBody = await err.json();
+      if (resBody.statusCode === 400) {
+      // return dispatch(receiveErrors(resBody.errors));
+      return null;
+    }
+  }
+}
+
 const pinsReducer = (state = {}, action) => {
   switch(action.type) {
       case RECEIVE_NEW_PIN:
           return {...state, [action.pin._id]: action.pin};
       case RECEIVE_EVENT_PINS:
           return action.pins;
+      case REMOVE_PIN:
+          let nextState = {...state};
+          delete nextState[action.id];
+          return nextState;
       default:
           return state;
   }
