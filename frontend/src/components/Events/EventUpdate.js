@@ -14,10 +14,13 @@ const EventUpdate = ({event, pins, mapData}) => {
 
     const [name, setName] = useState(event?.name);
     const [description, setDescription] = useState(event?.description);
-    const [date, setDate] = useState(event?.date?.slice(0,10));
+    // const [date, setDate] = useState(event?.date?.slice(0,10));
+    const [date, setDate] = useState(event?.date);
     const [time, setTime] = useState(event?.time?.slice(11,20));
     const [imageFile, setImageFile] = useState(event?.image)
     const [photoUrl, setPhotoUrl] = useState('')
+
+    const dateTime = date + 'T' + time + '-08:00';
 
     // console.log(date);
     // console.log(time);
@@ -55,7 +58,8 @@ const EventUpdate = ({event, pins, mapData}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('hello');
+    console.log(date);
+    console.log(time);
     const eventDurationSum = () => {
         let duration = 0;
         pins.forEach(pin => {
@@ -108,25 +112,25 @@ const EventUpdate = ({event, pins, mapData}) => {
         }
         // debugger
       let eventUpdated = await dispatch(eventReducerActions.updateEvent(eventToUpdate));
-        
+        debugger
       if (eventUpdated && photoUrl) { 
         await jwtFetch(`/api/events/addImage/${eventUpdated._id}`, {
           method: "PATCH",
           body: formData,
         })
       }
-
+      debugger
       if (eventUpdated) {
         //fetch the pins from the backend NOT the modified array on the frontend
         let oldPins = await dispatch(pinReducerActions.fetchEventPins(eventId)); //it's gonna get mad that I'm doing an async at 'not the top level'
-        //iterate over 
+         debugger
         let deletedPins = [];
-        
+        //iterate over
         oldPins.forEach( async pin => {
           let deletedPin = await dispatch(pinReducerActions.deletePin(pin._id))
             deletedPins.push(deletedPin)  //is it '_id'? I think so
         })
-        
+        debugger
         if (deletedPins.length === oldPins.length) {
             const mappedPins = pins.map(pin=> {
                 return {...pin, event: eventUpdated._id}
@@ -135,7 +139,7 @@ const EventUpdate = ({event, pins, mapData}) => {
                 dispatch(pinReducerActions.createPin(pin))
             })
         } else {
-          alert('pins werent all deleted')
+          alert('Not all pins were successfully deleted!')
         }
     }
 
