@@ -15,12 +15,10 @@
     font-weight: bold;
   }
 
-  .planning_map_area > * {
-    margin: 0 1vw;
-  }
 
   .planning_map_area {
     width: 100vw;
+    margin: 0 1vw;
 
     #google-map-container {
       height: 100vh;

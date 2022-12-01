@@ -30,8 +30,6 @@
       margin-bottom: 5vh;
     }
 
-    
-
     .game_key {
       width: 60%;
       font-size: 1vw;
@@ -106,9 +104,35 @@
   }
 }
 
-.start-button {
+.game_instructions {
   position: absolute;
-  top: calc(50vh - 30px);
-  left: calc(50vw - 75px);
-  cursor: pointer;
+  width: 50vw;
+  height: 76vh;
+  top: calc(50vh - 38vh);
+  left: calc(50vw - 25vw);
+  background-color: white;
+  padding: 5vh 3vw;
+  line-height: 1.4;
+  border-radius: var(--border-radius);
+
+  h3 {
+    font-size: 1.3vw;
+    margin-bottom: 3vh;
+ }
+
+  ol {
+    list-style: decimal;
+    margin-bottom: 3vh;
+
+    li {
+      margin-bottom: 1vh;
+    }
+  }
+
+  .start-button {
+    cursor: pointer;
+  }
 }
+
+
+
