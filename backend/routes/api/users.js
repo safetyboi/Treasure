@@ -103,7 +103,6 @@ router.patch('/:userId', async (req, res, next) => {
   imageUpload.single("images")(req, res, async function (err) {
     if(!req.file){
       photoUrl = 'https://treasure-photos.s3.us-west-1.amazonaws.com/1669765988351'
-      console.log(photoUrl, 'no photo uploded')
       User.findByIdAndUpdate((userId), {image: photoUrl})
       .exec()
       .then((event) => {
