@@ -1,6 +1,6 @@
 .profile_wrapper {
   position: relative;
-  top: -15vh;
+  top: -5vh;
   margin: 0 auto;
   width: 80vw;
 
@@ -132,4 +132,8 @@
 .user_details {
   margin-left: 2vw;
   vertical-align: center;
+}
+
+.profile_page footer {
+  position: absolute;
 }

@@ -7,10 +7,10 @@ import ClueForm from "./ClueForm";
 import { fetchEvent, loadEvent  } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
 import GameOver from '../GameOver/GameOver';
-import './GameMap.scss'
 import { Button } from "react-bootstrap";
 import jingle from '../../assets/sounds/success-bell.wav';
 import win from '../../assets/sounds/win.wav';
+import './GameMap.scss'
 
 export const OnlineGameMap = () => {
   const dispatch = useDispatch();
