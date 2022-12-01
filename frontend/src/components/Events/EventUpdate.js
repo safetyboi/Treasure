@@ -281,4 +281,6 @@ const EventUpdate = ({event, pins, mapData}) => {
       ) : null;
 }
 
+}
+
 export default EventUpdate;
