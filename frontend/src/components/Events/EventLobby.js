@@ -151,7 +151,7 @@ const EventLobby = () => {
               e.preventDefault();
               window.location = 'mailto:treasure.mern.team@gmail.com';
             }}>
-            Send Us Email
+            Email Us
           </Link>
         </Modal.Footer>
       </Modal>

@@ -67,7 +67,7 @@ const ClueForm = ({intervalId, setCoords, addLocationPin, winSound, showClue, se
           <button className="submit_response">Submit Response</button>
         </>
         }
-        <button
+        <button className="cheat_button"
           onClick={handleCheat}>
           Cheat Button
           </button>

@@ -21,7 +21,7 @@ function NavBar () {
           <Link to={'/events'}>All Events</Link>
           <Link to={'/profile'}>Profile</Link>
           <Link to={'/events/new'}>Create Event</Link>
-          <Link to={'/about'}>About Us</Link>
+          <Link to={'/about'}>About</Link>
           <button onClick={logoutUser}>Logout</button>
         </div>
       );

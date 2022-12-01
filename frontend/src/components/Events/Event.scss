@@ -324,7 +324,7 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0 , 0, 0.7);
-  z-index: 10;
+  z-index: 9990;
 }
 
 .event_modal {
@@ -338,7 +338,7 @@
   border-radius: var(--border-radius);
   transform: translateY(-25vh);
   animation: fadeIn .2s linear;
-  z-index: 10;
+  z-index: 9999;
 
 
   @keyframes fadeIn {
