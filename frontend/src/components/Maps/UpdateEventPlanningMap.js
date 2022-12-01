@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchEvent, loadEvent } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
 import { useParams } from 'react-router-dom';
-import Instructions from './Instructions.js'
+import Instructions from './Instructions.js';
 import './Map.scss';
 import './PinEditForm.scss';
 import "./Instructions.scss";
