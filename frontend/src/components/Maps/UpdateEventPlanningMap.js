@@ -331,7 +331,7 @@ export const UpdatePlanningMap = () => {
 
 	// const height = document.getElementById('accordion').clientHeight();
   // document.getElementById('google-map-container').style.height = height
-
+  console.log(pinsRef.current)
   return (
     <div className="planning_map_area flex-row">
       {showStartButton && 
@@ -349,7 +349,7 @@ export const UpdatePlanningMap = () => {
       </div>
       }
 			<div className="planning_map_form">
-        {event && 
+        {event && !showStartButton &&
 		    <EventUpdate event={event} pins={pins} mapData={mapData}/>
         }
 			</div>
