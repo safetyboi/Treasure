@@ -107,4 +107,5 @@ a.back {
   top: calc(50vh - 30px);
   left: calc(50vw - 75px);
   cursor: pointer;
+  z-index: 99999;
 }
