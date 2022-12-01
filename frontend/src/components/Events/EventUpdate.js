@@ -15,6 +15,9 @@ export const EventUpdate = ({event, pins, mapData}) => {
     const [description, setDescription] = useState(event?.description);
     const [date, setDate] = useState(event?.date?.slice(0,10));
     const [time, setTime] = useState(event?.time?.slice(11,20));
+    const [imageFile, setImageFile] = useState(event?.image)
+    const [photoUrl, setPhotoUrl] = useState('')
+
     // console.log(date);
     // console.log(time);
 
@@ -28,10 +31,16 @@ export const EventUpdate = ({event, pins, mapData}) => {
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
 
-    let imageFile;
     const updateImage = async (e) => {
-        imageFile = e.target.files[0] 
-      };
+      setImageFile(e.target.files[0])
+      if (e.target.files[0]) {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(e.target.files[0]);
+        fileReader.onload = () => {
+          setPhotoUrl(fileReader.result);
+        };
+      }
+    };
 
   const handleSubmit = async (e) => {
 
@@ -56,15 +65,12 @@ export const EventUpdate = ({event, pins, mapData}) => {
         address = "Location Unavailable"
       };
 
-      if (!imageFile) {
-        alert('Event must contain at an image. Please Upload')
-        return;
-      }
-  
-      const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-      if (!allowedExtensions.exec(imageFile.name)) {
-        alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
-        return;
+      if (imageFile) {
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+        if (!allowedExtensions.exec(imageFile.name)) {
+          alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
+          return;
+        }
       }
   
       const formData = new FormData();
@@ -88,6 +94,13 @@ export const EventUpdate = ({event, pins, mapData}) => {
             location: address
         }
       let eventUpdated = await dispatch(eventReducerActions.updateEvent(eventToUpdate));
+
+      if (eventUpdated && photoUrl) { 
+        await jwtFetch(`/api/events/addImage/${eventUpdated._id}`, {
+          method: "PATCH",
+          body: formData,
+        })
+      }
 
       history.push(`/events/${eventId}`)
     }
@@ -119,7 +132,8 @@ export const EventUpdate = ({event, pins, mapData}) => {
     return total;
     }
 
-
+    const previewTitle = photoUrl ?  <h3 className='preview-title'> Image preview</h3>: <h3 className='preview-title'> Original Image</h3>;
+    const preview = photoUrl ? <img className='preview-image' src={photoUrl} alt="" /> : <img className='preview-image' src={imageFile} alt="" /> ;
     return event ? (
         <>
           <div className='form_area'>
@@ -185,6 +199,8 @@ export const EventUpdate = ({event, pins, mapData}) => {
   
               <div className="errors">{errors && errors.text}</div>
               <input type="file" onChange={updateImage} multiple />
+              {previewTitle}
+              {preview}
               <button>Submit</button>
             </form>
             {/* <div>{displayPins()}</div> */}

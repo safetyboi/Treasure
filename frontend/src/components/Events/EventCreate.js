@@ -28,6 +28,7 @@ function EventCreate ({pins, mapData}) {
     const errors = useSelector(state => state.errors.events);
     const history = useHistory();
     const [show, setShow] = useState(false);
+    const [photoUrl, setPhotoUrl] = useState('')
 
     const dateTime = date + 'T' + time + '-08:00';
     const localTime = time >= 13 ? time - 12 : time;
@@ -53,6 +54,13 @@ function EventCreate ({pins, mapData}) {
 
     const updateImage = async (e) => {
       setImageFile(e.target.files[0])
+      if (e.target.files[0]) {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(e.target.files[0]);
+        fileReader.onload = () => {
+          setPhotoUrl(fileReader.result);
+        };
+      }
     };
   
     const handleSubmit = async (e) => {
@@ -212,6 +220,8 @@ function EventCreate ({pins, mapData}) {
       return total;
     }
 
+    const previewTitle = photoUrl ? <h3 className='preview-title'> Image preview</h3> : null;
+    const preview = photoUrl ? <img className='preview-image' src={photoUrl} alt="" /> : null;
     return (
       <section className="create_event_page">
         <div className='form_area'>
@@ -277,6 +287,8 @@ function EventCreate ({pins, mapData}) {
 
             <div className="errors">{errors && errors.text}</div>
             <input type="file" onChange={updateImage} />
+            {previewTitle}
+            {preview}
             <button>Submit</button>
           </form>
           {/* <div>{displayPins()}</div> */}
