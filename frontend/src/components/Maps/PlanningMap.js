@@ -3,13 +3,12 @@ import { Wrapper } from "@googlemaps/react-wrapper";
 import PinEditForm from "./EditPinForm";
 import EventCreate from '../Events/EventCreate';
 import Footer from "../NavBar/Footer";
-// import { Accordion, Collapse } from "react-bootstrap";
-import { Accordion } from "react-bootstrap";
-import { AccordionCollapse } from "react-bootstrap";
-import AccordionHeader from "react-bootstrap/esm/AccordionHeader";
-import AccordionBody from "react-bootstrap/esm/AccordionBody";
 import './Map.scss';
 import './PinEditForm.scss';
+import Step1 from "../../assets/images/step_1.png";
+import Step2 from "../../assets/images/step_2.png";
+import Step3 from "../../assets/images/step_3.png";
+import Step4 from "../../assets/images/step_4.png";
 
 export const PlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -282,43 +281,63 @@ export const PlanningMap = () => {
   // document.getElementById('google-map-container').style.height = height
 
   return (
-    <div className="planning_map_area flex-row">
-      {/* {showStartButton && 
-      <div>
-        <h3>How to Plan An Event</h3>
-        <ul>
-          <li>Click anywhere on the map to create an event pin.</li>
-          <li>Enter pertinent data into the pin editor. It is automatically saved.</li>
-          <li>Create as many event pins as you like - a route will automatically be drawn connecting them.</li>
-          <li>Click any pin and the "Delete" button to remove it from your event.</li>
-          <li>General info about the event goes in the form on the left of the map.</li>
-          <li>When your event looks good, click the submit button at the bottom.</li>
-        </ul>
-        <button onClick={startPlanning}>Start Planning</button>
-      </div>
-      } */}
-			<div className="planning_map_form">
-		    <EventCreate pins={pins} mapData={mapData}/>
-			</div>
-      <div className="map_instructions">
-        <div className="accordion">
-          <h2></h2>
+    <>
+      <div className="accordion">
+        <div className="accordion_title">
+          <h2>How to Plan An Event</h2>
         </div>
-        <div id="google-map-container" ref={mapRef}>
-          Map
-          {showPinEditForm && 
-            <PinEditForm 
-              deletePin={deletePin} 
-              addPinToArray={addPinToArray} 
-              marker={showPinEditForm} 
-              pin={selectedPin(showPinEditForm.order)}
-            />
-          }
+        <div className="accordion_body">
+          <div className="step_card flex-col align-center">
+            <span className="step_number fa-stack fa-2x">
+              <i className="fa-regular fa-circle fa-stack-2x"></i>
+              <i className="fa-solid fa-1 fa-stack-1x"></i>
+            </span>
+            <div className="step_image">
+              <img src={Step1} alt="step 1 how to plan" />
+            </div>
+            <div className="step_title">
+              <h3></h3>
+            </div>
+          </div>
         </div>
       </div>
-      
-      {/* TODO grab the correct marker */}
-    </div>
+
+      <div className="planning_map_area flex-row">
+        {/* {showStartButton && 
+        <div>
+          <h3>How to Plan An Event</h3>
+          <ul>
+            <li>Click anywhere on the map to create an event pin.</li>
+            <li>Enter pertinent data into the pin editor. It is automatically saved.</li>
+            <li>Create as many event pins as you like - a route will automatically be drawn connecting them.</li>
+            <li>Click any pin and the "Delete" button to remove it from your event.</li>
+            <li>General info about the event goes in the form on the left of the map.</li>
+            <li>When your event looks good, click the submit button at the bottom.</li>
+          </ul>
+          <button onClick={startPlanning}>Start Planning</button>
+        </div>
+        } */}
+        <div className="planning_map_form">
+          <EventCreate pins={pins} mapData={mapData}/>
+        </div>
+        <div className="map_instructions">
+          
+          <div id="google-map-container" ref={mapRef}>
+            Map
+            {showPinEditForm && 
+              <PinEditForm 
+                deletePin={deletePin} 
+                addPinToArray={addPinToArray} 
+                marker={showPinEditForm} 
+                pin={selectedPin(showPinEditForm.order)}
+              />
+            }
+          </div>
+        </div>
+        
+        {/* TODO grab the correct marker */}
+      </div>
+    </>
   )
 
 };
@@ -328,7 +347,6 @@ const PlanningMapWrapper = () => {
     <div className="planning_map">
       <section className="planning_map_wrapper flex-col align-center">
         <h1>Plan an Event</h1>
-        {/* <p>(Click anywhere on the map to create a pin)</p> */}
         <Wrapper 
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
           className="flex-row justify-center">
