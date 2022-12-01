@@ -73,7 +73,8 @@ export const UpdatePlanningMap = () => {
       return {lat: pin.location[0].lat, lng: pin.location[0].lng}
     }).reverse());
     renderEventPins(eventPins);
-    _setNumPoints(pinsRef.current.length)
+    _setNumPoints(pinsRef.current.length);
+
   }
 
   const calcElevationArray = async (points) => {
@@ -347,7 +348,9 @@ export const UpdatePlanningMap = () => {
       </div>
       }
 			<div className="planning_map_form">
-		    {/* <EventUpdate pins={pins} mapData={mapData}/> */}
+        {event && 
+		    <EventUpdate event={event} pins={pins} mapData={mapData}/>
+        }
 			</div>
       <div id="google-map-container" ref={mapRef}>
         Map
