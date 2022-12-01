@@ -151,7 +151,7 @@ function EventUpdate ({event, pins, mapData}) {
         pins.forEach(pin=> {
         if (pin.supplies.length > 0) return total += `${pin.supplies}, `;
         })
-        return total;
+        return total.slice(0, -2);
     }
 
     const totalDuration = () => {
@@ -271,5 +271,7 @@ function EventUpdate ({event, pins, mapData}) {
           </section>
         </>
       ) : null;
+
+}
 
 export default EventUpdate;

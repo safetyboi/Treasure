@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import UpdatePinForm from "./UpdatePinForm";
-import {EventUpdate} from '../Events/EventUpdate';
+import EventUpdate from '../Events/EventUpdate';
 import Footer from "../NavBar/Footer";
 import './Map.scss';
 import './PinEditForm.scss';
