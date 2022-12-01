@@ -20,6 +20,8 @@ import ImageUploader from '../src/components/AWSTest/ImageUploader';
 import LiveGameMapWrapper from './components/Maps/LiveGameMap';
 import EventLobby from './components/Events/EventLobby';
 import UpdatePlanningMapWrapper from './components/Maps/UpdateEventPlanningMap';
+import About from './components/About/About';
+
 
 function App() {
 
@@ -49,6 +51,7 @@ function App() {
         <ProtectedRoute exact path="/onlinegame" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/imageupload" component={ImageUploader} />
         <ProtectedRoute exact path="/demo-lobby" component={DemoLobby} />
+        <ProtectedRoute exact path="/about" component={About} />
       </Switch>
     </>
   );

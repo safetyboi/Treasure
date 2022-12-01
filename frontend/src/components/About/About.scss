@@ -1,0 +1,72 @@
+.about_project {
+  width: 80vw;
+  margin-bottom: 20vh;
+
+  .about_title {
+    width: 35%;
+
+    h1 {
+      margin-bottom: 10vh;
+    }
+  }
+
+  .about_content > * {
+    margin-bottom: 3vh;
+  }
+
+  .about_content {
+    width: 60%;
+    line-height: 1.5;
+    flex-wrap: wrap;
+  }
+
+  .tech_icons_wrapper {
+    h2 {
+      font-size: 1.2vw;
+      margin-bottom: 2vh;
+    }
+
+    .tech_icons > * {
+      margin: 1vh .5vw;
+    }
+  
+    .tech_icons {
+      flex-wrap: wrap;
+  
+      img {
+        width: 2.5vw;
+      }
+    }
+  }
+}
+
+
+.member_details {
+  margin: 5vh 2vw;
+
+  p {
+    font-weight: bold;
+    font-size: 1.3vw;
+    margin-bottom: 2vh;
+  }
+
+  img {
+    width: 15vw;
+    height: 15vw;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 3vh;
+    border: 1px solid var(--gray);
+    padding: 10px;
+  }
+
+  .member_links > * {
+    margin: 0 .5vw;
+    color: rgba(255, 114, 94, .7);
+    font-size: 1.8vw;
+  }
+
+  .member_links a:hover {
+    color: var(--black);
+  }
+}

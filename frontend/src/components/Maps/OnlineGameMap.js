@@ -291,6 +291,7 @@ export const OnlineGameMap = () => {
               <p className="game_value">{thinkingTime} {thinkingTime === 1 ? `minute` : `minutes`}</p>
             </li>
           </ul>
+          <Link className="back" to='/events'><Button>QUIT</Button></Link>
         </div>
       }
 
@@ -298,7 +299,7 @@ export const OnlineGameMap = () => {
       {!showStartButton && 
         <ClueForm intervalId={intervalId} setCoords={setCoords} addLocationPin={addLocationPin} winSound={winSound} showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
       }
-      <Link className="back" to='/events'><Button>QUIT</Button></Link>
+      {/* <Link className="back" to='/events'><Button>QUIT</Button></Link> */}
       {showStartButton &&
         <Button onClick={startGame} className="start-button">Start Game</Button>
       }

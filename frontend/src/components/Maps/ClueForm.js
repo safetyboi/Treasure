@@ -1,8 +1,8 @@
 import { useState } from "react";
-import './GameMap.scss';
 import wrong from '../../assets/sounds/wrong.mp3';
 import jingle from '../../assets/sounds/success-bell.wav';
 import mallet from '../../assets/sounds/mallet.mp3';
+import './GameMap.scss';
 
 
 const ClueForm = ({intervalId, setCoords, addLocationPin, winSound, showClue, setShowEndGame, nextPin, grabPin, checkResponse, currentPinOrder, eventPins}) => {
@@ -67,7 +67,10 @@ const ClueForm = ({intervalId, setCoords, addLocationPin, winSound, showClue, se
           <button>Submit Response</button>
         </>
         }
-        <button onClick={handleCheat}>Cheat Button</button>
+        <button className="cheat_button"
+          onClick={handleCheat}>
+          Cheat Button
+          </button>
       </form>
     </div>
   )

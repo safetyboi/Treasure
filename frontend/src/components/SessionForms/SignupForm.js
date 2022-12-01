@@ -5,6 +5,7 @@ import UploadImages from '../AWSTest/ImageUploader';
 import Footer from '../NavBar/Footer';
 import './SessionForm.scss';
 import { useHistory } from 'react-router-dom';
+import { getCurrentUser } from '../../store/session';
 
 function SignupForm () {
   const [email, setEmail] = useState('');
@@ -70,28 +71,14 @@ function SignupForm () {
     };
 
     dispatch(signup(user))
-    .then((newUser) => {
+     .then((newUser) => {
       if (newUser.currentUser) {
         dispatch(updateUserImage(newUser.currentUser._id, formData) )
+        setTimeout(function(){
+          history.push('./profile')
+        }, 1000);
       }
     })
-    .then(() => {
-      setTimeout(function(){
-        history.push('./profile')
-     }, 1000);
-    })
-    .catch(async (res) => {
-      let data;
-      try {
-        data = await res.clone().json();
-      } catch {
-        data = await res.text(); 
-      }
-      // if (data?.errors) setErrors(data.errors);
-      // else if (data) setErrors([data]);
-      // else setErrors([res.statusText]);
-    });
-    
   }
 
   return (
