@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchEvent, loadEvent } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
 import { useParams } from 'react-router-dom';
+import { Button } from "react-bootstrap";
 
 export const UpdatePlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -343,7 +344,7 @@ export const UpdatePlanningMap = () => {
           <li>General info about the event goes in the form on the left of the map.</li>
           <li>When your event looks good, click the submit button at the bottom.</li>
         </ul>
-        <button onClick={startPlanning}>Start Planning</button>
+        <Button onClick={startPlanning}>Start Planning</Button>
       </div>
       }
 			<div className="planning_map_form">
