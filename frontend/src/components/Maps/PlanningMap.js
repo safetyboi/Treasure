@@ -5,6 +5,7 @@ import EventCreate from '../Events/EventCreate';
 import Footer from "../NavBar/Footer";
 import './Map.scss';
 import './PinEditForm.scss';
+import { Button } from "react-bootstrap";
 
 export const PlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -288,7 +289,7 @@ export const PlanningMap = () => {
           <li>General info about the event goes in the form on the left of the map.</li>
           <li>When your event looks good, click the submit button at the bottom.</li>
         </ul>
-        <button onClick={startPlanning}>Start Planning</button>
+        <Button onClick={startPlanning}>Start Planning</Button>
       </div>
       }
 			<div className="planning_map_form">
