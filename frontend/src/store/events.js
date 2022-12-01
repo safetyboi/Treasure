@@ -103,11 +103,15 @@ export const createEvent = data => async dispatch => {
 };
 
 export const updateEvent = data =>  async dispatch => {
+  debugger
+
   try {
-    const res = await jwtFetch(`api/events/${data.id}`,{ //this is fine so long as you shape the data object in the EventUpdate to have an "id" key
+    // debugger
+    const res = await jwtFetch(`/api/events/${data.id}`,{ //this is fine so long as you shape the data object in the EventUpdate to have an "id" key
       method: 'PATCH',
       body: JSON.stringify(data)
     });
+    // debugger
     const updatedEvent = await res.json();
     dispatch(receiveEvent(updatedEvent));
       return updatedEvent;
@@ -156,7 +160,7 @@ const eventsReducer = (state = {}, action) => {
       case RECEIVE_EVENTS:
         return action.events;
       case RECEIVE_EVENT:
-        return {...state, [action.event._id]: action.event} 
+        return {...state, [action.event._id]: action.event}; 
       case REMOVE_EVENT:
         let nextState = {...state};
         delete nextState[action.eventId];
