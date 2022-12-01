@@ -144,7 +144,7 @@ const EventLobby = () => {
           We'd love to hear from you and collaborate to create something awesome.
         </Modal.Body>
         <Modal.Footer className="flex-row">
-          <Link><Button>About Us</Button></Link>
+          <Link to='/about'><Button>About Us</Button></Link>
           <Link to="#"
             className="modal_email flex-row align-center"
             onClick={e => {
