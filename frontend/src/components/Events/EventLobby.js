@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { deleteEvent, fetchEvent, loadEvent } from "../../store/events";
 import { Modal, Button, CloseButton } from "react-bootstrap";
 import Footer from '../NavBar/Footer';
-import defaultImage from '../../assets/images/defaultImage.svg'
+import defaultImage from '../../assets/images/defaultImage.svg';
+import EventShowMapWrapper from "../Maps/EventShowMap";
 
 const EventLobby = () => {
   const dispatch = useDispatch();
@@ -84,7 +85,8 @@ const EventLobby = () => {
     <section className="event_lobby_page">
       <div className="event_lobby_wrapper">
         <div className="event_img flex-row justify-center">
-          {eventImg()}
+          {/* {eventImg()} */}
+          <EventShowMapWrapper />
         </div>
         <div className="event_details_wrapper flex-row justify-between">
           <div className="event_details">

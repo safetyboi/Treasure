@@ -21,7 +21,6 @@ import LiveGameMapWrapper from './components/Maps/LiveGameMap';
 import EventLobby from './components/Events/EventLobby';
 import UpdatePlanningMapWrapper from './components/Maps/UpdateEventPlanningMap';
 import About from './components/About/About';
-import EventShowMapWrapper from './components/Maps/EventShowMap';
 
 
 function App() {
@@ -53,7 +52,6 @@ function App() {
         <ProtectedRoute exact path="/imageupload" component={ImageUploader} />
         <ProtectedRoute exact path="/demo-lobby" component={DemoLobby} />
         <ProtectedRoute exact path="/about" component={About} />
-        <ProtectedRoute exact path="/:eventId/showmap" component={EventShowMapWrapper} />
       </Switch>
     </>
   );
