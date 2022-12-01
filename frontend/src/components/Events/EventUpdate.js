@@ -11,10 +11,12 @@ import { useParams } from 'react-router-dom';
 
 export const EventUpdate = ({event, pins, mapData}) => {
 
-    const [name, setName] = useState(event.name);
-    const [description, setDescription] = useState(event.description);
-    const [date, setDate] = useState(event.date);
-    const [time, setTime] = useState(event.time);
+    const [name, setName] = useState(event?.name);
+    const [description, setDescription] = useState(event?.description);
+    const [date, setDate] = useState(event?.date?.slice(0,10));
+    const [time, setTime] = useState(event?.time?.slice(11,20));
+    // console.log(date);
+    // console.log(time);
 
     const updateName = e => setName(e.currentTarget.value);
     const updateDescription = e => setDescription(e.currentTarget.value);
@@ -118,7 +120,7 @@ export const EventUpdate = ({event, pins, mapData}) => {
     }
 
 
-    return (
+    return event ? (
         <>
           <div className='form_area'>
             <form className="create_event" onSubmit={handleSubmit}>
@@ -182,7 +184,7 @@ export const EventUpdate = ({event, pins, mapData}) => {
               </label>
   
               <div className="errors">{errors && errors.text}</div>
-              <input type="file" value={event.image} onChange={updateImage} multiple />
+              <input type="file" onChange={updateImage} multiple />
               <button>Submit</button>
             </form>
             {/* <div>{displayPins()}</div> */}
@@ -209,6 +211,6 @@ export const EventUpdate = ({event, pins, mapData}) => {
             </div>
           </div>
         </>
-      )
+      ) : null;
 
 }
