@@ -3,6 +3,11 @@ import { Wrapper } from "@googlemaps/react-wrapper";
 import PinEditForm from "./EditPinForm";
 import EventCreate from '../Events/EventCreate';
 import Footer from "../NavBar/Footer";
+// import { Accordion, Collapse } from "react-bootstrap";
+import { Accordion } from "react-bootstrap";
+import { AccordionCollapse } from "react-bootstrap";
+import AccordionHeader from "react-bootstrap/esm/AccordionHeader";
+import AccordionBody from "react-bootstrap/esm/AccordionBody";
 import './Map.scss';
 import './PinEditForm.scss';
 
@@ -25,6 +30,7 @@ export const PlanningMap = () => {
   const [mapListener, setMapListener] = useState('');
   const [showStartButton, setShowStartButton] = useState(true);
   const showStartButtonRef = useRef(showStartButton);
+  const [open, setOpen] = useState(false);
 
   const _setShowStartButton = (value) => {
     showStartButtonRef.current = value;
@@ -277,7 +283,7 @@ export const PlanningMap = () => {
 
   return (
     <div className="planning_map_area flex-row">
-      {showStartButton && 
+      {/* {showStartButton && 
       <div>
         <h3>How to Plan An Event</h3>
         <ul>
@@ -290,21 +296,27 @@ export const PlanningMap = () => {
         </ul>
         <button onClick={startPlanning}>Start Planning</button>
       </div>
-      }
+      } */}
 			<div className="planning_map_form">
 		    <EventCreate pins={pins} mapData={mapData}/>
 			</div>
-      <div id="google-map-container" ref={mapRef}>
-        Map
-        {showPinEditForm && 
-					<PinEditForm 
-						deletePin={deletePin} 
-						addPinToArray={addPinToArray} 
-						marker={showPinEditForm} 
-						pin={selectedPin(showPinEditForm.order)}
-					/>
-				}
+      <div className="map_instructions">
+        <div className="accordion">
+          <h2></h2>
+        </div>
+        <div id="google-map-container" ref={mapRef}>
+          Map
+          {showPinEditForm && 
+            <PinEditForm 
+              deletePin={deletePin} 
+              addPinToArray={addPinToArray} 
+              marker={showPinEditForm} 
+              pin={selectedPin(showPinEditForm.order)}
+            />
+          }
+        </div>
       </div>
+      
       {/* TODO grab the correct marker */}
     </div>
   )
@@ -316,7 +328,7 @@ const PlanningMapWrapper = () => {
     <div className="planning_map">
       <section className="planning_map_wrapper flex-col align-center">
         <h1>Plan an Event</h1>
-        <p>(Click anywhere on the map to create a pin)</p>
+        {/* <p>(Click anywhere on the map to create a pin)</p> */}
         <Wrapper 
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
           className="flex-row justify-center">
