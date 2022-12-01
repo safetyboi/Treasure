@@ -335,7 +335,7 @@ export const UpdatePlanningMap = () => {
   // document.getElementById('google-map-container').style.height = height
   console.log(pinsRef.current)
   return (
-    <div className="planning_map_area flex-row justify-center">
+    <div className="planning_map_area">
       {/* {showStartButton && 
       <div>
         <h3>How to Plan An Event</h3>
@@ -350,8 +350,8 @@ export const UpdatePlanningMap = () => {
         <Button onClick={startPlanning}>Start Planning</Button>
       </div>
       } */}
-
       <Instructions />
+
 
 			<div className="planning_map_form">
         {event && !showStartButton &&

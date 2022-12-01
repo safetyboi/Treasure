@@ -10,7 +10,7 @@ const Instructions = () => {
         <div className="accordion_title">
           <h2 className="text-center">How to Plan An Event</h2>
         </div>
-        <div className="accordion_body flex-row">
+        <div className="accordion_body flex-row justify-center">
           <div className="step_card flex-col align-center">
             <span className="step_number fa-stack fa-2x">
               <i className="fa-solid fa-circle fa-stack-2x"></i>
