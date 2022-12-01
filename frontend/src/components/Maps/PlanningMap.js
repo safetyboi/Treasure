@@ -23,6 +23,13 @@ export const PlanningMap = () => {
   const [mapData, setMapData] = useState({});
   const [directionsRenderer, setDirectionsRenderer] = useState(new window.google.maps.DirectionsRenderer({suppressMarkers: true, preserveViewport: true}));
   const [mapListener, setMapListener] = useState('');
+  const [showStartButton, setShowStartButton] = useState(true);
+  const showStartButtonRef = useRef(showStartButton);
+
+  const _setShowStartButton = (value) => {
+    showStartButtonRef.current = value;
+    setShowStartButton(value);
+  }
 
   useEffect(() => {
     if (!map) {
@@ -30,6 +37,10 @@ export const PlanningMap = () => {
     }
     
   }, [mapRef]);
+
+  const startPlanning = () => {
+    _setShowStartButton(false);
+  }
 
   const calcElevationArray = async (points) => {
     if (points.length > 1) {
@@ -110,8 +121,10 @@ export const PlanningMap = () => {
 
     window.google.maps.event.removeListener(mapListener);
     setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
-      setCoords(allCoords => [...allCoords, event.latLng])
-      addPin(event.latLng, map);
+      if (!showStartButtonRef.current) {
+        setCoords(allCoords => [...allCoords, event.latLng])
+        addPin(event.latLng, map);
+      }
     }));
 
     let reducedCoords = [...coords];
@@ -173,8 +186,10 @@ export const PlanningMap = () => {
   useEffect(() => {
     if (map) {
       setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
-        setCoords(allCoords => [...allCoords, event.latLng])
-        addPin(event.latLng, map);
+        if (!showStartButtonRef.current) {
+          setCoords(allCoords => [...allCoords, event.latLng])
+          addPin(event.latLng, map);
+        }
       }));
     };
     
@@ -262,6 +277,20 @@ export const PlanningMap = () => {
 
   return (
     <div className="planning_map_area flex-row">
+      {showStartButton && 
+      <div>
+        <h3>How to Plan An Event</h3>
+        <ul>
+          <li>Click anywhere on the map to create an event pin.</li>
+          <li>Enter pertinent data into the pin editor. It is automatically saved.</li>
+          <li>Create as many event pins as you like - a route will automatically be drawn connecting them.</li>
+          <li>Click any pin and the "Delete" button to remove it from your event.</li>
+          <li>General info about the event goes in the form on the left of the map.</li>
+          <li>When your event looks good, click the submit button at the bottom.</li>
+        </ul>
+        <button onClick={startPlanning}>Start Planning</button>
+      </div>
+      }
 			<div className="planning_map_form">
 		    <EventCreate pins={pins} mapData={mapData}/>
 			</div>

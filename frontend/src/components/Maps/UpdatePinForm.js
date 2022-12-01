@@ -2,20 +2,20 @@ import { useEffect, useState } from 'react';
 import './PinEditForm.scss';
 import './Map.scss';
 
-const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
-  const [directions, setDirections] = useState(pin?.directionToPin ? pin.directionToPin.text : '');
-  const [challengePrompt, setChallengePrompt] = useState(pin?.challengePrompt ? pin.challengePrompt : '');
-  const [challengeAnswser, setChallengeAnswser] = useState(pin?.challengeAnswser ? pin.challengeAnswser : '');
+const UpdatePinForm = ({deletePin, marker, pin, addPinToArray}) => {
+  const [directions, setDirections] = useState(pin?.directionToPin[0] ? pin.directionToPin[0].text : '');
+  const [challengePrompt, setChallengePrompt] = useState(pin?.task[0] ? pin.task[0].prompt : '');
+  const [challengeAnswser, setChallengeAnswser] = useState(pin?.task[0] ? pin.task[0].correctAnswer : '');
   const [supplies, setSupplies] = useState(pin?.supplies ? pin.supplies : '');
-  const [activityDuration, setActivityDuration] = useState(pin?.activityDuration ? pin.activityDuration : 0);
+  const [activityDuration, setActivityDuration] = useState(pin?.duration ? pin.duration : 0);
   const [price, setPrice] = useState(pin?.price ? pin.price : '');  
   const [currentPin, setcurrentPin] = useState(pin);
   
   useEffect(() => {
     if (pin) {
-      setDirections(pin.directionToPin.text);
-      setChallengePrompt(pin.task.prompt);
-      setChallengeAnswser(pin.task.correctAnswer);
+      setDirections(pin.directionToPin[0].text);
+      setChallengePrompt(pin.task[0].prompt);
+      setChallengeAnswser(pin.task[0].correctAnswer);
       setSupplies(pin.supplies);
       setActivityDuration(pin.duration);
       setPrice(pin.price);
@@ -36,11 +36,11 @@ const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
         lat: marker.position.lat(),
         lng: marker.position.lng(),
       },
-      directionToPin: {text: directions},
-      task: {
+      directionToPin: [{text: directions}],
+      task: [{
         prompt: challengePrompt,
         correctAnswer: challengeAnswser,
-      },
+      }],
       supplies: supplies,
       price: parseInt(price),
       duration: parseInt(activityDuration)
@@ -91,4 +91,4 @@ const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
 
 };
 
-export default PinEditForm;
+export default UpdatePinForm;
