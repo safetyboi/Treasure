@@ -11,6 +11,8 @@ import Instructions from './Instructions.js';
 import './Map.scss';
 import './PinEditForm.scss';
 import "./Instructions.scss";
+import dart from '../../assets/sounds/dart.wav';
+import fizz from '../../assets/sounds/fizz.wav';
 
 
 export const UpdatePlanningMap = () => {
@@ -30,6 +32,10 @@ export const UpdatePlanningMap = () => {
   const [mapData, setMapData] = useState({});
   const [directionsRenderer, setDirectionsRenderer] = useState(new window.google.maps.DirectionsRenderer({suppressMarkers: true, preserveViewport: true}));
   const [mapListener, setMapListener] = useState('');
+  const dartSound = new Audio(dart);
+  const fizzSound = new Audio(fizz);
+
+
   
   const dispatch = useDispatch();
   const {eventId} = useParams()
@@ -149,6 +155,7 @@ export const UpdatePlanningMap = () => {
         });
         newMarker.addListener('click', () => {
           setShowPinEditForm(newMarker);
+          fizzSound.play();
         })
         reducedMarkers.push(newMarker);
       } else if (mark.order < marker.order) {
@@ -160,6 +167,7 @@ export const UpdatePlanningMap = () => {
     window.google.maps.event.removeListener(mapListener);
     setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
       if (!showStartButtonRef.current) {
+        dartSound.play();
         setCoords(allCoords => [...allCoords, event.latLng])
         addPin(event.latLng, map);
       }
@@ -214,6 +222,7 @@ export const UpdatePlanningMap = () => {
             }
         });
         marker.addListener('click', async () => {
+          fizzSound.play();
             setShowPinEditForm(marker);
         })
         setMarkers(marks => [...marks, marker])
@@ -246,6 +255,7 @@ export const UpdatePlanningMap = () => {
     if (map) {
       setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
         if (!showStartButtonRef.current) {
+          dartSound.play();
           setCoords(allCoords => [...allCoords, event.latLng])
           addPin(event.latLng, map);
         }

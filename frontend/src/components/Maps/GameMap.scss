@@ -91,12 +91,12 @@
   }
 }
 
+.task-header {
+  color: #FF725E;
+}
+
 .clue-form-box > * {
   margin-bottom: 1vh;
-
-  .task-header {
-    color: #FF725E;
-  }
 
   .submit_response {
     margin-right: 1vw;
@@ -132,6 +132,16 @@
     cursor: pointer;
   }
 }
+
+.back {
+  float: right;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+
 
 
 

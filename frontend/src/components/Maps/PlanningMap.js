@@ -7,6 +7,8 @@ import Instructions from './Instructions.js'
 import "./Instructions.scss";
 import './Map.scss';
 import './PinEditForm.scss';
+import dart from '../../assets/sounds/dart.wav';
+import fizz from '../../assets/sounds/fizz.wav';
 
 export const PlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -28,6 +30,9 @@ export const PlanningMap = () => {
   const [showStartButton, setShowStartButton] = useState(true);
   const showStartButtonRef = useRef(showStartButton);
   const [open, setOpen] = useState(false);
+  const dartSound = new Audio(dart);
+  const fizzSound = new Audio(fizz);
+
 
   const _setShowStartButton = (value) => {
     showStartButtonRef.current = value;
@@ -114,6 +119,7 @@ export const PlanningMap = () => {
         });
         newMarker.addListener('click', () => {
           setShowPinEditForm(newMarker);
+          fizzSound.play();
         })
         reducedMarkers.push(newMarker);
       } else if (mark.order < marker.order) {
@@ -125,6 +131,7 @@ export const PlanningMap = () => {
     window.google.maps.event.removeListener(mapListener);
     setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
       if (!showStartButtonRef.current) {
+        dartSound.play();
         setCoords(allCoords => [...allCoords, event.latLng])
         addPin(event.latLng, map);
       }
@@ -180,6 +187,7 @@ export const PlanningMap = () => {
     });
     marker.addListener('click', async() => {
       setShowPinEditForm(marker);
+      fizzSound.play();
     })
     setMarkers(marks => [...marks, marker])
     addPinToArray(blankPin(marker))
@@ -190,6 +198,7 @@ export const PlanningMap = () => {
     if (map) {
       setMapListener(window.google.maps.event.addListener(map, "click", (event) => {
         if (!showStartButtonRef.current) {
+          dartSound.play();
           setCoords(allCoords => [...allCoords, event.latLng])
           addPin(event.latLng, map);
         }

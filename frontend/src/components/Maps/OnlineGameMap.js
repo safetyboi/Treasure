@@ -11,6 +11,7 @@ import { Button } from "react-bootstrap";
 import jingle from '../../assets/sounds/success-bell.wav';
 import win from '../../assets/sounds/win.wav';
 import './GameMap.scss'
+import dart from '../../assets/sounds/dart.wav';
 
 export const OnlineGameMap = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ export const OnlineGameMap = () => {
   const [showStartButton, setShowStartButton] = useState(true);
   const jingleSound = new Audio(jingle);
   const winSound = new Audio(win);
+  const dartSound = new Audio(dart);
   const [intervalId, setIntervalId] = useState('');
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
@@ -54,6 +56,7 @@ export const OnlineGameMap = () => {
     if (map) {
       window.google.maps.event.addListener(map, "click", (event) => {
         if (!showClueRef.current) {
+          dartSound.play();
           setCoords(allCoords => [...allCoords, event.latLng])
           addLocationPin(event.latLng, map);     
         }
@@ -267,11 +270,13 @@ export const OnlineGameMap = () => {
       {!showStartButton && 
         <div className='game-info'>
           <h1>{event?.name}</h1>
-          <h2 className='task-header'>CURRENT TASK <br /><br />{showClue ? `Respond to the clue below.` : `Follow the directions and click the map to travel to the next location pin.` }</h2>
+          <h2 className='task-header'>Current Task</h2>
+          <p >{showClue ? `Respond to the clue on the left.` : `Follow the directions and click the map to travel to the next location pin.` }</p>
+          <br/><br/>
           <ul>
             <li className='flex-row'>
               <p className="game_key">Remaining Time</p>
-              <p className="game_value">{duration > 0 ? `${Math.round(remainingTime)} minutes` : `${Math.round(event?.duration)} minutes` }</p>
+              <p className="game_value">{duration > 0 ? `${Math.round(remainingTime)} ${remainingTime === 1 ? `minute` : `minutes`}` : `${Math.round(event?.duration)} minutes` }</p>
             </li>
             <li className='flex-row'>
               <p className="game_key">Distance Traveled</p>
@@ -279,7 +284,7 @@ export const OnlineGameMap = () => {
             </li>
             <li className='flex-row'>
               <p className="game_key">Time "Walked"</p>
-              <p className="game_value">{Math.round(duration)} minutes</p>
+              <p className="game_value">{Math.round(duration)} {duration === 1 ? `minute` : `minutes`}</p>
             </li>
             <li className='flex-row'>
               <p className="game_key">Time Pondered</p>
@@ -294,7 +299,7 @@ export const OnlineGameMap = () => {
       {!showStartButton && 
         <ClueForm intervalId={intervalId} setCoords={setCoords} addLocationPin={addLocationPin} winSound={winSound} showClue={showClue} setShowEndGame={setShowEndGame} nextPin={nextPin} grabPin={grabPin} eventPins={eventPins} currentPinOrder={currentPinOrder}/>
       }
-      <Link className="back" to='/events'><Button>QUIT</Button></Link>
+      {/* <Link className="back" to='/events'><Button>QUIT</Button></Link> */}
       {showStartButton &&
         <div className="game_instructions">
           <h3>How to Play an Online Scavenger Hunt</h3>

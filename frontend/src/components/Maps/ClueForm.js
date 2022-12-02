@@ -53,15 +53,19 @@ const ClueForm = ({intervalId, setCoords, addLocationPin, winSound, showClue, se
     <div className="clue-form-box">
       <h2>{`Current Pin: ${currentPinOrder}`}</h2>
       <form onSubmit={checkAnswer} className="clue-form">
-        <h4 className='task-header' >Directions To This Pin</h4>
-        <p>{currentPin?.directionToPin[0].text}</p>
         <h4 className='task-header' >My Status</h4>
         <p>{showClue ? `You've arrived at Pin ${currentPinOrder}!` : `You haven't reached Pin ${currentPinOrder} yet!`}</p>
+        {!showClue &&
+        <>
+          <h4 className='task-header' >Directions To This Pin</h4>
+          <p>{currentPin?.directionToPin[0].text}</p>
+        </>
+        }
         { showClue &&
         <>
           <h4 className='task-header' >Clue</h4>
           <p>{currentPin?.task[0].prompt}</p>
-          <label className='task-header' >My Response
+          <label className='task-header' ><h4>My Response</h4>
             <input type='text' value={response} onChange={e => setResponse(e.target.value)}/>
           </label>
           <button className="submit_response">Submit Response</button>
