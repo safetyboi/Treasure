@@ -8,6 +8,7 @@ import { fetchEvent, loadEvent } from "../../store/events";
 import { fetchEventPins, getEventPins } from "../../store/pins";
 import { useParams } from 'react-router-dom';
 import Instructions from './Instructions.js';
+import { Button } from "react-bootstrap";
 import './Map.scss';
 import './PinEditForm.scss';
 import "./Instructions.scss";
@@ -35,8 +36,6 @@ export const UpdatePlanningMap = () => {
   const [mapListener, setMapListener] = useState('');
   const dartSound = new Audio(dart);
   const fizzSound = new Audio(fizz);
-
-
   
   const dispatch = useDispatch();
   const {eventId} = useParams()
@@ -345,23 +344,13 @@ export const UpdatePlanningMap = () => {
 	// const height = document.getElementById('accordion').clientHeight();
   // document.getElementById('google-map-container').style.height = height
   return (
-    <div className="planning_map_area">
-      {/* {showStartButton && 
-      <div>
-        <h3>How to Plan An Event</h3>
-        <ul>
-          <li>Click anywhere on the map to create an event pin.</li>
-          <li>Enter pertinent data into the pin editor. It is automatically saved.</li>
-          <li>Create as many event pins as you like - a route will automatically be drawn connecting them.</li>
-          <li>Click any pin and the "Delete" button to remove it from your event.</li>
-          <li>General info about the event goes in the form on the left of the map.</li>
-          <li>When your event looks good, click the submit button at the bottom.</li>
-        </ul>
-        </div>
-      } */}
-      <Button onClick={startPlanning}>Start Planning</Button>
-      <Instructions />
-
+    <div className="planning_map_area flex-row justify-center">
+      {showStartButton && 
+      <div className="instruction_area flex-col align-center">
+        <Instructions />
+        <Button onClick={startPlanning}>Start Planning</Button>
+      </div>
+      }
 
 			<div className="planning_map_form">
         {event && !showStartButton &&
@@ -389,7 +378,7 @@ const UpdatePlanningMapWrapper = () => {
   return (
     <div className="planning_map">
       <section className="planning_map_wrapper flex-col align-center">
-        <h1>Plan an Event</h1>
+        <h1>Update an Event</h1>
         <Wrapper 
           apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
           className="flex-row justify-center align-center">

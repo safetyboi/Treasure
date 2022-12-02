@@ -51,8 +51,12 @@
 }
 
 .planning_map_area {
-  .planning_map_form {
-    width: 30vw;
+  .instruction_area {
+    position: absolute;
+    z-index: 99;
+    height: 100vh;
+    background-color: rgba(242, 242, 242, .9);
+    padding: 5vh 0;
   }
 
   .map_instructions {
@@ -61,5 +65,16 @@
     min-width: 400px;
     min-height: 300px;
   }
+}
+
+.planning_map_form {
+  width: 25vw;
+  height: 100vh;
+  overflow: scroll;
+  margin-right: 1vw;
+}
+
+#google-map-container {
+  width: 70vw;
 }
 

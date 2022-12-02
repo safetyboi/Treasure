@@ -83,7 +83,6 @@
     background-color: white;
     padding: 5vh 2vw;
     border-radius: var(--border-radius);
-    height: 100vh;
 
     h2 {
       font-size: 1.3vw;
@@ -208,7 +207,6 @@
 
     img {
       width: 80px;
-      height: 80px;
       border-radius: .5vw;
       object-fit: cover;
     }
@@ -261,9 +259,19 @@
 
       .event_details {
         width: 65%;
+
+        .event_header {
+          img {
+            width: 7vw;
+            height: 7vw;
+            border-radius: var(--border-radius);
+            object-fit: cover;
+            margin-right: 2vw;
+          }
+        }
       }
 
-      .event_preview,
+      .event_header,
       .event_description {
         margin-bottom: 4vh;
       }
@@ -414,11 +422,16 @@
   }
 }
 
-.preview-image {
-  height: 20vh;
-  width: 20vw;
+.preview-title {
+  margin-bottom: 2vh;
 }
 
-.preview-title {
+.preview-image {
+  width: 100%;
+  border-radius: var(--border-radius);
+}
 
+.google-map-container {
+  height: 50vh;
+  width: 100%;
 }

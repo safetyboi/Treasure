@@ -4,7 +4,8 @@
 
   .hero {
     position: absolute;
-    top: 25vh;
+    top: calc(50vh - 20vh);
+    height: 60vh;
 
     .hero_title{
       width: 50vw;

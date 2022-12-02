@@ -3,8 +3,8 @@ import { Wrapper } from "@googlemaps/react-wrapper";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { loadEvent, fetchEvent } from "../../store/events";
-import './GameMap.scss'
 import myIcon from '../Events/MapMarker.png';
+import './GameMap.scss'
 
 export const EventShowMap = () => {
 
