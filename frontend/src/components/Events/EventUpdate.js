@@ -247,23 +247,26 @@ const EventUpdate = ({event, pins, mapData}) => {
           </div>
   
           <div className='map_stat_wrapper'>
-            <div className='flex-row'>
-              <p className='stat_key'>Estimated Event Duration</p>
-              <p className='stat_value'>{totalDuration()}</p>
-            </div>
-            <div className='flex-row'>
-              <p className='stat_key'>Estimated Walking Duration</p>
-              <p className='stat_value'>{mapData.duration}</p>
-            </div>
-            <div className='flex-row'>
-              <p className='stat_key'>Total Distance</p>
-              <p className='stat_value'>{mapData.distance}</p>
-            </div>
-            <div className='flex-row'>
-              <p className='stat_key'>Total Elevation Gain</p>
-              <p className='stat_value'>{mapData.elevation}</p>
-            </div>
+          <div className='flex-row'>
+            <p className='stat_key'>Estimated Event Duration</p>
+            <p className='stat_value'>{Math.round(totalDuration())} minutes</p>
           </div>
+          <div className='flex-row'>
+            <p className='stat_key'>Estimated Walking Duration</p>
+            <p className='stat_value'>{Math.round(mapData.duration)} minutes</p>
+          </div>
+          <div className='flex-row'>
+            <p className='stat_key'>Total Distance</p>
+            <p className='stat_value'>{mapData.distance} kilometers</p>
+          </div>
+          <div className='flex-row'>
+            <p className='stat_key'>Total Elevation Gain</p>
+            <p className='stat_value'>{Math.round(mapData.elevation)} meters</p>
+          </div>
+        </div>
+
+              
+
 
           <Modal show={show}
           onHide={handleClose}
