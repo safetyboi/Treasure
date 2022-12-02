@@ -4,14 +4,15 @@
   }
 
   .accordion_body {
+    transform: scale(.8);
+
     .step_card {
       width: 20%;
-      margin: 10vh 1.5vw;
+      margin: 0 1.5vw;
       background-color: white;
       padding: 0 2vw;
       border-radius: var(--border-radius);
       box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.1);
-
 
       .fa-stack {
         font-size: 1.2vw;
