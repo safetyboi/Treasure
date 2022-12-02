@@ -85,15 +85,17 @@ const EventLobby = () => {
     <section className="event_lobby_page">
       <div className="event_lobby_wrapper">
         <div className="event_img flex-row justify-center">
-          {/* {eventImg()} */}
           <EventShowMapWrapper />
         </div>
         <div className="event_details_wrapper flex-row justify-between">
           <div className="event_details">
-            <div className="event_preview">
-              <h1>{event.name}</h1>
-              <p>By <span>{event.creator.username}</span></p>
-              <p><i className="fa-solid fa-dollar-sign"></i>{event.price} USD</p>
+            <div className="event_header flex-row align-center">
+              {eventImg()}
+              <div className="event_preview">
+                <h1>{event.name}</h1>
+                <p>By <span>{event.creator.username}</span></p>
+                <p><i className="fa-solid fa-dollar-sign"></i>{event.price} USD</p>
+              </div>
             </div>
             <div className="event_description">
               <p>{event.description}</p>

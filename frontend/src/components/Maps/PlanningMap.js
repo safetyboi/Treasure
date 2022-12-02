@@ -9,6 +9,7 @@ import './Map.scss';
 import './PinEditForm.scss';
 import dart from '../../assets/sounds/dart.wav';
 import fizz from '../../assets/sounds/fizz.wav';
+import { Button } from "react-bootstrap";
 
 export const PlanningMap = () => {
   const [map, setMap] = useState(null);
@@ -289,22 +290,13 @@ export const PlanningMap = () => {
 
   return (
     <>
-      <Instructions />
       <div className="planning_map_area flex-row">
-        {/* {showStartButton && 
-        <div>
-          <h3>How to Plan An Event</h3>
-          <ul>
-            <li>Click anywhere on the map to create an event pin.</li>
-            <li>Enter pertinent data into the pin editor. It is automatically saved.</li>
-            <li>Create as many event pins as you like - a route will automatically be drawn connecting them.</li>
-            <li>Click any pin and the "Delete" button to remove it from your event.</li>
-            <li>General info about the event goes in the form on the left of the map.</li>
-            <li>When your event looks good, click the submit button at the bottom.</li>
-          </ul>
-          <button onClick={startPlanning}>Start Planning</button>
+        {showStartButton && 
+        <div className="instruction_area flex-col align-center">
+          <Instructions />
+          <Button onClick={startPlanning}>Start Planning</Button>
         </div>
-        } */}
+        }
         <div className="planning_map_form">
           <EventCreate pins={pins} mapData={mapData}/>
         </div>
