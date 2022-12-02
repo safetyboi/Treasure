@@ -242,8 +242,10 @@ const EventUpdate = ({event, pins, mapData}) => {
   
               <div className="errors">{errors && errors.text}</div>
               <input type="file" onChange={updateImage} multiple />
-              {previewTitle}
-              {preview}
+              <div className='.preview_image_wrapper flex-col'>
+                {previewTitle}
+                {preview}
+              </div>
               <button>Submit</button>
             </form>
             {/* <div>{displayPins()}</div> */}
