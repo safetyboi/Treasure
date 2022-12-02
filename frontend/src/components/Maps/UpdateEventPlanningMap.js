@@ -14,7 +14,6 @@ import './PinEditForm.scss';
 import "./Instructions.scss";
 import dart from '../../assets/sounds/dart.wav';
 import fizz from '../../assets/sounds/fizz.wav';
-import { Button } from "react-bootstrap";
 
 
 export const UpdatePlanningMap = () => {

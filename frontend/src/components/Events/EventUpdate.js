@@ -15,12 +15,12 @@ const EventUpdate = ({event, pins, mapData}) => {
     const [name, setName] = useState(event?.name);
     const [description, setDescription] = useState(event?.description);
     // const [date, setDate] = useState(event?.date?.slice(0,10));
-    const [date, setDate] = useState(event?.date);
-    const [time, setTime] = useState(event?.time?.slice(11,20));
-    const [imageFile, setImageFile] = useState(event?.image)
-    const [photoUrl, setPhotoUrl] = useState('')
+    const [date, setDate] = useState(event?.date?.slice(0,10));
+    const [time, setTime] = useState(event?.time?.slice(11,19));
+    const [imageFile, setImageFile] = useState(event?.image);
+    const [photoUrl, setPhotoUrl] = useState('');
 
-    const dateTime = date + 'T' + time + '-08:00';
+   
 
 
     const updateName = e => setName(e.currentTarget.value);
@@ -56,6 +56,8 @@ const EventUpdate = ({event, pins, mapData}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const dateTime = date + 'T' + time + '-08:00';
+    debugger
     const eventDurationSum = () => {
         let duration = 0;
         pins.forEach(pin => {
@@ -77,7 +79,7 @@ const EventUpdate = ({event, pins, mapData}) => {
         address = "Location Unavailable"
       };
 
-      if (imageFile) {
+      if (imageFile.files[0]) {
         const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
         if (!allowedExtensions.exec(imageFile.name)) {
           alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
@@ -100,7 +102,7 @@ const EventUpdate = ({event, pins, mapData}) => {
             price: totalPrice(), 
             supplies: totalSupplies(),
             elevation: mapData.elevation,
-            date: date,
+            date: dateTime,
             status: false,
             initCoords: firstPin.location,
             location: address
