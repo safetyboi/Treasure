@@ -132,7 +132,6 @@ router.patch('/:id', requireUser, validateEventInput, async (req, res, next) => 
             } else {
                 // res.status(200).send(`Event ${req.params.id} was updated`)
                 res.status(200)
-                console.log(`Event ${req.params.id} was updated`)
                 return res.json(event);
             }
     })

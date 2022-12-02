@@ -53,7 +53,9 @@ function EventCreate ({pins, mapData}) {
       setShow(false);
       //Redirect to "/" or eventually the eventShow for newlycreated Event:
       // <Redirect to="/"/>
-      history.push(`/events`);
+      setTimeout(() => {
+        history.push(`/events`);
+      }, 500)
     };
   
     useEffect(() => {
@@ -74,7 +76,6 @@ function EventCreate ({pins, mapData}) {
     const handleSubmit = async (e) => {
       e.preventDefault();
       const dateTime = dateRef.current + 'T' + time + '-08:00';
-      debugger;
     if (name.length === 0) {
       alert('Event must contain a name')
       return;
