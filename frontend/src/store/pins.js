@@ -77,6 +77,7 @@ export const deletePin = id => async dispatch => {
     return id;
   }
   } catch(err) {
+    console.log('catch')
     const resBody = await err.json();
       if (resBody.statusCode === 400) {
       // return dispatch(receiveErrors(resBody.errors));

@@ -14,6 +14,7 @@ import './PinEditForm.scss';
 import "./Instructions.scss";
 import dart from '../../assets/sounds/dart.wav';
 import fizz from '../../assets/sounds/fizz.wav';
+import { Button } from "react-bootstrap";
 
 
 export const UpdatePlanningMap = () => {
@@ -79,7 +80,7 @@ export const UpdatePlanningMap = () => {
     _setPins(eventPins);
     setCoords(eventPins.map(pin => {
       return {lat: pin.location[0].lat, lng: pin.location[0].lng}
-    }).reverse());
+    }));
     renderEventPins(eventPins);
     _setNumPoints(pinsRef.current.length);
 
@@ -342,7 +343,6 @@ export const UpdatePlanningMap = () => {
 
 	// const height = document.getElementById('accordion').clientHeight();
   // document.getElementById('google-map-container').style.height = height
-  console.log(pinsRef.current)
   return (
     <div className="planning_map_area flex-row justify-center">
       {showStartButton && 

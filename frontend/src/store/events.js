@@ -103,19 +103,14 @@ export const createEvent = data => async dispatch => {
 };
 
 export const updateEvent = data => async dispatch => {
-  debugger
   
   // try {
-    // debugger
     const res = await jwtFetch(`/api/events/${data.id}`,{ //this is fine so long as you shape the data object in the EventUpdate to have an "id" key
       method: 'PATCH',
       body: JSON.stringify(data)
     });
-    debugger
     const updatedEvent = await res.json();
-    debugger
     dispatch(receiveEvent(updatedEvent));
-    debugger
       return updatedEvent;
   // } catch(err) {
   //   console.log(err);
