@@ -39,7 +39,7 @@ function MainPage() {
         <section className='hero flex-row justify-center align-center'>
           <div className='hero_title flex-col justify-center'>
             <h1>Create and organize your own scavenger hunt event.</h1>
-            <p>Track the status of your joined event, create, and invite people, all in one app.</p>
+            <p>Create, invite guests, and track the status of your hunts &#8212; all in one app.</p>
             {splashButtons()}
           </div>
           <ManMap />

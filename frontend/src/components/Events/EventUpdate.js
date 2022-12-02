@@ -87,7 +87,7 @@ const EventUpdate = ({event, pins, mapData}) => {
       if (photoUrl) {
         const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
         if (!allowedExtensions.exec(imageFile.name)) {
-          alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
+          alert('Invalid file type, please upload a .jpeg, .jpg, or .png');
           return;
         }
       }
