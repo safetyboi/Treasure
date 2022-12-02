@@ -207,7 +207,6 @@
 
     img {
       width: 80px;
-      height: 80px;
       border-radius: .5vw;
       object-fit: cover;
     }
@@ -428,7 +427,8 @@
 }
 
 .preview-image {
-  width: 10vw;
+  width: 100%;
+  border-radius: var(--border-radius);
 }
 
 .google-map-container {
