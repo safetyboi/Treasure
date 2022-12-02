@@ -1,6 +1,6 @@
 .planning_map_wrapper {
   position: relative;
-  top: -15vh;
+  top: -10vh;
   overflow-x: hidden;
   margin-bottom: 10vh;
 
@@ -22,6 +22,7 @@
 
     #google-map-container {
       height: 100vh;
+      width: 75vw;
       position: relative;
       border-radius: var(--border-radius);
     }
