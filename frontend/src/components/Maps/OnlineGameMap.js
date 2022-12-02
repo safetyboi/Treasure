@@ -37,7 +37,6 @@ export const OnlineGameMap = () => {
   const jingleSound = new Audio(jingle);
   const winSound = new Audio(win);
   const [intervalId, setIntervalId] = useState('');
-
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
   }
@@ -162,8 +161,6 @@ export const OnlineGameMap = () => {
 
   };
   
-
-    
   function haversineDistance(mk1, mk2) {
     if (mk2) {
       const R = 6.378e+6; // Radius of the Earth in meters
@@ -205,7 +202,6 @@ export const OnlineGameMap = () => {
   const directionsService = new window.google.maps.DirectionsService();
   
   const renderPath = () => {
-    
     let midpoints = []
     for(let i = 1; i < coords.length - 1; i++) {
       let point = coords[i];
@@ -264,7 +260,6 @@ export const OnlineGameMap = () => {
     history.push('/events');
   }
 
-  
   if (!mapRef) return null;
 
   return (
