@@ -32,10 +32,10 @@ const UpdatePinForm = ({deletePin, marker, pin, addPinToArray}) => {
   useEffect(() => {
     setcurrentPin({
       order: pin?.order,
-      location: {
+      location: [{
         lat: marker.position.lat(),
         lng: marker.position.lng(),
-      },
+      }],
       directionToPin: [{text: directions}],
       task: [{
         prompt: challengePrompt,

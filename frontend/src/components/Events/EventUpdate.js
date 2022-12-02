@@ -22,8 +22,6 @@ const EventUpdate = ({event, pins, mapData}) => {
 
     const dateTime = date + 'T' + time + '-08:00';
 
-    // console.log(date);
-    // console.log(time);
 
     const updateName = e => setName(e.currentTarget.value);
     const updateDescription = e => setDescription(e.currentTarget.value);
@@ -58,8 +56,6 @@ const EventUpdate = ({event, pins, mapData}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(date);
-    console.log(time);
     const eventDurationSum = () => {
         let duration = 0;
         pins.forEach(pin => {
@@ -67,15 +63,14 @@ const EventUpdate = ({event, pins, mapData}) => {
         });
         return duration;
     }
-    console.log(pins);
     const firstPin = pins.filter(pin => {
         return pin.order === 1
     })[0]
-    console.log(firstPin);
     const geocoder = new window.google.maps.Geocoder();
     
-
-    let address = await geocoder.geocode({location: firstPin.location[0]});
+    console.log(firstPin)
+    let latlng = {lat: firstPin.location[0].lat, lng: firstPin.location[0].lng}
+    let address = await geocoder.geocode({location: latlng});
       if (address.results[0]) {
         address = address.results[0].formatted_address;
       } else {
@@ -110,27 +105,25 @@ const EventUpdate = ({event, pins, mapData}) => {
             initCoords: firstPin.location,
             location: address
         }
-        // debugger
       let eventUpdated = await dispatch(eventReducerActions.updateEvent(eventToUpdate));
-        debugger
       if (eventUpdated && photoUrl) { 
         await jwtFetch(`/api/events/addImage/${eventUpdated._id}`, {
           method: "PATCH",
           body: formData,
         })
       }
-      debugger
       if (eventUpdated) {
         //fetch the pins from the backend NOT the modified array on the frontend
-        let oldPins = await dispatch(pinReducerActions.fetchEventPins(eventId)); //it's gonna get mad that I'm doing an async at 'not the top level'
-         debugger
+        let oldPins = await dispatch(pinReducerActions.fetchEventPins(eventId));
         let deletedPins = [];
         //iterate over
-        oldPins.forEach( async pin => {
-          let deletedPin = await dispatch(pinReducerActions.deletePin(pin._id))
-            deletedPins.push(deletedPin)  //is it '_id'? I think so
+        deletedPins = await oldPins.map( async pin => {
+          const deletedPin = await dispatch(pinReducerActions.deletePin(pin._id))
+          console.log(deletedPin)
+          return deletedPin;
+          // return deletedPin;
         })
-        debugger
+        console.log('deleted pins are ', deletedPins)
         if (deletedPins.length === oldPins.length) {
             const mappedPins = pins.map(pin=> {
                 return {...pin, event: eventUpdated._id}
