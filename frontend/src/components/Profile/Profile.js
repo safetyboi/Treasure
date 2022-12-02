@@ -24,11 +24,16 @@ function Profile() {
   };
 
   const deleteProfile = e => {
-    if (window.confirm("Are you sure to delete your profile?")) {
-      dispatch(deleteUser(user.id));
-    };
+    if (user._id !== '6371a9a2386c814c8c4af77c') {
+      if (window.confirm("Are you sure? Deleting a profile is irreversible.")) {
+        dispatch(deleteUser(user.id));
+        logoutUser(e);
+      };
+    } else {
+      alert('You cannot delete the precious demo user!')
+    }
 
-    logoutUser(e);
+
   }
 
   return (
