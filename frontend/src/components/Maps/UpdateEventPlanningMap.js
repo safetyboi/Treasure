@@ -153,8 +153,8 @@ export const UpdatePlanningMap = () => {
         }
         });
         newMarker.addListener('click', () => {
-          setShowPinEditForm(newMarker);
           fizzSound.play();
+          setShowPinEditForm(newMarker);
         })
         reducedMarkers.push(newMarker);
       } else if (mark.order < marker.order) {
@@ -222,7 +222,7 @@ export const UpdatePlanningMap = () => {
         });
         marker.addListener('click', async () => {
           fizzSound.play();
-            setShowPinEditForm(marker);
+          setShowPinEditForm(marker);
         })
         setMarkers(marks => [...marks, marker])
     })
@@ -243,6 +243,7 @@ export const UpdatePlanningMap = () => {
     }
     });
     marker.addListener('click', async() => {
+      fizzSound.play();
       setShowPinEditForm(marker);
     })
     setMarkers(marks => [...marks, marker])
