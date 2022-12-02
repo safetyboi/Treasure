@@ -261,9 +261,19 @@
 
       .event_details {
         width: 65%;
+
+        .event_header {
+          img {
+            width: 7vw;
+            height: 7vw;
+            border-radius: var(--border-radius);
+            object-fit: cover;
+            margin-right: 2vw;
+          }
+        }
       }
 
-      .event_preview,
+      .event_header,
       .event_description {
         margin-bottom: 4vh;
       }
@@ -419,6 +429,7 @@
   width: 20vw;
 }
 
-.preview-title {
-
+.google-map-container {
+  height: 50vh;
+  width: 100%;
 }

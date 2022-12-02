@@ -17,7 +17,7 @@ import VisualStudio from '../../assets/images/visual_studio.svg';
 import Webpack from '../../assets/images/webpack.svg';
 import MongoDB from '../../assets/images/mongodb.svg';
 import React from '../../assets/images/react.svg';
-import Dan from '../../assets/images/dan_culbertson.JPG';
+import Dan from '../../assets/images/dan_culbertson.jpeg';
 import Moses from '../../assets/images/michael_moses.jpg';
 import Vince from '../../assets/images/vince_memmo.JPG';
 import Fifi from '../../assets/images/safitri_shelton.jpg';
