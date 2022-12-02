@@ -15,6 +15,7 @@ import "./Instructions.scss";
 import dart from '../../assets/sounds/dart.wav';
 import fizz from '../../assets/sounds/fizz.wav';
 
+
 export const UpdatePlanningMap = () => {
   const [map, setMap] = useState(null);
   const mapRef = useRef(null);

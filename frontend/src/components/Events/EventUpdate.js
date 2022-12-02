@@ -14,14 +14,20 @@ const EventUpdate = ({event, pins, mapData}) => {
 
     const [name, setName] = useState(event?.name);
     const [description, setDescription] = useState(event?.description);
-    // const [date, setDate] = useState(event?.date?.slice(0,10));
-    const [date, setDate] = useState(event?.date);
-    const [time, setTime] = useState(event?.time?.slice(11,20));
-    const [imageFile, setImageFile] = useState(event?.image)
-    const [photoUrl, setPhotoUrl] = useState('')
+    const [date, setDate] = useState(event?.date?.slice(0,10));
+    const [time, setTime] = useState(event?.date?.slice(11,19));
+    const [imageFile, setImageFile] = useState(event?.image);
+    const [photoUrl, setPhotoUrl] = useState('');
 
-    const dateTime = date + 'T' + time + '-08:00';
-
+    useEffect(() => {
+      let hour = time.slice(0,2)
+      hour = parseInt(hour) - 8
+      if (hour < 0) hour += 24
+      hour = hour.toString()
+      console.log(hour)
+      if (hour.length == 1) hour = '0' + hour
+      setTime(hour + time.slice(2))
+    }, [])
 
     const updateName = e => setName(e.currentTarget.value);
     const updateDescription = e => setDescription(e.currentTarget.value);
@@ -56,6 +62,7 @@ const EventUpdate = ({event, pins, mapData}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const dateTime = date + 'T' + time + '-08:00';
     const eventDurationSum = () => {
         let duration = 0;
         pins.forEach(pin => {
@@ -76,8 +83,8 @@ const EventUpdate = ({event, pins, mapData}) => {
       } else {
         address = "Location Unavailable"
       };
-
-      if (imageFile) {
+      
+      if (photoUrl) {
         const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
         if (!allowedExtensions.exec(imageFile.name)) {
           alert('Invalid file type, please upload a .jpeg, .jpg, or, .png');
@@ -100,7 +107,7 @@ const EventUpdate = ({event, pins, mapData}) => {
             price: totalPrice(), 
             supplies: totalSupplies(),
             elevation: mapData.elevation,
-            date: date,
+            date: dateTime,
             status: false,
             initCoords: firstPin.location,
             location: address
