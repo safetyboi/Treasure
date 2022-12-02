@@ -83,7 +83,6 @@
     background-color: white;
     padding: 5vh 2vw;
     border-radius: var(--border-radius);
-    height: 100vh;
 
     h2 {
       font-size: 1.3vw;
@@ -424,9 +423,12 @@
   }
 }
 
+.preview-title {
+  margin-bottom: 2vh;
+}
+
 .preview-image {
-  height: 20vh;
-  width: 20vw;
+  width: 10vw;
 }
 
 .google-map-container {

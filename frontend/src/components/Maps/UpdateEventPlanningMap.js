@@ -344,7 +344,7 @@ export const UpdatePlanningMap = () => {
   // document.getElementById('google-map-container').style.height = height
   console.log(pinsRef.current)
   return (
-    <div className="planning_map_area flex-row">
+    <div className="planning_map_area flex-row justify-center">
       {showStartButton && 
       <div className="instruction_area flex-col align-center">
         <Instructions />
