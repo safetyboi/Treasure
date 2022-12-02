@@ -16,7 +16,7 @@ const EventLobby = () => {
   const [show, setShow] = useState(false);
 
   // Date time object
-  const dateObj = new Date(event.date);
+  const dateObj = new Date(event?.date);
   const dateStrg = String(dateObj)
   const localTime = dateObj.toLocaleString('en-eg', {timeZone:"America/Los_Angeles"});
   const comaIdx = localTime.indexOf(',');
@@ -26,7 +26,7 @@ const EventLobby = () => {
   const hourLen = colonIdx - comaIdx;
   const hour = hourLen === 3 ? localTime.slice(comaIdx + 2, comaIdx + 6) : localTime.slice(comaIdx + 2, comaIdx + 7);
   const ampm = localTime.slice(-2);
-  const duration = Math.ceil(event.duration / 60);
+  const duration = Math.ceil(event?.duration / 60);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -55,24 +55,27 @@ const EventLobby = () => {
   }
 
   const eventImg = () => {
-    if (!event.image) {
-      return <img src={defaultImage} alt={`event_${event.name}`} className="default_img" />
-    }
+    if (event) {
+      // if (!event.image) {
+      //   return <img src={defaultImage} alt={`event_${event.name}`} className="default_img" />
+      // }
+  
+      return <img src={event.image} alt={`${event.name}_image`}/>
 
-    return <img src={event.image} alt={`${event.name}_image`}/>
+    }
   }
 
   const updateDeleteEvent = () => {
-    if (user._id === event.creator._id) {
+    if (event && user._id === event.creator._id) {
       return (
         <>
           <Button onClick={openUpdateEvent}>Update Event</Button>
           <Button onClick={
             () => {
-              if (window.confirm("Are you sure to delete this event?")) {
+              if (window.confirm("Are you sure? Deleting an event is irreversible.")) {
                 dispatch(deleteEvent(eventId));
+                redirectEvent();
               };
-              redirectEvent();
             }}>
             Delete Event
           </Button>
@@ -92,13 +95,13 @@ const EventLobby = () => {
             <div className="event_header flex-row align-center">
               {eventImg()}
               <div className="event_preview">
-                <h1>{event.name}</h1>
-                <p>By <span>{event.creator.username}</span></p>
-                <p><i className="fa-solid fa-dollar-sign"></i>{event.price} USD</p>
+                <h1>{event?.name}</h1>
+                <p>By <span>{event?.creator?.username}</span></p>
+                <p><i className="fa-solid fa-dollar-sign"></i>{event?.price} USD</p>
               </div>
             </div>
             <div className="event_description">
-              <p>{event.description}</p>
+              <p>{event?.description}</p>
             </div>
             <div className="time_location">
               <h2>When and Where</h2>
@@ -119,7 +122,7 @@ const EventLobby = () => {
                 <div className="divider"></div>
                 <div className="location flex-row">
                   <i className="fa-solid fa-location-dot"></i>
-                  <p>{event.location}</p>
+                  <p>{event?.location}</p>
                 </div>
               </div>
             </div>
