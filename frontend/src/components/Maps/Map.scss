@@ -59,18 +59,22 @@
   }
 
   .map_instructions {
-    height: 100%;
+    height: 70vh;
     width: 100%;
     min-width: 400px;
     min-height: 300px;
+    
+    #google-map-container {
+      height: 100%;
+    }
   }
 }
 
 .planning_map_form {
-  width: 25vw;
-  height: 100vh;
-  overflow: scroll;
+  width: 30vw;
+  height: 70vh;
   margin-right: 1vw;
+  overflow: scroll;
 }
 
 #google-map-container {

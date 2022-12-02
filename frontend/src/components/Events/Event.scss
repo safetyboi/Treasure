@@ -6,7 +6,7 @@
     margin-bottom: 20vh;
     
     h1 {
-      margin-bottom: 10vh;
+      margin-bottom: 5vh;
     }
 
     .event_index > * {
@@ -15,7 +15,7 @@
 
     .event_list_wrapper {
       width: 25vw;
-      height: 90vh;
+      height: 70vh;
       overflow: scroll;
       padding: 0 .5vw;
 
@@ -426,6 +426,6 @@
 }
 
 .google-map-container {
-  height: 90vh;
+  height: 70vh;
   width: 100%;
 }
