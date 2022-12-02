@@ -46,7 +46,7 @@
 
 .planning_map {
   h1 {
-    margin-bottom: 7vh;
+    margin-bottom: 5vh;
   }
 }
 
@@ -55,8 +55,7 @@
     position: absolute;
     z-index: 99;
     height: 100vh;
-    background-color: rgba(242, 242, 242, .9);
-    padding: 5vh 0;
+    background-color: rgba(242, 242, 242, .95);
   }
 
   .map_instructions {

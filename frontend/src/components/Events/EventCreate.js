@@ -34,10 +34,14 @@ function EventCreate ({pins, mapData}) {
     const localTime = time >= 13 ? time - 12 : time;
     
     const modalTime = () => {
-      if (time >= 13) {
-        return `${localTime} PM`
+      const colonIdx = time.indexOf(':');
+      const hour = time.slice(0, colonIdx);
+      const minute = time.slice(colonIdx + 1);
+
+      if (parseInt(hour) >= 13) {
+        return `${hour - 12}:${minute} PM`
       }
-      return `${localTime} AM`
+      return `${hour}:${minute} AM`
     }
 
     const handleShow = () => setShow(true);

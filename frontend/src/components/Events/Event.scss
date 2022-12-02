@@ -145,9 +145,9 @@
 // Map State CSS
 .map_stat_wrapper {
   position: absolute;
-  right: 5vw;
+  right: 4vw;
   z-index: 1;
-  bottom: 83vh;
+  top: 14vh;
   background-color: rgba(0, 0,0, .75);
   padding: 2vh 1vw;
   border-radius: var(--border-radius);
@@ -225,18 +225,12 @@
       // margin: 10vh 15vw;
       width: 70vw;
       height: 50vh;
-      background-color: rgba(45, 45, 45, .2);
       border-radius: var(--border-radius);
       margin-bottom: 7vh;
       
-      img {
-        margin: 0 auto;
-      }
-
-      img.default_img {
+      .google-map-container {
+        width: 100%;
         height: 100%;
-        padding-top: 5%;
-        opacity: .2;
       }
     }
   
@@ -432,6 +426,6 @@
 }
 
 .google-map-container {
-  height: 50vh;
+  height: 90vh;
   width: 100%;
 }
