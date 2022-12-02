@@ -62,6 +62,9 @@ const EventUpdate = ({event, pins, mapData}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    debugger;
+    if (!pins.length) alert('Event must have at least one pin.')
+    if (!imageFile) alert('Event must have an image.')
     const dateTime = date + 'T' + time + '-08:00';
     const eventDurationSum = () => {
         let duration = 0;
