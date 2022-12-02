@@ -9,6 +9,7 @@ import * as pinReducerActions from '../../store/pins'
 import * as eventReducerActions from '../../store/events';
 import jwtFetch from '../../store/jwt';
 import './Event.scss'
+import { useRef } from 'react';
 
 
 function EventCreate ({pins, mapData}) {
@@ -22,6 +23,7 @@ function EventCreate ({pins, mapData}) {
     // const [supplies, setSupplies] = useState('');
     // const [elevation, setElevation] = useState(0);
     const [date, setDate] = useState('');
+    const dateRef = useRef(date);
     const [time, setTime] = useState('');
     // const [location, setLocation] = useState('');
     const dispatch = useDispatch();
@@ -29,8 +31,14 @@ function EventCreate ({pins, mapData}) {
     const history = useHistory();
     const [show, setShow] = useState(false);
     const [photoUrl, setPhotoUrl] = useState('')
+  
 
-    const dateTime = date + 'T' + time + '-08:00';
+    const _setDate = (value) => {
+      dateRef.current = value;
+      setDate(value);
+    }
+
+    console.log(date);
     const localTime = time >= 13 ? time - 12 : time;
     
     const modalTime = () => {
@@ -49,7 +57,9 @@ function EventCreate ({pins, mapData}) {
       setShow(false);
       //Redirect to "/" or eventually the eventShow for newlycreated Event:
       // <Redirect to="/"/>
-      history.push(`/events`);
+      setTimeout(() => {
+        history.push(`/events`);
+      }, 500)
     };
   
     useEffect(() => {
@@ -69,7 +79,7 @@ function EventCreate ({pins, mapData}) {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-
+      const dateTime = dateRef.current + 'T' + time + '-08:00';
     if (name.length === 0) {
       alert('Event must contain a name')
       return;
@@ -180,7 +190,7 @@ function EventCreate ({pins, mapData}) {
     // const updatePrice = e => setPrice(e.currentTarget.value);
     // const updateSupplies = e => setSupplies(e.currentTarget.value);
     // const updateElevation = e => setElevation(e.currentTarget.value);
-    const updateDate = e => setDate(e.currentTarget.value);
+    const updateDate = e => _setDate(e.currentTarget.value);
     const updateTime = e => setTime(e.currentTarget.value);
     // const updateLocation = e => setLocation(e.currentTarget.value);
 

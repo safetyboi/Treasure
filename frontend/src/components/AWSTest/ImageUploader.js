@@ -20,8 +20,7 @@ const UploadImages = () => {
       method: "POST",
       body: formData,
     })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((res) => res.json());
   };
 
   const handleFiles = async (e) => {

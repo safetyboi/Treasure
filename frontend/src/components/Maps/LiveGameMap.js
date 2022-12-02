@@ -70,7 +70,6 @@ export const LiveGameMap = () => {
   }, [mapRef, event]);
 
   const renderLocation = (position) => {
-    console.log({lat: position.coords.latitude, lng: position.coords.longitude})
     addLocationPin({lat: position.coords.latitude, lng: position.coords.longitude}, map);
   }
 

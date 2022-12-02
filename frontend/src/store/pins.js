@@ -35,13 +35,10 @@ export const getEventPins = (eventId) => (state) => {
 }
 
 export const fetchEventPins = eventId => async dispatch => {
-  // debugger
   try {
-    // debugger
       const res = await jwtFetch(`/api/pins/${eventId}`);
       const eventPins = await res.json();
     dispatch(receiveEventPins(eventPins));
-    // debugger
     return eventPins;
   } catch (err) {
     const resBody = await err.json();
@@ -53,34 +50,26 @@ export const fetchEventPins = eventId => async dispatch => {
 }
 
 export const createPin = data => async dispatch => {
-  // debugger
   const res = await jwtFetch(`/api/pins/${data.event}`, {
       method: 'POST',
       body: JSON.stringify(data)
     });
-    // debugger
     const pin = await res.json();
     dispatch(receiveNewPin(pin));
-    //no error-handling yet
 }
 
 export const deletePin = id => async dispatch => {
-  // debugger
   try {
-    // debugger
   const res = await jwtFetch(`/api/pins/${id}`, {
     method: 'DELETE'
   });
-  // debugger
   if (res.ok) {
     dispatch(removePin(id))
     return id;
   }
   } catch(err) {
-    console.log('catch')
     const resBody = await err.json();
       if (resBody.statusCode === 400) {
-      // return dispatch(receiveErrors(resBody.errors));
       return null;
     }
   }

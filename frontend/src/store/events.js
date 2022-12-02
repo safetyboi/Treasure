@@ -104,22 +104,14 @@ export const createEvent = data => async dispatch => {
 
 export const updateEvent = data => async dispatch => {
   
-  // try {
-    const res = await jwtFetch(`/api/events/${data.id}`,{ //this is fine so long as you shape the data object in the EventUpdate to have an "id" key
+    const res = await jwtFetch(`/api/events/${data.id}`,{
       method: 'PATCH',
       body: JSON.stringify(data)
     });
     const updatedEvent = await res.json();
     dispatch(receiveEvent(updatedEvent));
       return updatedEvent;
-  // } catch(err) {
-  //   console.log(err);
-  //     const resBody = await err.json();
-  //     if (resBody.statusCode === 400) {
-  //     // return dispatch(receiveErrors(resBody.errors));
-  //     return null;
-  //   }
-  // }
+
 }
 
 export const deleteEvent = eventId => async dispatch => {

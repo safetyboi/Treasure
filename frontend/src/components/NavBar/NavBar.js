@@ -1,7 +1,8 @@
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../store/session';
+import { logout, login } from '../../store/session';
 import './NavBar.scss';
+import { Button } from 'react-bootstrap';
 
 function NavBar () {
   const dispatch = useDispatch(); 
@@ -12,6 +13,10 @@ function NavBar () {
       e.preventDefault();
       dispatch(logout());
       history.push('/');
+  }
+
+  const demoLogin = ()=> {
+    dispatch(login({email: 'demo@user.io', password: 'password'}))
   }
 
   const getLinks = () => {
@@ -30,7 +35,7 @@ function NavBar () {
         <div className="links-auth flex-row justify-evenly align-center">
           <Link to={'/signup'}>Signup</Link>
           <Link to={'/login'}>Login</Link>
-          <Link to="/demo-lobby" className='demo-btn'>DEMO</Link>
+          <Link to={'/demo-lobby'}><Button className='demo-btn' onClick={demoLogin}>DEMO</Button></Link>
         </div>
       );
     }

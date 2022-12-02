@@ -24,7 +24,6 @@ const EventUpdate = ({event, pins, mapData}) => {
       hour = parseInt(hour) - 8
       if (hour < 0) hour += 24
       hour = hour.toString()
-      console.log(hour)
       if (hour.length == 1) hour = '0' + hour
       setTime(hour + time.slice(2))
     }, [])
@@ -62,6 +61,8 @@ const EventUpdate = ({event, pins, mapData}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!pins.length) alert('Event must have at least one pin.')
+    if (!imageFile) alert('Event must have an image.')
     const dateTime = date + 'T' + time + '-08:00';
     const eventDurationSum = () => {
         let duration = 0;
@@ -75,7 +76,6 @@ const EventUpdate = ({event, pins, mapData}) => {
     })[0]
     const geocoder = new window.google.maps.Geocoder();
     
-    console.log(firstPin)
     let latlng = {lat: firstPin.location[0].lat, lng: firstPin.location[0].lng}
     let address = await geocoder.geocode({location: latlng});
       if (address.results[0]) {
@@ -126,11 +126,9 @@ const EventUpdate = ({event, pins, mapData}) => {
         //iterate over
         deletedPins = await oldPins.map( async pin => {
           const deletedPin = await dispatch(pinReducerActions.deletePin(pin._id))
-          console.log(deletedPin)
           return deletedPin;
           // return deletedPin;
         })
-        console.log('deleted pins are ', deletedPins)
         if (deletedPins.length === oldPins.length) {
             const mappedPins = pins.map(pin=> {
                 return {...pin, event: eventUpdated._id}
