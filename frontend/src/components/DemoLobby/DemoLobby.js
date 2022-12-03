@@ -23,6 +23,7 @@ const DemoLobby = () => {
             </Link>
           </div>
         </div>
+        {/* <Footer /> */}
       </section>
     )
 }

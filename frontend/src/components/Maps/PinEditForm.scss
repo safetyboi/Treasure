@@ -21,7 +21,7 @@
     margin: 0 1vw;
 
     #google-map-container {
-      height: 100vh;
+      height: 70vh;
       width: 75vw;
       position: relative;
       border-radius: var(--border-radius);
@@ -31,13 +31,14 @@
 
 .pin-edit-area {
   position: absolute;
-  top: 8vh;
-  left: 10px;
+  top: -3vh;
+  left: -10px;
   // z-index: 30;
   background-color: rgba(255, 114, 94, .95);
   padding: 3vh 2vw;
   border-radius: var(--border-radius);
   color: white;
+  transform: scale(.95);
 
   h2 {
     margin-bottom: 3vh;
