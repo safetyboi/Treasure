@@ -42,7 +42,11 @@ const EventLobby = () => {
 
   const openUpdateEvent = (e) => {
     e.preventDefault();
-    history.push(`/events/${eventId}/update-event`)
+    if (eventId === '638a9e6fcbf4f1662f53440a') {
+      alert(`The precious demo event may not be manipulated.`)
+    } else {  
+      history.push(`/events/${eventId}/update-event`)
+    }
   }
 
   const redirectEvent = () => {
@@ -71,11 +75,17 @@ const EventLobby = () => {
         <>
           <Button onClick={openUpdateEvent}>Update Event</Button>
           <Button onClick={
+            
             () => {
-              if (window.confirm("Are you sure? Deleting an event is irreversible.")) {
-                dispatch(deleteEvent(eventId));
-                redirectEvent();
-              };
+              if (eventId === '638a9e6fcbf4f1662f53440a') {
+                alert(`The precious demo event may not be deleted.`)
+              } else {  
+                if (window.confirm("Are you sure? Deleting an event is irreversible.")) {
+                  dispatch(deleteEvent(eventId));
+                  redirectEvent();
+                };
+                }
+          
             }}>
             Delete Event
           </Button>

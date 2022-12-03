@@ -38,8 +38,8 @@ const UpdatePinForm = ({deletePin, marker, pin, addPinToArray}) => {
       }],
       directionToPin: [{text: directions}],
       task: [{
-        prompt: challengePrompt,
-        correctAnswer: challengeAnswser,
+        prompt: challengePrompt.toLowerCase(),
+        correctAnswer: challengeAnswser.toLowerCase(),
       }],
       supplies: supplies,
       price: parseInt(price),

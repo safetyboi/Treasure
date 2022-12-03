@@ -11,7 +11,7 @@ const DemoLobby = () => {
         <div className='flex-row justify-center'>
           <div className='left_demo flex-col align-center'>
             <img src={Treasure} alt="demo_hunt" />
-            <Link className="lobby-link" to={'/events/6386a2d5f5b69056b352d711/online-game'}>
+            <Link className="lobby-link" to={'/events/638a9e6fcbf4f1662f53440a/online-game'}>
               <Button className="lobby-button" >Try Our Demo Hunt!</Button>
             </Link>
           </div>

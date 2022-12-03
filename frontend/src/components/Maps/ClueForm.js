@@ -15,13 +15,13 @@ const ClueForm = ({intervalId, setCoords, addLocationPin, winSound, showClue, se
 
   const checkAnswer = (e) => {
     e.preventDefault();
-    if (currentPinOrder === eventPins.length && response === currentPin.task[0].correctAnswer) {
+    if (currentPinOrder === eventPins.length && response.toLowerCase() === currentPin.task[0].correctAnswer) {
       winSound.play();
       clearInterval(intervalId);
       setShowEndGame(true);
     }
 
-    else if (response === currentPin.task[0].correctAnswer) {
+    else if (response.toLowerCase() === currentPin.task[0].correctAnswer) {
       jingleSound.play();
       setResponse('')
       setTimeout(() => {
