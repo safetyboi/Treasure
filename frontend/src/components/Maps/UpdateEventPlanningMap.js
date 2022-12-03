@@ -69,7 +69,7 @@ export const UpdatePlanningMap = () => {
 
   useEffect(() => {
     if (!map && event) {
-      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: event.initCoords[0]}))
+      setMap(new window.google.maps.Map(mapRef.current, {mapTypeControl: false, zoom: 12, center: event.initCoords[0]}))
     }
     
   }, [mapRef, event]);
