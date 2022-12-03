@@ -42,7 +42,7 @@ export const PlanningMap = () => {
 
   useEffect(() => {
     if (!map) {
-      setMap(new window.google.maps.Map(mapRef.current, { zoom: 12, center: {lat: 37.773972, lng: -122.431297}}))
+      setMap(new window.google.maps.Map(mapRef.current, {mapTypeControl: false, zoom: 12, center: {lat: 37.773972, lng: -122.431297}}))
     }
     
   }, [mapRef]);

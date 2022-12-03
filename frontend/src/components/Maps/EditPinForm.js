@@ -59,13 +59,13 @@ const PinEditForm = ({deletePin, marker, pin, addPinToArray}) => {
   return (
     <div className="pin-edit-area">
       <div className='flex-row justify-between'>
-        <h2>Edit Pins</h2>
+        <h2>Edit Pin {marker?.order}</h2>
       </div>
 
       <form className="pin-edit-form">
-        <label>Pin Order
+        {/* <label>Pin Order
           <input disabled placeholder="" value={marker?.order}/>
-        </label>
+        </label> */}
         <label>Directions to get to this pin
           <input placeholder="*Required*" onChange={e => {setDirections(e.target.value)}} value={directions}/>
         </label>
