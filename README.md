@@ -35,4 +35,4 @@ Treasure user authetntication allows user to create an account or login, either 
 ### Event Planning
 Logged in users can create, read, update, and delete their own events. An interactive map will be shown so users are able to create their own route and create each details in each points. Total distance, elevation gain, and estimated event duration will be automatically updated according to the user input.
 
-![create_event.gif](https://s9.gifyu.com/images/create_event.gif)
+![create_event](https://s9.gifyu.com/images/create_event47c6d01a4d76800d.gif)
