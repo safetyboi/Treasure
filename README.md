@@ -40,6 +40,7 @@ Logged in users can create, read, update, and delete their own events. An intera
 Perhaps the biggest challenge of the event planning map is the deleting of pins amongst the ones the user has already placed when planning an event. Not only does the targeted pin need to be deleted, but all pins placed later in the event need their order to be decremented, and the route needs to be redrawn without passing their the location of the deleted pin. 
 
 It was decided that a custom reducer function would be utilized to rebuild the array of pins, markers, and coordinates upon pin deletion. 
+
 ###PlanningMap.js
 ```javascript
 
@@ -64,8 +65,9 @@ const deletePin = (marker) => {
 
 
 
-Code Snippet: Find address of the first pin of the map 
-```
+A street address and starting location was acquired for each event by calling the Google Maps Geocoder API and passing in the coordinates of the event's first pin. This address is displayed to users so that they can easily locate the start of the event.  
+
+```javascript
 const geocoder = new window.google.maps.Geocoder();
 
 let address = await geocoder.geocode({location: firstPin.location});
