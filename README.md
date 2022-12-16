@@ -99,7 +99,9 @@ A major problem with starting a game was access to event data on initial page re
         }
       });
     };
+    
 …
+
   const addLocationPin = (location, map) => {
       setNumPoints(numPoints++)
       const marker = new window.google.maps.Marker({
@@ -125,14 +127,16 @@ The game needs a way to track a user’s ‘location’ as she clicks around the
 
 ###OnlineGameMap.js
 ```javascript
-window.google.maps.event.addListener(map, "click", (event) => {
-        if (!showClueRef.current) {
-          dartSound.play();
-          setCoords(allCoords => [...allCoords, event.latLng])
-          addLocationPin(event.latLng, map);     
-        }
-      });
+    window.google.maps.event.addListener(map, "click", (event) => {
+      if (!showClueRef.current) {
+        dartSound.play();
+        setCoords(allCoords => [...allCoords, event.latLng])
+        addLocationPin(event.latLng, map);     
+      }
+    });
+      
 …
+
   function haversineDistance(mk1, mk2) {
     if (mk2) {
       const R = 6.378e+6; // Radius of the Earth in meters
@@ -149,6 +153,7 @@ window.google.maps.event.addListener(map, "click", (event) => {
   const pointReached = () => {
     return haversineDistance(currentPosition, grabPin(currentPinOrder).location[0]) < 500
   }
+  
   const releaseClue = () => {
     if (pointReached()) {
       jingleSound.play();
@@ -206,6 +211,7 @@ const markerIcon = {
       })
     }
   }, [map, events])
+  
   return (
     <>
       <div className="google-map-container" ref={mapRef}>Map</div>
