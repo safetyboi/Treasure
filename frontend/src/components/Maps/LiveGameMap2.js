@@ -40,6 +40,8 @@ export const LiveGameMap2 = () => {
   const winSound = new Audio(win);
   const dartSound = new Audio(dart);
   const [intervalId, setIntervalId] = useState('');
+  let watch;
+
   const grabPin = (order) => {
     return eventPins.filter(pin => pin.order === order)[0]
   }
@@ -55,13 +57,17 @@ export const LiveGameMap2 = () => {
     map.setCenter({lng: position.coords.longitude, lat: position.coords.latitude});
   }
 
+  const geoWatchError = (error) => {
+    console.log(error.message);
+  }
+
   const startGame = () => {
     setShowStartButton(false);
     setCoords(allCoords => [...allCoords, event.initCoords[0]]);
-    setInterval(() => {
-      if (navigator.geolocation) navigator.geolocation.getCurrentPosition(updatePosition)
-    }, 10000)
-
+    // setInterval(() => {
+    //   if (navigator.geolocation) navigator.geolocation.getCurrentPosition(updatePosition)
+    // }, 10000)
+    watch = navigator.geolocation.watchPosition(updatePosition, geoWatchError);
 
     // addLocationPin(event.initCoords[0], map);
     
