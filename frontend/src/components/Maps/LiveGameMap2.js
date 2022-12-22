@@ -32,6 +32,7 @@ export const LiveGameMap2 = () => {
   const [currentPinOrder, setCurrentPinOrder] = useState(1);
   const [showEndGame, setShowEndGame] = useState(false);
   const[markers, setMarkers] = useState([]);
+  const [myLocationMarkers, setMyLocationMarkers] = useState([])
   const history = useHistory();
   const [eventDuration, setEventDuration] = useState(0);
   const [showStartButton, setShowStartButton] = useState(true);
@@ -52,7 +53,8 @@ export const LiveGameMap2 = () => {
   }
 
   const updatePosition = (position) => {
-    console.log(position.coords.latitude, position.coords.longitude)
+    console.log(position.coords.latitude, position.coords.longitude);
+    setCoords(allCoords => [...allCoords, event.latLng]);
     addLocationPin({lat: position.coords.latitude, lng: position.coords.longitude}, map);
     map.setCenter({lng: position.coords.longitude, lat: position.coords.latitude});
   }
@@ -63,7 +65,7 @@ export const LiveGameMap2 = () => {
 
   const startGame = () => {
     setShowStartButton(false);
-    setCoords(allCoords => [...allCoords, event.initCoords[0]]);
+    // setCoords(allCoords => [...allCoords, event.initCoords[0]]);
     // setInterval(() => {
     //   if (navigator.geolocation) navigator.geolocation.getCurrentPosition(updatePosition)
     // }, 10000)
@@ -178,7 +180,14 @@ export const LiveGameMap2 = () => {
           strokeWeight: 0
         }
       });
+
       setCurrentPosition({lat: marker.position.lat(), lng: marker.position.lng()});
+
+      myLocationMarkers.forEach(marker => {
+        marker.setMap(null);
+      });
+
+      setMyLocationMarkers(markers => [...markers, marker]);
 
   };
   
