@@ -35,6 +35,7 @@ export const LiveGameMap2 = () => {
   const history = useHistory();
   const [eventDuration, setEventDuration] = useState(0);
   const [showStartButton, setShowStartButton] = useState(true);
+  const [reachedCurrentPin, setReachedCurrentPin] = useState(false);
   const jingleSound = new Audio(jingle);
   const winSound = new Audio(win);
   const dartSound = new Audio(dart);
@@ -59,7 +60,7 @@ export const LiveGameMap2 = () => {
     setCoords(allCoords => [...allCoords, event.initCoords[0]]);
     setInterval(() => {
       if (navigator.geolocation) navigator.geolocation.getCurrentPosition(updatePosition)
-    }, 1000)
+    }, 10000)
 
 
     // addLocationPin(event.initCoords[0], map);
@@ -193,7 +194,8 @@ export const LiveGameMap2 = () => {
   }
 
   const releaseClue = () => {
-    if (pointReached()) {
+    if (pointReached() && !reachedCurrentPin) {
+      setReachedCurrentPin(true);
       jingleSound.play();
 
       setTimeout(() => {
@@ -209,6 +211,7 @@ export const LiveGameMap2 = () => {
   const nextPin = () => {
       setCurrentPinOrder(currentPinOrder + 1);
       showClueUpdater(false);
+      setReachedCurrentPin(false)
   }
 
   const directionsRenderer = new window.google.maps.DirectionsRenderer({suppressMarkers: true});
