@@ -23,7 +23,7 @@ const ClueForm = ({intervalId, setCoords, addLocationPin, winSound, showClue, se
 
     else if (response.toLowerCase() === currentPin.task[0].correctAnswer) {
       jingleSound.play();
-      setResponse('')
+      setResponse('');
       setTimeout(() => {
         alert('Correct Response! You can now head for the next event pin.')
         nextPin();

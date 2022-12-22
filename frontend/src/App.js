@@ -17,7 +17,7 @@ import UpdateEventPlanningMapWrapper from './components/Maps/UpdateEventPlanning
 import { getCurrentUser } from './store/session';
 import OnlineGameMapWrapper from './components/Maps/OnlineGameMap';
 import ImageUploader from '../src/components/AWSTest/ImageUploader';
-import LiveGameMapWrapper from './components/Maps/LiveGameMap';
+import LiveGameMap2Wrapper from './components/Maps/LiveGameMap2';
 import EventLobby from './components/Events/EventLobby';
 import UpdatePlanningMapWrapper from './components/Maps/UpdateEventPlanningMap';
 import About from './components/About/About';
@@ -40,7 +40,7 @@ function App() {
         <AuthRoute exact path="/login" component={LoginForm} />
         <AuthRoute exact path="/signup" component={SignupForm} />
 
-        <ProtectedRoute exact path="/events/:eventId/live-game" component={LiveGameMapWrapper} />
+        <ProtectedRoute exact path="/events/:eventId/live-game" component={LiveGameMap2Wrapper} />
         <ProtectedRoute exact path="/events/:eventId/online-game" component={OnlineGameMapWrapper} />
         <ProtectedRoute exact path="/events/:eventId/update-event" component={UpdatePlanningMapWrapper} />
         <ProtectedRoute exact path="/events/new" component={PlanningMapWrapper} />
