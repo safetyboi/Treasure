@@ -190,7 +190,7 @@ export const LiveGameMap2 = () => {
   }
   
   const pointReached = () => {
-    return haversineDistance(currentPosition, grabPin(currentPinOrder).location[0]) < 500
+    return haversineDistance(currentPosition, grabPin(currentPinOrder).location[0]) < 50
   }
 
   const releaseClue = () => {
